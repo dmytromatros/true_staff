@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "HelloWorld",
   data() {
@@ -25,10 +27,10 @@ export default {
     };
   },
   methods: {
-    submit() {
-      let data = { email: this.email, password: this.password };
-
-      console.log(data);
+    async submit() {
+      await axios.get("http://localhost:5000/api/get-user-list").then((res) => {
+        console.log(res.data.data);
+      });
     },
   },
 };

@@ -1,7 +1,7 @@
 
 exports = module.exports = (app) => {
     const { MongoClient, ServerApiVersion } = require('mongodb');
-    const uri = "";
+    const uri = "mongodb+srv://dimamatroswork:2mwsE0zFSRgbhVDx@truestuff.3nq3mdd.mongodb.net/?retryWrites=true&w=majority";
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,

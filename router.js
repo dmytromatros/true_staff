@@ -5,7 +5,8 @@ exports = module.exports = (app) => {
     // System
 
     app.post('/api/registration', require('./routes/system/registration'))
-    app.post('/api/login', require('./routes/system/login'))
+    app.post('/api/login-user', require('./routes/system/loginUser'))
+    app.post('/api/login-company', require('./routes/system/loginCompany'))
 
     // Users
 

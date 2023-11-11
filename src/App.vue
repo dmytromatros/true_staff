@@ -2,7 +2,21 @@
   <router-view />
 </template>
 
+<script>
+const { isAuth } = require("../utils/permission");
 
+export default {
+  mounted() {
+    isAuth();
+  },
+
+  watch: {
+    "$route.name"() {
+      isAuth();
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 #app {

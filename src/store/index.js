@@ -1,18 +1,21 @@
 import { createStore } from 'vuex'
 import axios from "axios";
 
+const { isAuth } = require("../../utils/permission");
+
+
 export default createStore({
   state: {
     users: [],
     user: {},
-    isUser: false
+    role: ''
   },
   getters: {
   },
   mutations: {
     setUser: (state, data) => {
       state.user = data.data;
-      state.isUser = true;
+      state.role = 'user';
     },
     setUserList: (state, data) => {
       state.users = data.data;
@@ -22,14 +25,33 @@ export default createStore({
 
     // System actios /////////////////////////////////////////////////////////////////////////////
 
-    logInAction: async ({ commit }, data) => {
+    logInUserAction: async ({ commit }, data) => {
       return new Promise(done => {
-        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/login`, data)
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/login-user`, data)
           .then(res => {
             commit('setUser', res.data);
 
             localStorage.setItem('token', res.data.data._id);
+            localStorage.setItem('role', 'user');
 
+            isAuth()
+
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+    logInCompanyAction: async (context, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/login-company`, data)
+          .then(res => {
+            // commit('setUser', res.data);
+
+            // localStorage.setItem('token', res.data.data._id);
+            // localStorage.setItem('role', 'user');
+            isAuth()
             done(res.data)
           })
           .catch(err => done(err));
@@ -39,7 +61,9 @@ export default createStore({
 
     logOutAction: ({ commit }) => {
       localStorage.setItem('token', '');
+      localStorage.setItem('role', '');
       commit('setUser', {})
+      isAuth()
     },
 
     // User action ////////////////////////////////////////////////////////////////////////////////////

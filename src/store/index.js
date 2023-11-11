@@ -4,13 +4,15 @@ import axios from "axios";
 export default createStore({
   state: {
     users: [],
-    user: {}
+    user: {},
+    isUser: false
   },
   getters: {
   },
   mutations: {
     setUser: (state, data) => {
       state.user = data.data;
+      state.isUser = true;
     },
     setUserList: (state, data) => {
       state.users = data.data;
@@ -18,7 +20,7 @@ export default createStore({
   },
   actions: {
 
-    // System actios
+    // System actios /////////////////////////////////////////////////////////////////////////////
 
     logInAction: async ({ commit }, data) => {
       return new Promise(done => {
@@ -40,7 +42,7 @@ export default createStore({
       commit('setUser', {})
     },
 
-    // User action
+    // User action ////////////////////////////////////////////////////////////////////////////////////
 
     getUserListAction: async ({ commit }) => {
       return new Promise(done => {

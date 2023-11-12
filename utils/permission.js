@@ -3,14 +3,52 @@ import router from '@/router';
 
 function isAuth() {
     const auth = localStorage.getItem('token') == '' ? false : true;
+    const role = localStorage.getItem('role')
 
     if (!auth) {
         router.push('/');
-    } else {
+    } else if (auth && role) {
         if (router.currentRoute.value.name == 'login') {
-            router.push('/about');
+            switch (role) {
+                case 'user':
+                    router.push({
+                        name: 'user-dashboard'
+                    });
+                    break;
+
+                case 'company':
+                    router.push({
+                        name: 'company-dashboard'
+                    });
+                    break;
+            }
         }
     }
 }
 
-export { isAuth };
+function checkRoutePermission() {
+    const userRoutes = ['user', 'user-dashboard']
+    const companyRoutes = ['copmany', 'copmany-dashboard']
+
+    const role = localStorage.getItem('role')
+
+    switch (role) {
+        case 'user':
+            if (!userRoutes.includes(router.currentRoute.value.name)) {
+                router.push({
+                    name: 'user-dashboard'
+                });
+            }
+            break;
+
+        case 'company':
+            if (!companyRoutes.includes(router.currentRoute.value.name)) {
+                router.push({
+                    name: 'company-dashboard'
+                });
+            }
+            break;
+    }
+}
+
+export { isAuth, checkRoutePermission };

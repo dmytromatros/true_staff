@@ -1,21 +1,28 @@
 <template>
   <div class="log-in-form">
-    <select name="role" id="role" v-model="role">
-      <option value="company">Company</option>
-      <option value="user" selected>user</option>
-    </select>
+    <SelectInput class="log-in-form__select" :options="roles" v-model="role" />
 
     <form class="log-in-form__form" @submit.prevent="loginFn">
-      <input type="email" v-model="login" />
-      <input type="password" v-model="password" />
+      <TextInput
+        class="log-in-form__text-input"
+        label="Login"
+        type="email"
+        v-model="login"
+      />
+      <TextInput
+        class="log-in-form__text-input"
+        label="Password"
+        type="password"
+        v-model="password"
+      />
       <button type="submit">Login</button>
     </form>
-
-    <button @click="logoutFn">Log out</button>
   </div>
 </template>
   
-  <script>
+<script>
+import SelectInput from "@/components/inputs/SelectInput.vue";
+import TextInput from "@/components/inputs/TextInput.vue";
 export default {
   name: "LogInForm",
   data() {
@@ -23,7 +30,21 @@ export default {
       login: "",
       password: "",
       role: "user",
+      roles: [
+        {
+          value: "company",
+          label: "Company",
+        },
+        {
+          value: "user",
+          label: "User",
+        },
+      ],
     };
+  },
+  components: {
+    TextInput,
+    SelectInput,
   },
   methods: {
     async loginFn() {
@@ -43,11 +64,15 @@ export default {
           break;
       }
     },
-    async logoutFn() {
-      this.$store.dispatch("logOutAction");
-    },
   },
 };
 </script>
   
-  <style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.log-in-form {
+  &__select,
+  &__text-input {
+    margin-bottom: 15px;
+  }
+}
+</style>

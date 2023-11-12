@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LogInView from '@/views/LogInView.vue'
+import LogInView from '@/views/System/LogInView.vue'
 
 const routes = [
   {
@@ -7,19 +7,33 @@ const routes = [
     name: 'login',
     component: LogInView
   },
+
   {
-    path: '/about',
-    name: 'about',
-    component: LogInView
+    path: '/user',
+    redirect: { name: 'user-dashboard' },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'user-dashboard',
+        component: () => import('@/views/User/Dashboard.vue'),
+      },
+    ]
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  // }
+  {
+    path: '/company',
+    redirect: { name: 'company-dashboard' },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'company-dashboard',
+        component: () => import('@/views/Company/Dashboard.vue'),
+      },
+    ]
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: { name: 'login' },
+  },
 ]
 
 const router = createRouter({

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const { isAuth } = require("../utils/permission");
+const { isAuth, checkRoutePermission } = require("../utils/permission");
 
 export default {
   mounted() {
@@ -13,6 +13,7 @@ export default {
   watch: {
     "$route.name"() {
       isAuth();
+      checkRoutePermission();
     },
   },
 };
@@ -23,7 +24,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+  height: 100vh;
 }
 </style>

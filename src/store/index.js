@@ -8,6 +8,7 @@ export default createStore({
   state: {
     users: [],
     user: {},
+    copmany: {},
     role: ''
   },
   getters: {
@@ -19,6 +20,10 @@ export default createStore({
     },
     setUserList: (state, data) => {
       state.users = data.data;
+    },
+    setCopmany(state, data) {
+      state.copmany = data.data;
+      state.role = 'cpomany';
     }
   },
   actions: {
@@ -43,15 +48,17 @@ export default createStore({
     },
 
 
-    logInCompanyAction: async (context, data) => {
+    logInCompanyAction: async ({ commit }, data) => {
       return new Promise(done => {
         axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/login-company`, data)
           .then(res => {
-            // commit('setUser', res.data);
+            commit('setCopmany', res.data);
 
-            // localStorage.setItem('token', res.data.data._id);
-            // localStorage.setItem('role', 'user');
+            localStorage.setItem('token', res.data.data._id);
+            localStorage.setItem('role', 'company');
+
             isAuth()
+
             done(res.data)
           })
           .catch(err => done(err));
@@ -73,6 +80,16 @@ export default createStore({
         axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-list`)
           .then(res => {
             commit('setUserList', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+    addUserAction: async (context, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-user`, data)
+          .then(res => {
             done(res.data)
           })
           .catch(err => done(err));

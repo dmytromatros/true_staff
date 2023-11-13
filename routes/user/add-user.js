@@ -5,22 +5,28 @@ module.exports = async (req, res) => {
     const { name, surname, email, password } = req.body;
     let error = [];
 
-    let nameCheck, surnameCheck, emailCheck, passwordCheck;
+    if (name == '' || name == undefined) error.push('Name is required');
+    if (password == '' || password == undefined) error.push('Password is required');
+    if (email == '' || email == undefined) error.push('Email is required');
 
-    try {
+    let nameCheck, surnameCheck, emailCheck;
 
-        nameCheck = await req.app.db.collection('users').findOne({ name });
-        if (nameCheck) error.push('The user with such a name is already registered');
+    if (error.length === 0) {
+        try {
 
-        surnameCheck = await req.app.db.collection('users').findOne({ surname });
-        if (surnameCheck) error.push('The user with such a surname is already registered');
+            nameCheck = await req.app.db.collection('users').findOne({ name });
+            if (nameCheck) error.push('The user with such a name is already registered');
 
-        emailCheck = await req.app.db.collection('users').findOne({ email });
-        if (emailCheck) error.push('The user with such an email is already registered');
+            surnameCheck = await req.app.db.collection('users').findOne({ surname });
+            if (surnameCheck) error.push('The user with such a surname is already registered');
+
+            emailCheck = await req.app.db.collection('users').findOne({ email });
+            if (emailCheck) error.push('The user with such an email is already registered');
 
 
-    } catch (error) {
-        error.push(error);
+        } catch (error) {
+            error.push(error);
+        }
     }
 
     if (error.length === 0) {

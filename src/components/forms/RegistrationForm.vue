@@ -24,7 +24,11 @@
       <TextInput label="Suranme" type="text" v-model="userInfo.surname" />
       <TextInput label="Email" type="email" v-model="userInfo.email" />
       <TextInput label="Pasword" type="password" v-model="userInfo.password" />
-
+      <CheckboxInput
+        label="I am an employee"
+        v-model="userInfo.isEmployee"
+        id="is-employee-registration"
+      />
       <button type="submit">Register</button>
     </form>
   </div>
@@ -32,6 +36,7 @@
 
 <script>
 import TextInput from "../inputs/TextInput.vue";
+import CheckboxInput from "../inputs/CheckboxInput.vue";
 export default {
   name: "RegistrationForm",
   data() {
@@ -42,10 +47,11 @@ export default {
         surname: "",
         email: "",
         password: "",
+        isEmployee: false,
       },
     };
   },
-  components: { TextInput },
+  components: { TextInput, CheckboxInput },
   methods: {
     selectRole(role) {
       this.role = role;

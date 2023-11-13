@@ -11,7 +11,9 @@
       :for="id"
       :class="{ 'checkbox-input__label--active': internalValue }"
     ></label>
-    <span class="checkbox-input__text" v-if="label">{{ label }}</span>
+    <label class="checkbox-input__text" v-if="label" :for="id">{{
+      label
+    }}</label>
   </div>
 </template>
 

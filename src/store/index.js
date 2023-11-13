@@ -94,7 +94,21 @@ export default createStore({
           })
           .catch(err => done(err));
       })
+    },
+
+
+    // Company actions //////////////////////////////////////////////////////////////////////////////////
+
+    addCompanyAction: async (context, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-company`, data)
+          .then(res => {
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
     }
+
   },
   modules: {
   }

@@ -31,6 +31,37 @@
       />
       <button type="submit">Register</button>
     </form>
+
+    <form
+      v-if="role == 'company'"
+      class="registration-form__company"
+      @submit.prevent="registerCompany"
+    >
+      <div class="registration-form__type">
+        <button
+          type="button"
+          class="registration-form__type-button"
+          @click="changeType(1)"
+        >
+          Юридична особа РНОКПП
+        </button>
+        <button
+          type="button"
+          class="registration-form__type-button"
+          @click="changeType(2)"
+        >
+          Фізична особа ЄДРПОУ
+        </button>
+      </div>
+      <TextInput label="Name" type="text" v-model="copmanyInfo.name" />
+      <TextInput label="Login" type="text" v-model="copmanyInfo.login" />
+      <TextInput
+        label="Password"
+        type="password"
+        v-model="copmanyInfo.password"
+      />
+      <button type="submit">Register</button>
+    </form>
   </div>
 </template>
 
@@ -49,6 +80,12 @@ export default {
         password: "",
         isEmployee: false,
       },
+      copmanyInfo: {
+        name: "",
+        login: "",
+        password: "",
+        organizationType: 1,
+      },
     };
   },
   components: { TextInput, CheckboxInput },
@@ -58,6 +95,16 @@ export default {
     },
     registerUser() {
       this.$store.dispatch("addUserAction", this.userInfo).then((res) => {
+        if (res.success) {
+          this.$emit("registered");
+        }
+      });
+    },
+    changeType(num) {
+      this.copmanyInfo.organizationType = num;
+    },
+    registerCompany() {
+      this.$store.dispatch("addCompanyAction", this.copmanyInfo).then((res) => {
         if (res.success) {
           this.$emit("registered");
         }
@@ -82,6 +129,22 @@ export default {
     &--active {
       background-color: #404040;
       color: #ffffff;
+    }
+  }
+  &__type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  &__type-button {
+    border-radius: 15px;
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #797979;
     }
   }
 }

@@ -12,4 +12,9 @@ exports = module.exports = (app) => {
 
     app.get('/api/get-user-list', require('./routes/user/get-user-list'))
     app.post('/api/add-user', require('./routes/user/add-user'))
+
+    // Company
+
+    app.post('/api/add-company', require('./routes/company/add-company'))
+
 }

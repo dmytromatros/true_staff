@@ -22,3 +22,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+<!-- Ducumentaion -->
+
+<!-- Company organization type: -->
+
+<!-- 1 - Фоп (фізична особа) -->
+<!-- 2 - Не фоп (юридична особа) -->

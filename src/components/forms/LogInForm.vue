@@ -6,7 +6,7 @@
       <TextInput
         class="log-in-form__text-input"
         label="Login"
-        type="email"
+        type="text"
         v-model="login"
       />
       <TextInput

@@ -18,5 +18,8 @@ exports = module.exports = (app) => {
     app.post('/api/add-company', require('./routes/company/add-company'))
     app.get('/api/get-company/:id', require('./routes/company/get-company'))
     app.post('/api/edit-company', require('./routes/company/edit-company'))
+    app.post('/api/edit-company-password', require('./routes/company/edit-password'))
+    app.get('/api/get-locations/:companyId', require('./routes/company/get-locations'))
+    app.post('/api/add-location', require('./routes/company/add-location'))
 
 }

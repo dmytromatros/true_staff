@@ -16,25 +16,31 @@
       <div class="copmany-dashboard__pass">
         <TextInput
           label="Company password"
-          type="password"
+          type="password "
           :disabled="true"
           v-model="company.password"
         />
-        <DefaultButton label="Change password" />
+        <DefaultButton label="Change password" @click="openPopup" />
       </div>
-      <DefaultButton label="Save" :action="saveChangesFn" />
+      <DefaultButton label="Save" @click="saveChangesFn" />
     </div>
     <button @click="logoutFn">Log out</button>
+
+    <ChangeCompanyPasswordPopup
+      :isShown="changePassPopup"
+      @close="closePopup"
+    />
   </div>
 </template>
 
 <script>
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import ChangeCompanyPasswordPopup from "@/components/popups/AddLocationPopup.vue";
 
 export default {
   name: "CopmanyDashboard",
-  components: { TextInput, DefaultButton },
+  components: { TextInput, DefaultButton, ChangeCompanyPasswordPopup },
   data() {
     return {
       company: {
@@ -42,6 +48,7 @@ export default {
         login: "",
         password: "",
       },
+      changePassPopup: false,
     };
   },
   methods: {
@@ -54,6 +61,12 @@ export default {
         password: this.company.password,
         id: this.$route.params.id,
       });
+    },
+    openPopup() {
+      this.changePassPopup = true;
+    },
+    closePopup() {
+      this.changePassPopup = false;
     },
   },
   mounted() {

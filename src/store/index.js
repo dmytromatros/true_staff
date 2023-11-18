@@ -9,7 +9,8 @@ export default createStore({
     users: [],
     user: {},
     copmany: {},
-    role: ''
+    role: '',
+    locations: []
   },
   getters: {
   },
@@ -24,6 +25,9 @@ export default createStore({
     setCopmany(state, data) {
       state.copmany = data.data;
       state.role = 'cpomany';
+    },
+    setLocations: (state, data) => {
+      state.locations = data.data;
     }
   },
   actions: {
@@ -127,6 +131,43 @@ export default createStore({
         axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company`, data)
           .then(res => {
             commit('setCopmany', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+    editCompanyPasswordAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company-password`, data)
+          .then(res => {
+            commit('setCopmany', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+    getLocationsAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-locations/${data.id}`)
+          .then(res => {
+            commit('setLocations', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+
+    addLocationAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-location`, data)
+          .then(res => {
+            commit('setLocations', res.data);
             done(res.data)
           })
           .catch(err => done(err));

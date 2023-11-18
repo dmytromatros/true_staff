@@ -8,6 +8,9 @@
       @input="changed"
       :placeholder="placeholder"
       v-model="internalValue"
+      autocomplete="off"
+      list="autocompleteOff"
+      :name="type"
     />
   </div>
 </template>

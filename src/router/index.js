@@ -31,6 +31,27 @@ const routes = [
             path: 'dashboard',
             name: 'company-dashboard',
             component: () => import('@/views/Company/Dashboard.vue'),
+          },
+          {
+            path: 'locations',
+            name: 'company-locations',
+            component: () => import('@/views/Company/LocationsList.vue'),
+            children: [
+              {
+                path: 'edit/:locationId',
+                name: 'edit_location',
+                components: {
+                  edit_location: () => import('@/components/popups/EditLocationPopup.vue'),
+                }
+              },
+              {
+                path: 'add',
+                name: 'add_location',
+                components: {
+                  add_location: () => import('@/components/popups/AddLocationPopup.vue'),
+                }
+              },
+            ]
           }
         ]
       }

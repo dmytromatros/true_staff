@@ -7,6 +7,8 @@ module.exports = async (req, res) => {
     let error = [];
 
     if (!req.body.id) error.push('Id is required');
+    if (!req.body.oldPass) error.push('Old password is required');
+    if (!req.body.newPass) error.push('New password is required');
 
     let company;
 
@@ -15,22 +17,33 @@ module.exports = async (req, res) => {
     let updateData = {};
 
     if (error.length === 0) {
-        if (req.body.name) updateData.name = req.body.name;
+        if (req.body.newPass) updateData.password = req.body.newPass;
     }
 
-    let result;
+    let check;
 
     if (error.length === 0) {
+        check = await req.app.db.collection('companies').findOne({
+            _id: objectId,
+            password: req.body.oldPass
+        });
+
+        if (!check) {
+            error.push('Incorrect old password')
+        }
+    }
+
+    if (error.length === 0 && check) {
         try {
-            result = await req.app.db.collection('companies').updateOne(
-                { _id: objectId },
+            await req.app.db.collection('companies').updateOne(
+                { _id: objectId, password: req.body.oldPass },
                 { $set: updateData }
             );
+
         } catch (err) {
             error.push(err);
         }
     }
-
 
     if (error.length === 0) {
         try {
@@ -44,7 +57,6 @@ module.exports = async (req, res) => {
         }
     }
 
-
     if (error.length === 0) {
         res.status(200).json({
             data: { ...company },
@@ -56,4 +68,4 @@ module.exports = async (req, res) => {
             success: false
         });
     }
-}
+};

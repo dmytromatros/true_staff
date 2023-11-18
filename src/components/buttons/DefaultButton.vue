@@ -1,6 +1,6 @@
 <template>
   <div class="default-button">
-    <button @click="action">{{ label }}</button>
+    <button @click.stop="action">{{ label }}</button>
   </div>
 </template>
 
@@ -8,13 +8,14 @@
 export default {
   name: "DefaultButton",
   props: {
-    action: {
-      type: Function,
-      default: () => {},
-    },
     label: {
       type: String,
       default: "",
+    },
+  },
+  methods: {
+    action() {
+      this.$emit("click");
     },
   },
 };

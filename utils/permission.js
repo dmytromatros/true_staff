@@ -1,7 +1,7 @@
 'use strict';
 import router from '@/router';
 
-function isAuth() {
+function isAuth(id) {
     const auth = localStorage.getItem('token') == '' ? false : true;
     const role = localStorage.getItem('role')
 
@@ -18,7 +18,10 @@ function isAuth() {
 
                 case 'company':
                     router.push({
-                        name: 'company-dashboard'
+                        name: 'company-dashboard',
+                        params: {
+                            id: id
+                        }
                     });
                     break;
             }

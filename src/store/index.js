@@ -57,7 +57,7 @@ export default createStore({
             localStorage.setItem('token', res.data.data._id);
             localStorage.setItem('role', 'company');
 
-            isAuth()
+            isAuth(res.data.data._id)
 
             done(res.data)
           })
@@ -103,6 +103,30 @@ export default createStore({
       return new Promise(done => {
         axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-company`, data)
           .then(res => {
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+    getCompanyAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`,)
+          .then(res => {
+            commit('setCopmany', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+    editCompanyAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company`, data)
+          .then(res => {
+            commit('setCopmany', res.data);
             done(res.data)
           })
           .catch(err => done(err));

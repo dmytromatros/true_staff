@@ -24,10 +24,17 @@ const routes = [
     redirect: { name: 'company-dashboard' },
     children: [
       {
-        path: 'dashboard',
-        name: 'company-dashboard',
-        component: () => import('@/views/Company/Dashboard.vue'),
-      },
+        path: ':id',
+        redirect: { name: 'company-dashboard' },
+        children: [
+          {
+            path: 'dashboard',
+            name: 'company-dashboard',
+            component: () => import('@/views/Company/Dashboard.vue'),
+          }
+        ]
+      }
+
     ]
   },
   {

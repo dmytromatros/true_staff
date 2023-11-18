@@ -16,5 +16,7 @@ exports = module.exports = (app) => {
     // Company
 
     app.post('/api/add-company', require('./routes/company/add-company'))
+    app.get('/api/get-company/:id', require('./routes/company/get-company'))
+    app.post('/api/edit-company', require('./routes/company/edit-company'))
 
 }

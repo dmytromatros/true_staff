@@ -3,6 +3,7 @@
     <span v-if="label" class="text-input__label">{{ label }}</span>
     <input
       class="text-input__input"
+      :class="{ 'text-input__input--disabled': disabled }"
       :type="type"
       @input="changed"
       :placeholder="placeholder"
@@ -27,6 +28,10 @@ export default {
       type: String,
       default: "",
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     modelValue: String,
   },
   emits: ["update:modelValue"],
@@ -50,5 +55,11 @@ export default {
 .text-input {
   display: flex;
   flex-direction: column;
+  &__input {
+    &--disabled {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+  }
 }
 </style>

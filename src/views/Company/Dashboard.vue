@@ -36,7 +36,7 @@
 <script>
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import ChangeCompanyPasswordPopup from "@/components/popups/AddLocationPopup.vue";
+import ChangeCompanyPasswordPopup from "@/components/popups/ChangeCompanyPasswordPopup.vue";
 
 export default {
   name: "CopmanyDashboard",

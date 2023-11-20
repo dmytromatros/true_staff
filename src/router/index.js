@@ -52,7 +52,22 @@ const routes = [
                 }
               },
             ]
+          },
+          {
+            path: 'employees',
+            name: 'company-employees',
+            component: () => import('@/views/Company/EmployeesList.vue'),
+            children: [
+              {
+                path: 'add',
+                name: 'add_employee',
+                components: {
+                  add_employee: () => import('@/components/popups/AddEmployeePopup.vue'),
+                }
+              },
+            ]
           }
+
         ]
       }
 

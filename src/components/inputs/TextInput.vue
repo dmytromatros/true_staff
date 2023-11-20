@@ -2,6 +2,7 @@
   <div class="text-input">
     <span v-if="label" class="text-input__label">{{ label }}</span>
     <input
+      v-if="!textarea"
       class="text-input__input"
       :class="{ 'text-input__input--disabled': disabled }"
       :type="type"
@@ -12,6 +13,7 @@
       list="autocompleteOff"
       :name="type"
     />
+    <textarea v-else v-model="internalValue"></textarea>
   </div>
 </template>
 
@@ -36,6 +38,10 @@ export default {
       default: false,
     },
     modelValue: String,
+    textarea: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["update:modelValue"],
   data() {

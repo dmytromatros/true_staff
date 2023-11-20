@@ -10,7 +10,7 @@
     </div>
     <DefaultButton label="Add location" @click="openAddPopupFN" />
 
-    <router-view name="edit_location" />
+    <router-view name="edit_location" @edited="getLocations" />
     <router-view name="add_location" @added="getLocations" />
   </div>
 </template>

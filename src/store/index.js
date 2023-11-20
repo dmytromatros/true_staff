@@ -150,6 +150,22 @@ export default createStore({
     },
 
 
+    addCompanyRequestAction: async (context, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/send-company-request`, data)
+          .then(res => {
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+
+    // Locatoin actions /////////////////////////////////////////////////////////////////////////////
+
+
+
     getLocationsAction: async ({ commit }, data) => {
       return new Promise(done => {
         axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-locations/${data.id}`)
@@ -172,7 +188,34 @@ export default createStore({
           })
           .catch(err => done(err));
       })
+    },
+
+
+
+    getLocationAction: async (context, data) => {
+      return new Promise(done => {
+        axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-location/${data.locationId}`)
+          .then(res => {
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
+    },
+
+
+
+    editLocationAction: async ({ commit }, data) => {
+      return new Promise(done => {
+        axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-location`, data)
+          .then(res => {
+            commit('setLocations', res.data);
+            done(res.data)
+          })
+          .catch(err => done(err));
+      })
     }
+
+
 
   },
   modules: {

@@ -23,10 +23,6 @@ export default {
   components: { TextInput, DefaultPopup },
   props: {
     isShown: Boolean,
-    location: {
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
     return {
@@ -38,7 +34,29 @@ export default {
     close() {
       this.$router.go(-1);
     },
-    editLocation() {},
+    editLocation() {
+      this.$store
+        .dispatch("editLocationAction", {
+          image: this.image,
+          adress: this.adress,
+          companyId: this.$route.params.id,
+          id: this.$route.params.locationId,
+        })
+        .then(() => {
+          this.$emit("edited");
+          this.close();
+        });
+    },
+  },
+  mounted() {
+    this.$store
+      .dispatch("getLocationAction", {
+        locationId: this.$route.params.locationId,
+      })
+      .then((res) => {
+        this.adress = res.data.adress;
+        this.image = res.data.image;
+      });
   },
 };
 </script>

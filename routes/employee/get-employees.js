@@ -5,6 +5,7 @@ module.exports = async (req, res) => {
 
     let users;
 
+
     try {
         users = await req.app.db.collection('users').find({}).toArray()
 

@@ -10,8 +10,8 @@ exports = module.exports = (app) => {
 
     // Users
 
-    app.get('/api/get-user-list', require('./routes/user/get-user-list'))
-    app.post('/api/add-user', require('./routes/user/add-user'))
+    app.get('/api/get-user-list', require('./routes/employee/get-employees'))
+    app.post('/api/add-user', require('./routes/employee/add-user'))
 
     // Company
 
@@ -19,7 +19,18 @@ exports = module.exports = (app) => {
     app.get('/api/get-company/:id', require('./routes/company/get-company'))
     app.post('/api/edit-company', require('./routes/company/edit-company'))
     app.post('/api/edit-company-password', require('./routes/company/edit-password'))
-    app.get('/api/get-locations/:companyId', require('./routes/company/get-locations'))
-    app.post('/api/add-location', require('./routes/company/add-location'))
+    app.post('/api/send-company-request', require('./routes/company/send-request'))
+
+
+    // Location
+    app.get('/api/get-locations/:companyId', require('./routes/location/get-locations'))
+    app.post('/api/add-location', require('./routes/location/add-location'))
+    app.get('/api/get-location/:locationId', require('./routes/location/get-location'))
+    app.post('/api/edit-location', require('./routes/location/edit-location'))
+
+
+    // Employees
+
+    app.get('/api/get-employees', require('./routes/employee/get-employees'))
 
 }

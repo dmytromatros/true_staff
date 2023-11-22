@@ -14,7 +14,10 @@ function isAuth() {
             switch (role) {
                 case 'user':
                     router.push({
-                        name: 'user-dashboard'
+                        name: 'user-dashboard',
+                        params: {
+                            id: token
+                        }
                     });
                     break;
 
@@ -32,7 +35,7 @@ function isAuth() {
 }
 
 function checkRoutePermission() {
-    const userRoutes = ['user', 'user-dashboard']
+    const userRoutes = ['user', 'user-dashboard', 'user-settings']
     const companyRoutes = ['copmany', 'copmany-dashboard', 'company-locations', 'edit_location', 'add_location', 'company-employees', 'add_employee']
 
     const role = localStorage.getItem('role')
@@ -42,7 +45,10 @@ function checkRoutePermission() {
         case 'user':
             if (!userRoutes.includes(router.currentRoute.value.name)) {
                 router.push({
-                    name: 'user-dashboard'
+                    name: 'user-dashboard',
+                    params: {
+                        id: token
+                    }
                 });
             }
             break;
@@ -50,7 +56,8 @@ function checkRoutePermission() {
         case 'company':
             if (!companyRoutes.includes(router.currentRoute.value.name)) {
                 router.push({
-                    name: 'company-dashboard', params: {
+                    name: 'company-dashboard',
+                    params: {
                         id: token
                     }
                 });

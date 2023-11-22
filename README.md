@@ -1,4 +1,4 @@
-# true_stuff
+# true_staff
 
 ## Project setup
 ```
@@ -29,3 +29,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 <!-- 1 - Фоп (фізична особа) -->
 <!-- 2 - Не фоп (юридична особа) -->
+
+
+<!-- Request type: -->
+
+<!-- 1 - From company to the user -->
+<!-- 2 - From user to the company -->

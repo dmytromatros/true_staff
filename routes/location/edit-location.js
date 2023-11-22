@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async (req, res) => {
+module.exports = async(req, res) => {
 
     let error = [];
 
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     let updateData = {};
 
     if (error.length === 0) {
-        if (req.body.adress) updateData.adress = req.body.adress;
+        if (req.body.address) updateData.address = req.body.address;
         if (req.body.image) updateData.image = req.body.image;
     }
 
@@ -25,10 +25,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         try {
-            result = await req.app.db.collection('locations').updateOne(
-                { _id: objectId },
-                { $set: updateData }
-            );
+            result = await req.app.db.collection('locations').updateOne({ _id: objectId }, { $set: updateData });
         } catch (err) {
             error.push(err);
         }
@@ -46,7 +43,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            data: { ...locations },
+            data: {...locations },
             success: true
         });
     } else {

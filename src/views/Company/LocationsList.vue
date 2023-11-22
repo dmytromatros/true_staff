@@ -5,7 +5,7 @@
       v-for="(location, key) in locations"
       :key="key"
     >
-      <span>{{ location.adress }}</span>
+      <span>{{ location.address }}</span>
       <DefaultButton label="Edit" @click="openEditPopupFN(location._id)" />
     </div>
     <DefaultButton label="Add location" @click="openAddPopupFN" />

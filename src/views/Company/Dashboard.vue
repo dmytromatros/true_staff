@@ -1,5 +1,8 @@
 <template>
   <div class="copmany-dashboard">
+    <button @click="logoutFn">Log out</button>
+    <button @click="locationsFn">Locations</button>
+    <button @click="employeesFn">Employees</button>
     <h2>Copmany settings</h2>
     <div class="copmany-dashboard__form">
       <img
@@ -24,8 +27,6 @@
       </div>
       <DefaultButton label="Save" @click="saveChangesFn" />
     </div>
-    <button @click="logoutFn">Log out</button>
-
     <ChangeCompanyPasswordPopup
       :isShown="changePassPopup"
       @close="closePopup"
@@ -61,6 +62,22 @@ export default {
         password: this.company.password,
         id: this.$route.params.id,
       });
+    },
+    locationsFn(){
+      this.$router.push({
+        name: 'company-locations',
+        params: {
+          id: this.$route.params.id
+        }
+      })
+    },
+    employeesFn(){
+      this.$router.push({
+        name: 'company-employees',
+        params: {
+          id: this.$route.params.id
+        }
+      })
     },
     openPopup() {
       this.changePassPopup = true;

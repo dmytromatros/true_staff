@@ -12,6 +12,7 @@ exports = module.exports = (app) => {
 
     app.get('/api/get-user-list', require('./routes/employee/get-employees'))
     app.post('/api/add-user', require('./routes/employee/add-user'))
+    app.get('/api/get-user/:id', require('./routes/employee/get-user'))
 
     // Company
 

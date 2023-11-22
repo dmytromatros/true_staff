@@ -8,7 +8,7 @@
     <template v-slot:body>
       <div class="change-password">
         <TextInput label="Image" type="test" v-model="image" :disabled="true" />
-        <TextInput label="Location adress" type="test" v-model="adress" />
+        <TextInput label="Location address" type="test" v-model="address" />
       </div>
     </template>
   </DefaultPopup>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       image: "",
-      adress: "",
+      address: "",
     };
   },
   methods: {
@@ -38,7 +38,7 @@ export default {
       this.$store
         .dispatch("addLocationAction", {
           image: this.image,
-          adress: this.adress,
+          address: this.address,
           company: this.$route.params.id,
         })
         .then(() => {

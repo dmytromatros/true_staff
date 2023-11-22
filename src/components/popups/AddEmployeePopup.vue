@@ -1,24 +1,10 @@
 <template>
-  <DefaultPopup
-    :isShown="true"
-    @close="close"
-    title="Add new employee"
-    @confirm="addEmployee"
-  >
+  <DefaultPopup :isShown="true" @close="close" title="Add new employee" @confirm="addEmployee">
     <template v-slot:body>
       <div class="change-password">
-        <SelectInput
-          label="Select location"
-          :options="locations"
-          v-model="selectedLocation"
-        />
+        <SelectInput label="Select location" :options="locations" v-model="selectedLocation" />
         <TextInput label="User id code" type="text" v-model="userId" />
-        <TextInput
-          label="Messege"
-          type="text"
-          v-model="messege"
-          :textarea="true"
-        />
+        <TextInput label="Message" type="text" v-model="message" :textarea="true" />
       </div>
     </template>
   </DefaultPopup>
@@ -40,11 +26,9 @@ export default {
       locations: [],
       selectedLocation: "",
       userId: "",
-      messege: "",
-      company: {
-        id: "",
-        name: "",
-      },
+      message: "",
+      companyId: "",
+      companyName: ""
     };
   },
   methods: {
@@ -53,19 +37,18 @@ export default {
     },
     addEmployee() {
       let data = {
-        company: { ...this.company },
-        location: {
-          id: this.selectedLocation,
-          adress: this.getLocationAdress(this.selectedLocation),
-        },
-        recivier: this.userId,
-        messege: this.messege,
+        companyId: this.companyId,
+        companyName: this.companyName,
+        locationId: this.selectedLocation,
+        locationAddress: this.getLocationAddress(this.selectedLocation),
+        receiver: this.userId,
+        message: this.message,
         type: 1,
       };
 
       this.$store.dispatch("addCompanyRequestAction", data);
     },
-    getLocationAdress(id) {
+    getLocationAddress(id) {
       let address = "";
       this.locations.forEach((loc) => {
         if (loc.value == id) {
@@ -84,7 +67,7 @@ export default {
             for (const key in res.data) {
               if (Object.hasOwnProperty.call(res.data, key)) {
                 this.locations.push({
-                  label: res.data[key].adress,
+                  label: res.data[key].address,
                   value: res.data[key]._id,
                 });
               }
@@ -98,8 +81,8 @@ export default {
           id: this.$route.params.id,
         })
         .then((res) => {
-          this.company.id = res.data._id;
-          this.company.name = res.data.name;
+          this.companyId = res.data._id;
+          this.companyName = res.data.name;
         });
     },
   },
@@ -110,5 +93,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

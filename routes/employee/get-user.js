@@ -6,17 +6,17 @@ module.exports = async(req, res) => {
 
     let error = [];
 
-    if (!req.params.locationId) error.push('Location Id is required');
+    if (!req.params.id) error.push('Id is required');
 
-    let location;
+    let user;
 
-    const objectId = new ObjectId(req.params.locationId);
+    const objectId = new ObjectId(req.params.id);
 
     if (error.length === 0) {
         try {
-            location = await req.app.db.collection('locations').findOne({
+            user = await req.app.db.collection('users').findOne({
                 _id: objectId
-            }, { projection: { address: 1, image: 1 } });
+            }, );
         } catch (err) {
             error.push(err);
         }
@@ -25,7 +25,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            data: {...location },
+            data: {...user },
             success: true
         });
     } else {

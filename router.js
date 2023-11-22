@@ -13,6 +13,8 @@ exports = module.exports = (app) => {
     app.get('/api/get-user-list', require('./routes/employee/get-employees'))
     app.post('/api/add-user', require('./routes/employee/add-user'))
     app.get('/api/get-user/:id', require('./routes/employee/get-user'))
+    app.post('/api/edit-user', require('./routes/employee/edit-user'))
+    app.post('/api/send-user-request', require('./routes/employee/send-request'))
 
     // Company
 
@@ -21,6 +23,7 @@ exports = module.exports = (app) => {
     app.post('/api/edit-company', require('./routes/company/edit-company'))
     app.post('/api/edit-company-password', require('./routes/company/edit-password'))
     app.post('/api/send-company-request', require('./routes/company/send-request'))
+    app.get('/api/get-list', require('./routes/company/get-list'))
 
 
     // Location

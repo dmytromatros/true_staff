@@ -5,6 +5,7 @@
         <SelectInput label="Select location" :options="locations" v-model="selectedLocation" />
         <TextInput label="User id code" type="text" v-model="userId" />
         <TextInput label="Message" type="text" v-model="message" :textarea="true" />
+        <TextInput label="Position" type="text" v-model="position"  />
       </div>
     </template>
   </DefaultPopup>
@@ -28,7 +29,8 @@ export default {
       userId: "",
       message: "",
       companyId: "",
-      companyName: ""
+      companyName: "",
+      position: ""
     };
   },
   methods: {
@@ -43,6 +45,7 @@ export default {
         locationAddress: this.getLocationAddress(this.selectedLocation),
         receiver: this.userId,
         message: this.message,
+        position: this.position,
         type: 1,
       };
 

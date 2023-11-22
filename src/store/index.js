@@ -111,6 +111,28 @@ export default createStore({
         },
 
 
+        editUserAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-user`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+        addUserRequestAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/send-user-request`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
         // Company actions //////////////////////////////////////////////////////////////////////////////////
 
         addCompanyAction: async(context, data) => {
@@ -170,6 +192,17 @@ export default createStore({
             })
         },
 
+
+
+        getCompanyListAction: async() => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-list`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
 
 
         // Locatoin actions /////////////////////////////////////////////////////////////////////////////

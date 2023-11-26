@@ -3,6 +3,7 @@
     <div>user dashboard</div>
     <button @click="logoutFn">Log out</button>
     <button @click="settingsFn">Settings</button>
+    <button @click="requestsFn">Requests</button>
   </div>
 </template>
 
@@ -16,6 +17,11 @@ export default {
     settingsFn(){
       this.$router.push({
         name: 'user-settings'
+      })
+    },
+    requestsFn(){
+      this.$router.push({
+        name: 'user-requests'
       })
     }
   },

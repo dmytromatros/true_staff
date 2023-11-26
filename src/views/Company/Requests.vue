@@ -5,7 +5,7 @@
         <h2>Received:</h2>
         <div v-for="(rec, key) in receive" :key="key">
           <ReceiveRequest
-            :from="rec.companyName"
+            :from="rec.employeeName"
             :location="rec.locationAddress"
             :position="rec.position"
             :editable="!rec.rejected && !rec.accepted"
@@ -19,7 +19,7 @@
         <h2>Sent:</h2>
         <div v-for="(rec, key) in sent" :key="key">
           <SentRequest
-            :to="rec.companyName"
+            :to="rec.employeeName"
             :location="rec.locationAddress"
             :position="rec.position"
             @delete-request="deleteSentRequest(rec._id)"
@@ -39,7 +39,7 @@ export default {
     return {
       sent: {},
       receive: {},
-      page: 2,
+      page: 1,
     };
   },
   components: { ReceiveRequest, SentRequest },
@@ -55,18 +55,18 @@ export default {
       });
     },
     deleteReceiveRequest(id) {
-      this.$store.dispatch("userDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch("companyDeleteRequestAction", { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     deleteSentRequest(id) {
-      this.$store.dispatch("userDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch("companyDeleteRequestAction", { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     getAllRequest() {
       this.$store
-        .dispatch("getUserRequestListAction", { id: this.$route.params.id })
+        .dispatch("getCompanyRequestListAction", { id: this.$route.params.id })
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };

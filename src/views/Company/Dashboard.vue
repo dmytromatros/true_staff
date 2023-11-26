@@ -3,6 +3,7 @@
     <button @click="logoutFn">Log out</button>
     <button @click="locationsFn">Locations</button>
     <button @click="employeesFn">Employees</button>
+    <button @click="requestsFn">Requests</button>
     <h2>Copmany settings</h2>
     <div class="copmany-dashboard__form">
       <img
@@ -63,21 +64,29 @@ export default {
         id: this.$route.params.id,
       });
     },
-    locationsFn(){
+    locationsFn() {
       this.$router.push({
-        name: 'company-locations',
+        name: "company-locations",
         params: {
-          id: this.$route.params.id
-        }
-      })
+          id: this.$route.params.id,
+        },
+      });
     },
-    employeesFn(){
+    employeesFn() {
       this.$router.push({
-        name: 'company-employees',
+        name: "company-employees",
         params: {
-          id: this.$route.params.id
-        }
-      })
+          id: this.$route.params.id,
+        },
+      });
+    },
+    requestsFn() {
+      this.$router.push({
+        name: "company-requests",
+        params: {
+          id: this.$route.params.id,
+        },
+      });
     },
     openPopup() {
       this.changePassPopup = true;

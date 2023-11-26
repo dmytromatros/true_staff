@@ -133,6 +133,18 @@ export default createStore({
         },
 
 
+        getUserRequestListAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-request-list/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+
         // Company actions //////////////////////////////////////////////////////////////////////////////////
 
         addCompanyAction: async(context, data) => {
@@ -205,6 +217,29 @@ export default createStore({
         },
 
 
+
+        getCompanyEmployeesAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company-employees/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+        deleteEmployeeAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-employee`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
         // Locatoin actions /////////////////////////////////////////////////////////////////////////////
 
 
@@ -256,10 +291,62 @@ export default createStore({
                     })
                     .catch(err => done(err));
             })
-        }
+        },
 
 
 
+        // Requests //////////////////////////////////////////////
+
+        rejectRequestAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/reject-request`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+        userDeleteRequestAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/user-delete-request`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+        companyDeleteRequestAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/company-delete-request`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+        acceptRequestAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/accept-request`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+        getCompanyRequestListAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company-request-list/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
     },
     modules: {}
 })

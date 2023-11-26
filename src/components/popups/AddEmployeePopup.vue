@@ -1,11 +1,25 @@
 <template>
-  <DefaultPopup :isShown="true" @close="close" title="Add new employee" @confirm="addEmployee">
+  <DefaultPopup
+    :isShown="true"
+    @close="close"
+    title="Add new employee"
+    @confirm="addEmployee"
+  >
     <template v-slot:body>
       <div class="change-password">
-        <SelectInput label="Select location" :options="locations" v-model="selectedLocation" />
+        <SelectInput
+          label="Select location"
+          :options="locations"
+          v-model="selectedLocation"
+        />
         <TextInput label="User id code" type="text" v-model="userId" />
-        <TextInput label="Message" type="text" v-model="message" :textarea="true" />
-        <TextInput label="Position" type="text" v-model="position"  />
+        <TextInput
+          label="Message"
+          type="text"
+          v-model="message"
+          :textarea="true"
+        />
+        <TextInput label="Position" type="text" v-model="position" />
       </div>
     </template>
   </DefaultPopup>
@@ -30,26 +44,40 @@ export default {
       message: "",
       companyId: "",
       companyName: "",
-      position: ""
+      position: "",
     };
   },
   methods: {
     close() {
       this.$router.go(-1);
     },
-    addEmployee() {
+    async addEmployee() {
+      const employeeName = await this.getUserName(this.userId);
       let data = {
         companyId: this.companyId,
         companyName: this.companyName,
         locationId: this.selectedLocation,
         locationAddress: this.getLocationAddress(this.selectedLocation),
-        receiver: this.userId,
+        employeeId: this.userId,
+        employeeName: employeeName,
         message: this.message,
         position: this.position,
         type: 1,
       };
 
       this.$store.dispatch("addCompanyRequestAction", data);
+    },
+    async getUserName(id) {
+      try {
+        const res = await this.$store.dispatch("getUserAction", { id });
+        if (res.success) {
+          return `${res.data.name} ${res.data.surname}`;
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error as needed, e.g., return a default value or throw an error
+        return "";
+      }
     },
     getLocationAddress(id) {
       let address = "";

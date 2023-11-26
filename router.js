@@ -24,6 +24,8 @@ exports = module.exports = (app) => {
     app.post('/api/edit-company-password', require('./routes/company/edit-password'))
     app.post('/api/send-company-request', require('./routes/company/send-request'))
     app.get('/api/get-list', require('./routes/company/get-list'))
+    app.get('/api/get-company-employees/:id', require('./routes/company/get-company-employees'))
+    app.post('/api/delete-employee', require('./routes/company/delete-employee'))
 
 
     // Location
@@ -36,5 +38,17 @@ exports = module.exports = (app) => {
     // Employees
 
     app.get('/api/get-employees', require('./routes/employee/get-employees'))
+
+
+
+    // Requests
+
+
+    app.get('/api/get-user-request-list/:id', require('./routes/employee/get-request-list'))
+    app.get('/api/get-company-request-list/:id', require('./routes/company/get-request-list'))
+    app.post('/api/reject-request', require('./routes/request/reject'))
+    app.post('/api/user-delete-request', require('./routes/request/user-delete'))
+    app.post('/api/company-delete-request', require('./routes/request/company-delete'))
+    app.post('/api/accept-request', require('./routes/request/accept'))
 
 }

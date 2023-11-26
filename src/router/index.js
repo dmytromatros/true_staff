@@ -24,6 +24,12 @@ const routes = [{
                     name: 'user-dashboard',
                     component: () =>
                         import ('@/views/User/Dashboard.vue'),
+                },
+                {
+                    path: 'requests',
+                    name: 'user-requests',
+                    component: () =>
+                        import ('@/views/User/Requests.vue'),
                 }
             ]
         }]
@@ -76,6 +82,12 @@ const routes = [{
                                     import ('@/components/popups/AddEmployeePopup.vue'),
                             }
                         }, ]
+                    },
+                    {
+                        path: 'requests',
+                        name: 'company-requests',
+                        component: () =>
+                            import ('@/views/Company/Requests.vue'),
                     }
 
                 ]

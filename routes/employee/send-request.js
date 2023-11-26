@@ -7,8 +7,8 @@ module.exports = async(req, res) => {
     req.body;
     let error = [];
 
-    if (!req.body.company) error.push('Company is required');
-    if (!req.body.location) error.push('Location is required');
+    if (!req.body.companyId) error.push('Company is required');
+    if (!req.body.locationId) error.push('Location is required');
     if (!req.body.position) error.push('Position is required');
     if (!req.body.message) error.push('Message is required');
     if (!req.body.employeeId || !req.body.employeeName) error.push('Employee info is required');
@@ -65,8 +65,16 @@ module.exports = async(req, res) => {
         }
     }
 
+    let workplace;
+
     if (error.length === 0) {
-        if (user && user.company && user.company == req.body.company) error.push('The employee is already in the company!');
+        workplace = await req.app.db.collection('workplaces').findOne({
+            companyId: req.body.companyId,
+            // locationId: req.body.location,
+            employeeId: req.body.employeeId,
+            deleted: false
+        })
+        if (workplace) error.push('The account is already in the company!');
     }
 
     let existingRequest;
@@ -75,8 +83,8 @@ module.exports = async(req, res) => {
         try {
             existingRequest = await req.app.db.collection('requests').findOne({
                 type: req.body.type,
-                company: req.body.company,
-                location: req.body.location,
+                companyId: req.body.companyId,
+                // locationId: req.body.locationId,
                 employeeId: req.body.employeeId,
                 rejected: false
             });
@@ -94,9 +102,9 @@ module.exports = async(req, res) => {
         try {
             existingCompanyRequest = await req.app.db.collection('requests').findOne({
                 type: 1,
-                companyId: req.body.company,
-                locationId: req.body.location,
-                receiver: req.body.employeeId,
+                companyId: req.body.companyId,
+                // locationId: req.body.locationId,
+                employeeId: req.body.employeeId,
                 rejected: false
             });
             if (existingCompanyRequest) {

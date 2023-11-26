@@ -9,15 +9,16 @@ module.exports = async(req, res) => {
 
     if (!req.body.companyId || !req.body.companyName) error.push('Company is required');
     if (!req.body.locationId || !req.body.locationAddress) error.push('Location is required');
+    if (!req.body.position) error.push('Position is required');
     if (!req.body.message) error.push('Message is required');
-    if (!req.body.receiver) error.push('Receiver is required');
+    if (!req.body.employeeId) error.push('Receiver is required');
 
     // Check the user
 
     let user;
 
     if (error.length === 0) {
-        const objectId = new ObjectId(req.body.receiver);
+        const objectId = new ObjectId(req.body.employeeId);
 
         console.log(objectId)
 
@@ -32,8 +33,18 @@ module.exports = async(req, res) => {
 
     // Check if the company includes the user
 
+    let workplace;
+
     if (error.length === 0) {
-        if (user && user.company && user.company == req.body.company.id) error.push('The account is already in the company!');
+
+        workplace = await req.app.db.collection('workplaces').findOne({
+            companyId: req.body.companyId,
+            // locationId: req.body.locationId,
+            employeeId: req.body.employeeId,
+            deleted: false
+        });
+
+        if (workplace) error.push('The account is already in the company!');
 
     }
 
@@ -52,9 +63,9 @@ module.exports = async(req, res) => {
         try {
             existingRequest = await req.app.db.collection('requests').findOne({
                 type: 2,
-                company: req.body.companyId,
-                location: req.body.locationId,
-                employeeId: req.body.receiver,
+                companyId: req.body.companyId,
+                // locationId: req.body.locationId,
+                employeeId: req.body.employeeId,
                 rejected: false
             });
             if (existingRequest) {
@@ -72,8 +83,8 @@ module.exports = async(req, res) => {
             existingCompanyRequest = await req.app.db.collection('requests').findOne({
                 type: req.body.type,
                 companyId: req.body.companyId,
-                locationId: req.body.locationId,
-                receiver: req.body.receiver,
+                // locationId: req.body.locationId,
+                employeeId: req.body.employeeId,
                 rejected: false
             });
             if (existingCompanyRequest) {

@@ -13,8 +13,20 @@
 
       <DefaultButton label="Save" @click="editUser" />
 
+      <div class="user-settings__companies">
+        <div
+          class="user-settings__companies-item"
+          v-for="(company, key) in enteredCompanies"
+          :key="key"
+        >
+          <div>Name: {{ company.companyName }}</div>
+          <div>Faired: {{ company.deleted }}</div>
+          <div>Position: {{ company.position }}</div>
+        </div>
+      </div>
+
       <div v-if="user.isEmployee" class="user-settings__organization">
-        <div v-if="!isInCompany">
+        <div>
           <SelectInput
             label="Select the company"
             v-model="company"
@@ -35,7 +47,6 @@
             </div>
           </div>
         </div>
-        <div v-else>Is in company</div>
       </div>
     </div>
   </section>
@@ -59,9 +70,9 @@ export default {
       position: "",
       message: "",
       ////////////
-      isInCompany: false,
       companyList: [],
       locationList: [],
+      enteredCompanies: [],
     };
   },
   methods: {
@@ -159,12 +170,13 @@ export default {
       .then((res) => {
         if (res.success) {
           this.user = { ...res.data };
-          if (this.user.company && this.user.company.length)
-            this.isInCompany = true;
 
-          if (!this.isInCompany) {
-            this.getCompanyList();
-          }
+          this.$store
+            .dispatch("getWorkplacesAction", { employeeId: this.user._id })
+            .then((res) => {
+              this.enteredCompanies = res.data;
+            });
+          this.getCompanyList();
         }
       });
   },

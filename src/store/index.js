@@ -347,6 +347,21 @@ export default createStore({
                     .catch(err => done(err));
             })
         },
+
+
+
+        // Workspaces
+
+        getWorkplacesAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-workplaces/${data.employeeId}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
     },
     modules: {}
 })

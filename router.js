@@ -51,4 +51,9 @@ exports = module.exports = (app) => {
     app.post('/api/company-delete-request', require('./routes/request/company-delete'))
     app.post('/api/accept-request', require('./routes/request/accept'))
 
+
+    // Workspaces
+
+    app.get('/api/get-workplaces/:employeeId', require('./routes/workplaces/get-workplaces'))
+
 }

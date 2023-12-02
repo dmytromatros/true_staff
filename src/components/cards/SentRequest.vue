@@ -4,7 +4,8 @@
 
     <div class="receive-request-card__to">To: {{ to }}</div>
     <div class="receive-request-card__location">Location: {{ location }}</div>
-    <div class="receive-request-card__position">Position: {{ position }}</div>
+    <div class="receive-request-card__location">Location: {{ location }}</div>
+    <div class="receive-request-card__status">Status: {{ status }}</div>
   </div>
 </template>
 
@@ -24,6 +25,10 @@ export default {
       default: "",
     },
     position: {
+      type: String,
+      default: "",
+    },
+    status: {
       type: String,
       default: "",
     },

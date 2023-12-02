@@ -7,6 +7,7 @@ module.exports = async(req, res) => {
     let error = [];
 
     if (!req.body.id) error.push('Request id is required');
+    if (!req.body.type) error.push('Request type is required');
 
     let request;
 
@@ -15,6 +16,9 @@ module.exports = async(req, res) => {
     let updateData = {};
 
     updateData.accepted = true
+
+    if (req.body.type == 1) updateData.companyDeleted = true
+    if (req.body.type == 2) updateData.userDeleted = true
 
     //  Update request
 

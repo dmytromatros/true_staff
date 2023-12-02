@@ -23,6 +23,7 @@
             :location="rec.locationAddress"
             :position="rec.position"
             @delete-request="deleteSentRequest(rec._id)"
+            :status="sentStatus(rec.rejected, rec.accepted)"
           />
         </div>
       </div>
@@ -39,20 +40,29 @@ export default {
     return {
       sent: {},
       receive: {},
-      page: 2,
+      page: 1,
     };
   },
   components: { ReceiveRequest, SentRequest },
   methods: {
+    sentStatus(rejected, accepted) {
+      if (accepted) return "Підтверджено";
+      else if (rejected) return "Відхилено";
+      else return "Очікується на відповідь";
+    },
     acceptReceiveRequest(id) {
-      this.$store.dispatch("acceptRequestAction", { id }).then((res) => {
-        if (res.success) this.getAllRequest();
-      });
+      this.$store
+        .dispatch("acceptRequestAction", { id: id, type: 2 })
+        .then((res) => {
+          if (res.success) this.getAllRequest();
+        });
     },
     rejectReceiveRequest(id) {
-      this.$store.dispatch("rejectRequestAction", { id }).then((res) => {
-        if (res.success) this.getAllRequest();
-      });
+      this.$store
+        .dispatch("rejectRequestAction", { id: id, type: 1 })
+        .then((res) => {
+          if (res.success) this.getAllRequest();
+        });
     },
     deleteReceiveRequest(id) {
       this.$store.dispatch("userDeleteRequestAction", { id }).then((res) => {

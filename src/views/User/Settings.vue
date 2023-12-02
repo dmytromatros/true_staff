@@ -1,6 +1,9 @@
 <template>
   <section class="user-settings">
     <div class="user-settings__form">
+      <input type="file" @change="handleFileChange" />
+      <img :src="imageUrl" alt="img" />
+      <button @click="saveImage">Save Image</button>
       <TextInput label="name" v-model="user.name" />
       <TextInput label="surname" v-model="user.surname" />
       <TextInput
@@ -73,9 +76,21 @@ export default {
       companyList: [],
       locationList: [],
       enteredCompanies: [],
+      image: null,
+      imageUrl: null,
     };
   },
   methods: {
+    handleFileChange(event) {
+      this.image = event.target.files[0];
+    },
+    saveImage() {
+      const formData = new FormData();
+      formData.append("userId", this.$route.params.id);
+      formData.append("file", this.image);
+
+      this.$store.dispatch("uploadImageAction", formData);
+    },
     editUser() {
       const data = {
         id: this.$route.params.id,
@@ -162,6 +177,23 @@ export default {
         }
       });
     },
+    getImageFn() {
+      this.$store
+        .dispatch("getImageAction", { id: this.$route.params.id })
+        .then((res) => {
+          this.imageUrl = res.data;
+        });
+    },
+    getWorkplacesFn() {
+      this.$store
+        .dispatch("getWorkplacesAction", {
+          employeeId: this.$route.params.id,
+        })
+        .then((res) => {
+          this.enteredCompanies = res.data;
+          console.log(this.enteredCompanies);
+        });
+    },
   },
 
   mounted() {
@@ -171,11 +203,10 @@ export default {
         if (res.success) {
           this.user = { ...res.data };
 
-          this.$store
-            .dispatch("getWorkplacesAction", { employeeId: this.user._id })
-            .then((res) => {
-              this.enteredCompanies = res.data;
-            });
+          if (this.user.isImage) {
+            this.getImageFn();
+          }
+          this.getWorkplacesFn();
           this.getCompanyList();
         }
       });

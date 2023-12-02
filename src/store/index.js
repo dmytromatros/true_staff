@@ -362,6 +362,31 @@ export default createStore({
             })
         },
 
+
+        // Files
+
+
+        uploadImageAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/upload-image`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+        getImageAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-image/${data.id}`, )
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
     },
     modules: {}
 })

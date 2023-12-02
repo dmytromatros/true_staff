@@ -56,4 +56,10 @@ exports = module.exports = (app) => {
 
     app.get('/api/get-workplaces/:employeeId', require('./routes/workplaces/get-workplaces'))
 
+
+    // Files
+
+    app.post('/api/upload-image', app.upload.single('file'), require('./routes/images/upload-image'));
+    app.get('/api/get-image/:id', require('./routes/images/get-image'));
+
 }

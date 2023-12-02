@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async (req, res) => {
+module.exports = async(req, res) => {
 
     const { name, surname, email, password } = req.body;
     let error = [];
@@ -29,9 +29,13 @@ module.exports = async (req, res) => {
         }
     }
 
+    let newUser = req.body
+
+    newUser.isImage = false
+
     if (error.length === 0) {
         try {
-            await req.app.db.collection('users').insertOne(req.body);
+            await req.app.db.collection('users').insertOne(newUser);
         } catch (error) {
             error.push(error);
         }

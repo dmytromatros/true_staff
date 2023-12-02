@@ -3,25 +3,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
 const multer = require('multer');
 
 const app = express();
 
-// Midleware
-
-app.use(bodyParser.json())
-app.use(cors())
-
-
-// Routes
-
-require('./router')(app);
+// Middleware
+app.use(bodyParser.json());
+app.use(cors());
 
 // MongoDB connection
+require('./mongodb-connection')(app);
 
-require('./mongodb-connection')(app)
+// Set up Multer for file uploads
+const storage = multer.memoryStorage(); // Store the file in memory as a Buffer
+app.upload = multer({ storage: storage });
 
-const port = process.env.PORT || 5000
+// Image upload endpoint
 
-app.listen(port, () => console.log(`listening on port ${port}`))
+
+// Other routes
+require('./router')(app);
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`listening on port ${port}`));

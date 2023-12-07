@@ -61,10 +61,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
 .text-input {
   display: flex;
   flex-direction: column;
+  &__label {
+    color: $dark_text;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
   &__input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    @include main-shadow;
+    color: $dark_text;
+    font-size: 16px;
+    font-weight: 400;
+    transition: 0.3s ease-in-out all;
+    border: 1px solid $main-color;
     &--disabled {
       pointer-events: none;
       opacity: 0.7;

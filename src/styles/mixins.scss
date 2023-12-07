@@ -1,0 +1,8 @@
+@import "@/styles/variables.scss";
+@mixin main-shadow {
+    box-shadow: 0 0 10px 1px rgba($color: rgb(43, 51, 104), $alpha: 0.3);
+    transition: 0.3s ease-in-out all;
+    &:hover {
+        box-shadow: 0 0 10px 1px rgba($color: rgb(43, 51, 104), $alpha: 0.15);
+    }
+}

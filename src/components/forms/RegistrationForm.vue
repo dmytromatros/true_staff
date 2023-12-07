@@ -5,69 +5,69 @@
         class="registration-form__selector"
         @click="selectRole('user')"
         :class="{ 'registration-form__selector--active': role == 'user' }"
-        >User</span
+        >Користувач</span
       >
       <span
         class="registration-form__selector"
         @click="selectRole('company')"
         :class="{ 'registration-form__selector--active': role == 'company' }"
-        >Company</span
+        >Компанія</span
       >
     </div>
 
-    <form
-      v-if="role == 'user'"
-      class="registration-form__user"
-      @submit.prevent="registerUser"
-    >
-      <TextInput label="Name" type="text" v-model="userInfo.name" />
-      <TextInput label="Suranme" type="text" v-model="userInfo.surname" />
-      <TextInput label="Email" type="email" v-model="userInfo.email" />
-      <TextInput label="Pasword" type="password" v-model="userInfo.password" />
+    <div v-if="role == 'user'" class="registration-form__user">
+      <TextInput label="Ім'я" type="text" v-model="userInfo.name" />
+      <TextInput label="Прізвище" type="text" v-model="userInfo.surname" />
+      <TextInput label="E-mail" type="email" v-model="userInfo.email" />
+      <TextInput label="Пароль" type="password" v-model="userInfo.password" />
       <CheckboxInput
-        label="I am an employee"
+        label="Я є робітником у компанії"
         v-model="userInfo.isEmployee"
         id="is-employee-registration"
       />
-      <button type="submit">Register</button>
-    </form>
+      <DefaultButton @click="registerUser" label="Зареєструватись" />
+    </div>
 
-    <form
-      v-if="role == 'company'"
-      class="registration-form__company"
-      @submit.prevent="registerCompany"
-    >
+    <div v-if="role == 'company'" class="registration-form__company">
       <div class="registration-form__type">
-        <button
-          type="button"
-          class="registration-form__type-button"
-          @click="changeType(1)"
-        >
-          Юридична особа РНОКПП
-        </button>
-        <button
-          type="button"
-          class="registration-form__type-button"
-          @click="changeType(2)"
-        >
-          Фізична особа ЄДРПОУ
-        </button>
+        <RadioCheckboxInput
+          name="company-type"
+          :items="[
+            { value: 1, label: 'Юридична особа РНОКПП' },
+            { value: 2, label: 'Фізична особа ЄДРПОУ' },
+          ]"
+          v-model="companyInfo.organizationType"
+        />
       </div>
-      <TextInput label="Name" type="text" v-model="copmanyInfo.name" />
-      <TextInput label="Login" type="text" v-model="copmanyInfo.login" />
       <TextInput
-        label="Password"
-        type="password"
-        v-model="copmanyInfo.password"
+        label="Назва компанії"
+        type="text"
+        v-model="companyInfo.name"
       />
-      <button type="submit">Register</button>
-    </form>
+      <TextInput
+        label="Логін (це має бути код компанії)"
+        type="text"
+        v-model="companyInfo.login"
+      />
+      <TextInput
+        label="Пароль"
+        type="password"
+        v-model="companyInfo.password"
+      />
+      <DefaultButton
+        class="registration-form__company-button"
+        @click="registerCompany"
+        label="Зареєструватись"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import TextInput from "../inputs/TextInput.vue";
-import CheckboxInput from "../inputs/CheckboxInput.vue";
+import TextInput from "@/components/inputs/TextInput.vue";
+import CheckboxInput from "@/components/inputs/CheckboxInput.vue";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import RadioCheckboxInput from "@/components/inputs/RadioCheckboxInput.vue";
 export default {
   name: "RegistrationForm",
   data() {
@@ -80,7 +80,7 @@ export default {
         password: "",
         isEmployee: false,
       },
-      copmanyInfo: {
+      companyInfo: {
         name: "",
         login: "",
         password: "",
@@ -88,7 +88,7 @@ export default {
       },
     };
   },
-  components: { TextInput, CheckboxInput },
+  components: { TextInput, CheckboxInput, DefaultButton, RadioCheckboxInput },
   methods: {
     selectRole(role) {
       this.role = role;
@@ -101,10 +101,10 @@ export default {
       });
     },
     changeType(num) {
-      this.copmanyInfo.organizationType = num;
+      this.companyInfo.organizationType = num;
     },
     registerCompany() {
-      this.$store.dispatch("addCompanyAction", this.copmanyInfo).then((res) => {
+      this.$store.dispatch("addCompanyAction", this.companyInfo).then((res) => {
         if (res.success) {
           this.$emit("registered");
         }
@@ -115,21 +115,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
 .registration-form {
-  &__select {
+  background-color: $white;
+  @include main-shadow;
+  overflow: hidden;
+  border-radius: 10px;
+
+  &__user {
+    border-radius: 10px;
+    padding: 30px 15px;
+    background-color: $white;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 10px;
   }
+  &__company {
+    border-radius: 0px 0px 10px 10px;
+    padding: 30px 15px;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  &__select {
+    border-radius: 10px 10px 0px 0px;
+    background-color: $white;
+    display: flex;
+    width: 100%;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid $main-color;
+  }
   &__selector {
+    text-align: center;
+    flex: 1;
+    font-weight: 600;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #e3e3e3;
+    padding: 15px;
+    background-color: $white;
+    color: $dark_text;
     &--active {
-      background-color: #404040;
-      color: #ffffff;
+      background-color: rgba($color: $main-color, $alpha: 1);
+      color: $white;
     }
+  }
+  &__company-button {
+    margin-top: 15px;
   }
   &__type {
     display: flex;

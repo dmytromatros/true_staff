@@ -10,6 +10,8 @@ const routes = [{
     {
         path: '/user',
         redirect: { name: 'user-dashboard' },
+        component: () =>
+            import ('@/views/User/Dashboard.vue'),
         children: [{
             path: ':id',
             redirect: { name: 'user-dashboard' },
@@ -23,7 +25,7 @@ const routes = [{
                     path: 'dashboard',
                     name: 'user-dashboard',
                     component: () =>
-                        import ('@/views/User/Dashboard.vue'),
+                        import ('@/views/User/SendReview.vue'),
                 },
                 {
                     path: 'requests',

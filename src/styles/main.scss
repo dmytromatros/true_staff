@@ -5,3 +5,16 @@
 * {
     font-family: $font_family;
 }
+
+div {
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: $white;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $main-color;
+    }
+}

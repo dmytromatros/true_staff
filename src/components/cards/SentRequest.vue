@@ -1,11 +1,27 @@
 <template>
   <div class="receive-request-card">
-    <DefaultButton label="Delete" @click="handleDeleteRequest" />
+    <div class="receive-request-card__to">
+      Кому: <span class="receive-request-card__bold">{{ to }}</span>
+    </div>
+    <div class="receive-request-card__location">
+      Локація: <span class="receive-request-card__bold">{{ location }}</span>
+    </div>
+    <div class="receive-request-card__location">
+      Позиція: <span class="receive-request-card__bold">{{ position }}</span>
+    </div>
+    <div class="receive-request-card__message">
+      Повідомлення:
+      <span class="receive-request-card__bold">{{ message }}</span>
+    </div>
+    <div class="receive-request-card__status">
+      Статус: <span class="receive-request-card__bold">{{ status }}</span>
+    </div>
 
-    <div class="receive-request-card__to">To: {{ to }}</div>
-    <div class="receive-request-card__location">Location: {{ location }}</div>
-    <div class="receive-request-card__location">Location: {{ location }}</div>
-    <div class="receive-request-card__status">Status: {{ status }}</div>
+    <DefaultButton
+      label="Видалити"
+      @click="handleDeleteRequest"
+      :danger="true"
+    />
   </div>
 </template>
 
@@ -21,6 +37,10 @@ export default {
       default: "",
     },
     location: {
+      type: String,
+      default: "",
+    },
+    message: {
       type: String,
       default: "",
     },
@@ -41,4 +61,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "@/styles/main.scss";
+.receive-request-card {
+  border-radius: 15px;
+  padding: 15px;
+  @include main-shadow;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  &__bold {
+    font-weight: 600;
+  }
+}
+</style>

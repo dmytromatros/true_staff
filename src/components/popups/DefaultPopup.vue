@@ -33,14 +33,18 @@
           <slot name="body"></slot>
         </div>
         <div class="default-popup__footer">
-          <DefaultButton label="close" @click="closePopup" />
-          <DefaultButton :label="confirmLabel" @click="confirmFn" />
+          <DefaultButton label="Закрити" @click="closePopup" :danger="true" />
+          <DefaultButton
+            :label="confirmLabel"
+            @click="confirmFn"
+            :success="true"
+          />
         </div>
       </div>
     </div>
   </transition>
 </template>
-  
+
 <script>
 import DefaultButton from "../buttons/DefaultButton.vue";
 
@@ -50,7 +54,7 @@ export default {
   props: {
     isShown: Boolean,
     title: { type: String, default: "Title" },
-    confirmLabel: { type: String, default: "Save" },
+    confirmLabel: { type: String, default: "Зберегти" },
   },
   methods: {
     closePopup() {
@@ -62,8 +66,8 @@ export default {
   },
 };
 </script>
-  
-  <style lang="scss">
+
+<style lang="scss">
 .default-popup {
   position: fixed;
   width: 100vw;
@@ -79,14 +83,18 @@ export default {
   &__window {
     background-color: #ffffff;
     border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
   }
   &__header {
     border-bottom: 1px solid #999;
-    padding: 20px 10px;
+    padding: 20px 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 20px);
+    width: 100%;
+    font-weight: 800;
+    font-size: 22px;
   }
   &__body {
     padding: 50px;
@@ -94,6 +102,9 @@ export default {
   &__footer {
     border-top: 1px solid #999;
     padding: 20px 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
   }
   &__close {
     cursor: pointer;
@@ -120,4 +131,3 @@ export default {
   transform: translateY(50%);
 }
 </style>
-  

@@ -77,14 +77,14 @@ export default {
       position: absolute;
       transform: translate(1px, 1px);
       border-radius: 50%;
-      background-color: $main-color;
+      background-color: $red-color;
       transition: 0.3s ease-in-out all;
     }
     &--active {
       &::before {
         transform: translate(26px, 1px);
 
-        background-color: $second-color;
+        background-color: $green-color;
       }
     }
   }

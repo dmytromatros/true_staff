@@ -1,6 +1,11 @@
 <template>
   <div class="text-input">
-    <span v-if="label" class="text-input__label">{{ label }}</span>
+    <span
+      v-if="label"
+      class="text-input__label"
+      :class="{ 'text-input__input--disabled': disabled }"
+      >{{ label }}</span
+    >
     <input
       v-if="!textarea"
       class="text-input__input"
@@ -13,7 +18,11 @@
       list="autocompleteOff"
       :name="type"
     />
-    <textarea v-else v-model="internalValue"></textarea>
+    <textarea
+      v-else
+      v-model="internalValue"
+      :class="{ 'text-input__input--disabled': disabled }"
+    ></textarea>
   </div>
 </template>
 
@@ -69,12 +78,16 @@ export default {
     color: $dark_text;
     font-size: 16px;
     font-weight: 400;
-    margin-bottom: 10px;
     margin-left: 10px;
+    margin-bottom: 10px;
+    width: fit-content;
+    border-radius: 10px 10px 0 0;
   }
-  &__input {
+
+  &__input,
+  textarea {
     width: 100%;
-    padding: 10px 15px;
+    padding: 15px 20px;
     border-radius: 10px;
     @include main-shadow;
     color: $dark_text;
@@ -84,8 +97,11 @@ export default {
     border: 1px solid $main-color;
     &--disabled {
       pointer-events: none;
-      opacity: 0.7;
+      opacity: 0.5;
     }
+  }
+  textarea {
+    resize: none;
   }
 }
 </style>

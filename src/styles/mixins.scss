@@ -6,3 +6,18 @@
         box-shadow: 0 0 10px 1px rgba($color: rgb(43, 51, 104), $alpha: 0.15);
     }
 }
+
+@mixin main-back {
+    background-color: rgba($color: $white, $alpha: 0.5);
+    // backdrop-filter: blur(25px);
+}
+
+@mixin main-title {
+    @include main-shadow;
+    padding: 20px 15px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    backdrop-filter: blur(30px);
+    border-radius: $border-radius $border-radius 0 0;
+}

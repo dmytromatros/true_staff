@@ -2,8 +2,9 @@
   <DefaultPopup
     :isShown="true"
     @close="close"
-    title="Add new employee"
+    title="Додати робітника"
     @confirm="addEmployee"
+    :confirmLabel="'Додати'"
   >
     <template v-slot:body>
       <div class="change-password">

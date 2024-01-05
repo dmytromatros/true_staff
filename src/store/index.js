@@ -21,7 +21,7 @@ export default createStore({
         setUserList: (state, data) => {
             state.users = data.data;
         },
-        setCopmany(state, data) {
+        setCompany(state, data) {
             state.copmany = data.data;
             state.role = 'cpomany';
         },
@@ -55,7 +55,7 @@ export default createStore({
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/login-company`, data)
                     .then(res => {
-                        commit('setCopmany', res.data);
+                        commit('setCompany', res.data);
 
                         localStorage.setItem('token', res.data.data._id);
                         localStorage.setItem('role', 'company');
@@ -162,7 +162,7 @@ export default createStore({
             return new Promise(done => {
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`, )
                     .then(res => {
-                        commit('setCopmany', res.data);
+                        commit('setCompany', res.data);
                         done(res.data)
                     })
                     .catch(err => done(err));
@@ -174,7 +174,7 @@ export default createStore({
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company`, data)
                     .then(res => {
-                        commit('setCopmany', res.data);
+                        commit('setCompany', res.data);
                         done(res.data)
                     })
                     .catch(err => done(err));
@@ -186,7 +186,18 @@ export default createStore({
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company-password`, data)
                     .then(res => {
-                        commit('setCopmany', res.data);
+                        commit('setCompany', res.data);
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+        editUserPasswordAction: async({ commit }, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-user-password`, data)
+                    .then(res => {
+                        commit('setUser', res.data);
                         done(res.data)
                     })
                     .catch(err => done(err));

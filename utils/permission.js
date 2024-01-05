@@ -66,4 +66,23 @@ function checkRoutePermission() {
     }
 }
 
-export { isAuth, checkRoutePermission };
+
+function checkRole() {
+    const auth = localStorage.getItem('token') == '' ? false : true;
+    const role = localStorage.getItem('role')
+
+    if (auth && role) {
+
+        switch (role) {
+            case 'user':
+                return 'user';
+
+            case 'company':
+                return 'company';
+        }
+    }
+
+    return null;
+}
+
+export { isAuth, checkRoutePermission, checkRole };

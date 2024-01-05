@@ -1,5 +1,5 @@
 <template>
-  <div class="select-input">
+  <div class="select-input" :class="{ disabled }">
     <span v-if="label" class="select-input__label">{{ label }}</span>
     <select
       class="select-input__input"
@@ -25,6 +25,10 @@ export default {
     options: {
       type: Array,
       default: () => {},
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     modelValue: String,
   },
@@ -60,12 +64,12 @@ export default {
   }
   &__input {
     width: 100%;
-    padding: 10px 15px;
+    padding: 18px;
     border-radius: 10px;
     @include main-shadow;
     color: $dark_text;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 600;
     transition: 0.3s ease-in-out all;
     cursor: pointer;
     -moz-appearance: none;
@@ -79,6 +83,10 @@ export default {
     &:hover {
       box-shadow: 0 0 10px 1px rgba($color: $black, $alpha: 0.32);
     }
+  }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 </style>

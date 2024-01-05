@@ -1,83 +1,74 @@
 <template>
   <section class="user-settings">
     <div class="user-settings__form">
-      <input type="file" @change="handleFileChange" />
-      <img :src="imageUrl" alt="img" />
-      <button @click="saveImage">Save Image</button>
-      <TextInput label="name" v-model="user.name" />
-      <TextInput label="surname" v-model="user.surname" />
-      <TextInput
-        label="password"
-        type="password"
-        v-model="user.password"
-        :disabled="true"
-      />
-      <CheckboxInput label="Is an employee" v-model="user.isEmployee" />
+      <div class="user-settings__content">
+        <BaseCard style="padding: 0">
+          <template v-slot:body>
+            <div class="user-settings__data">
+              <div class="user-settings__data-title">Загальна інформація</div>
+              <div class="user-settings__data-content">
+                <TextInput label="Ім'я" v-model="user.name" />
+                <TextInput label="Прізвище" v-model="user.surname" />
+                <div class="user-settings__data-pass">
+                  <TextInput
+                    class="user-settings__data-pass-input"
+                    label="Пароль"
+                    type="password"
+                    v-model="user.password"
+                    :disabled="true"
+                  />
+                  <DefaultButton label="Змінити пароль" @click="openPopup" />
+                </div>
+                <CheckboxInput
+                  label="Is an employee"
+                  v-model="user.isEmployee"
+                />
 
-      <DefaultButton label="Save" @click="editUser" />
-
-      <div class="user-settings__companies">
-        <div
-          class="user-settings__companies-item"
-          v-for="(company, key) in enteredCompanies"
-          :key="key"
-        >
-          <div>Name: {{ company.companyName }}</div>
-          <div>Faired: {{ company.deleted }}</div>
-          <div>Position: {{ company.position }}</div>
-        </div>
-      </div>
-
-      <div v-if="user.isEmployee" class="user-settings__organization">
-        <div>
-          <SelectInput
-            label="Select the company"
-            v-model="company"
-            :options="companyList"
-          />
-          <div v-if="company">
-            <SelectInput
-              label="Select the location"
-              v-model="location"
-              :options="locationList"
-            />
-            <div v-if="location">
-              <TextInput label="Position" v-model="position" />
-              <div v-if="position">
-                <TextInput label="Message" :textarea="true" v-model="message" />
-                <DefaultButton label="Send a request" @click="sendRequest" />
+                <div class="user-settings__buttons">
+                  <DefaultButton label="Зберегти зміни" @click="editUser" />
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </template>
+        </BaseCard>
+      </div>
+      <div class="user-settings__content">
+        <BaseCard>
+          <template v-slot:body
+            ><div class="user-settings__image">
+              <ImageInput :imageLink="imageUrl" />
+            </div> </template
+        ></BaseCard>
       </div>
     </div>
+    <ChangeUserPasswordPopup :isShown="changePassPopup" @close="closePopup" />
   </section>
 </template>
 
 <script>
 import TextInput from "@/components/inputs/TextInput.vue";
 import CheckboxInput from "@/components/inputs/CheckboxInput.vue";
-import SelectInput from "@/components/inputs/SelectInput.vue";
+import ChangeUserPasswordPopup from "@/components/popups/ChangeUserPasswordPopup.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import BaseCard from "@/components/cards/BaseCard.vue";
+import ImageInput from "@/components/inputs/ImageInput.vue";
 
 export default {
   name: "UserSettings",
-  components: { TextInput, CheckboxInput, SelectInput, DefaultButton },
+  components: {
+    TextInput,
+    CheckboxInput,
+    ChangeUserPasswordPopup,
+    DefaultButton,
+    BaseCard,
+    ImageInput,
+  },
   data() {
     return {
       user: {},
-      // Request data
-      company: "",
-      location: "",
-      position: "",
-      message: "",
-      ////////////
-      companyList: [],
-      locationList: [],
-      enteredCompanies: [],
       image: null,
       imageUrl: null,
+      changePassPopup: false,
     };
   },
   methods: {
@@ -97,86 +88,12 @@ export default {
         name: this.user.name,
         surname: this.user.surname,
         image: this.user.image,
+        isEmployee: this.user.isEmployee,
       };
 
       this.$store.dispatch("editUserAction", data);
     },
-    getCompanyList() {
-      this.$store.dispatch("getCompanyListAction").then((res) => {
-        if (res.success) {
-          for (const key in res.data) {
-            if (Object.hasOwnProperty.call(res.data, key)) {
-              this.companyList.push({
-                label: res.data[key].name,
-                value: res.data[key]._id,
-              });
-            }
-          }
-        }
-      });
-    },
-    getLocationList(id) {
-      this.$store.dispatch("getLocationsAction", { id }).then((res) => {
-        if (res.success) {
-          for (const key in res.data) {
-            if (Object.hasOwnProperty.call(res.data, key)) {
-              this.locationList.push({
-                label: res.data[key].address,
-                value: res.data[key]._id,
-              });
-            }
-          }
-        }
-      });
-    },
-    async getCompanyName(id) {
-      try {
-        const res = await this.$store.dispatch("getCompanyAction", { id });
-        if (res.success) {
-          return res.data.name;
-        }
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed, e.g., return a default value or throw an error
-        return "";
-      }
-    },
-    async getLocationAddress(id) {
-      try {
-        const res = await this.$store.dispatch("getLocationAction", {
-          locationId: id,
-        });
-        if (res.success) {
-          return res.data.address;
-        }
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed, e.g., return a default value or throw an error
-        return "";
-      }
-    },
-    async sendRequest() {
-      const companyName = await this.getCompanyName(this.company);
-      const locationAddress = await this.getLocationAddress(this.location);
 
-      const data = {
-        companyId: this.company,
-        companyName: companyName,
-        locationId: this.location,
-        locationAddress: locationAddress,
-        position: this.position,
-        message: this.message,
-        employeeId: this.user._id,
-        employeeName: `${this.user.name} ${this.user.surname}`,
-        type: 2,
-      };
-
-      this.$store.dispatch("addUserRequestAction", data).then((res) => {
-        if (res.success) {
-          console.log(res);
-        }
-      });
-    },
     getImageFn() {
       this.$store
         .dispatch("getImageAction", { id: this.$route.params.id })
@@ -194,6 +111,13 @@ export default {
           console.log(this.enteredCompanies);
         });
     },
+
+    openPopup() {
+      this.changePassPopup = true;
+    },
+    closePopup() {
+      this.changePassPopup = false;
+    },
   },
 
   mounted() {
@@ -207,23 +131,53 @@ export default {
             this.getImageFn();
           }
           this.getWorkplacesFn();
-          this.getCompanyList();
         }
       });
-  },
-  watch: {
-    company() {
-      this.getLocationList(this.company);
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
 .user-settings {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+  &__form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 25px;
+    justify-content: center;
+  }
+  &__content {
+    &:first-child {
+      min-width: 500px;
+    }
+    height: fit-content;
+  }
+  &__image {
+    max-width: 250px;
+    max-height: 500px;
+  }
+
+  &__data-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px;
+  }
+  &__data-title {
+    @include main-title;
+  }
+  &__data-pass {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    &-input {
+      flex: 1;
+    }
+  }
 }
 </style>

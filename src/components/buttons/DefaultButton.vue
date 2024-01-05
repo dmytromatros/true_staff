@@ -1,6 +1,10 @@
 <template>
   <div class="default-button">
-    <button @click.stop="action" class="default-button__button">
+    <button
+      @click.stop="action"
+      class="default-button__button"
+      :class="{ danger, success, warning }"
+    >
       {{ label }}
     </button>
   </div>
@@ -13,6 +17,18 @@ export default {
     label: {
       type: String,
       default: "",
+    },
+    danger: {
+      type: Boolean,
+      default: false,
+    },
+    success: {
+      type: Boolean,
+      default: false,
+    },
+    warning: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
@@ -30,7 +46,6 @@ export default {
   &__button {
     width: 100%;
     text-align: center;
-    background-color: red;
     width: 100%;
     padding: 10px 15px;
     border-radius: 10px;
@@ -42,6 +57,17 @@ export default {
     background-color: $main-color;
     color: $white;
     font-weight: 600;
+    letter-spacing: 1px;
+
+    &.danger {
+      background-color: $red-color;
+    }
+    &.success {
+      background-color: $green-color;
+    }
+    &.warning {
+      background-color: $yellow-color;
+    }
     &:hover {
       background-color: $white;
       color: $main-color;

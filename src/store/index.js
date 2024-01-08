@@ -110,6 +110,15 @@ export default createStore({
             })
         },
 
+        getUserInfoAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-info/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
 
         editUserAction: async(context, data) => {
             return new Promise(done => {
@@ -391,6 +400,16 @@ export default createStore({
         getImageAction: async(context, data) => {
             return new Promise(done => {
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-image/${data.id}`, )
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+        getEmployeesAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-employees/${data.location}`, )
                     .then(res => {
                         done(res.data)
                     })

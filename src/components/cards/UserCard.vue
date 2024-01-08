@@ -4,7 +4,7 @@
       <img v-if="image" :src="image" :alt="image" />
       <img v-else src="@/assets/img/profile-img.webp" :alt="image" />
       <div class="user-card__bottom">
-        <span class="user-card__label">{{ label }}</span>
+        <!-- <span class="user-card__label">{{ label }}</span> -->
         <span class="user-card__name">{{ name }}</span>
       </div>
     </button>
@@ -88,7 +88,7 @@ export default {
     background-color: rgba($color: $white, $alpha: 0.4);
     backdrop-filter: blur(25px);
     width: 100%;
-    height: 20%;
+    height: 15%;
     max-height: 100px;
     border-radius: $border-radius;
     display: flex;
@@ -96,7 +96,7 @@ export default {
     justify-content: center;
     @include main-shadow;
   }
-  &__label {
+  &__name {
     font-weight: 600;
     font-size: 20px;
     color: $dark_text;

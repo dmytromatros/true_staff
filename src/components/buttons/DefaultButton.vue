@@ -3,7 +3,7 @@
     <button
       @click.stop="action"
       class="default-button__button"
-      :class="{ danger, success, warning }"
+      :class="{ danger, success, warning, disabled }"
     >
       {{ label }}
     </button>
@@ -27,6 +27,10 @@ export default {
       default: false,
     },
     warning: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -67,6 +71,10 @@ export default {
     }
     &.warning {
       background-color: $yellow-color;
+    }
+    &.disabled {
+      background-color: grey;
+      pointer-events: none;
     }
     &:hover {
       background-color: $white;

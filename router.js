@@ -13,6 +13,7 @@ exports = module.exports = (app) => {
     app.get('/api/get-user-list', require('./routes/employee/get-employees'))
     app.post('/api/add-user', require('./routes/employee/add-user'))
     app.get('/api/get-user/:id', require('./routes/employee/get-user'))
+    app.get('/api/get-user-info/:id', require('./routes/employee/get-user-info'))
     app.post('/api/edit-user', require('./routes/employee/edit-user'))
     app.post('/api/send-user-request', require('./routes/employee/send-request'))
     app.post('/api/edit-user-password', require('./routes/employee/edit-password'))
@@ -38,7 +39,7 @@ exports = module.exports = (app) => {
 
     // Employees
 
-    app.get('/api/get-employees', require('./routes/employee/get-employees'))
+    app.get('/api/get-employees/:location', require('./routes/employee/get-employees'))
 
 
 

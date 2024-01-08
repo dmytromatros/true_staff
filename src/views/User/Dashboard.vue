@@ -16,7 +16,7 @@
           ]"
         />
 
-        <MenuCard
+        <!-- <MenuCard
           class="user-dashboard__sidebar-link"
           label="Залишити відгук"
           link="user-dashboard"
@@ -33,6 +33,28 @@
             <img
               src="@/assets/img/reviews-img.avif"
               alt="Налаштування профілю"
+            />
+          </template>
+        </MenuCard> -->
+
+        <MenuCard
+          class="user-dashboard__sidebar-link"
+          label="Знайти користувача"
+          link="user-dashboard"
+          :background_1="checkRoute('user-dashboard') ? '#00243f' : '#fff'"
+          :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'"
+          :class="[
+            {
+              'user-dashboard__sidebar-link--active':
+                checkRoute('user-dashboard'),
+            },
+          ]"
+        >
+          <template v-slot:image>
+            <img
+              src="@/assets/img/m-glass.avif"
+              alt="Знайти користувача"
+              style="object-position: left"
             />
           </template>
         </MenuCard>
@@ -54,27 +76,6 @@
             <img
               src="@/assets/img/cooperation.avif"
               alt="Запити до співпраці"
-            />
-          </template>
-        </MenuCard>
-
-        <MenuCard
-          class="user-dashboard__sidebar-link"
-          label="Знайти користувача"
-          link="user-search"
-          :background_1="checkRoute('user-search') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-search') ? '#0a5a99 ' : '#fff'"
-          :class="[
-            {
-              'user-dashboard__sidebar-link--active': checkRoute('user-search'),
-            },
-          ]"
-        >
-          <template v-slot:image>
-            <img
-              src="@/assets/img/m-glass.avif"
-              alt="Знайти користувача"
-              style="object-position: left"
             />
           </template>
         </MenuCard>
@@ -122,7 +123,7 @@ export default {
   }
   &__sidebar {
     display: grid;
-    grid-template-rows: 2.5fr repeat(3, 1fr);
+    grid-template-rows: 2.5fr repeat(2, 1fr);
 
     gap: 15px;
     height: 100%;

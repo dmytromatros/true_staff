@@ -40,9 +40,13 @@ export default {
   border-radius: 0 0 25px 25px;
   display: flex;
   width: 100%;
+  max-width: 600px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   justify-content: space-between;
   align-items: center;
-  border: 1px solid $main-color;
+  // border: 1px solid $main-color;
   border-top: none;
   &__info {
     display: flex;

@@ -13,22 +13,22 @@
           <SelectInput
             class="requests__input"
             label="Локація"
-            :disabled="!searchInfo.company"
+            :disabled="!searchInfo.company || !locationList.length"
             v-model="searchInfo.location"
             :options="locationList"
           />
 
           <SelectInput
             label="Робітник"
-            :disabled="!searchInfo.location"
+            :disabled="!searchInfo.location || !users.length"
             v-model="searchInfo.user"
             :options="users"
           />
 
-          <TextInput
+          <!-- <TextInput
             label="Залиште відгук"
             :disabled="!searchInfo.user"
-            v-model="searchInfo.message"
+            v-model="searchInfo.review"
             :textarea="true"
           />
 
@@ -36,8 +36,8 @@
             class="search-card__button"
             label="Залишити відгук"
             @click="sendReview"
-            :disabled="!searchInfo.message"
-          />
+            :disabled="!searchInfo.review"
+          /> -->
         </div>
       </template>
     </BaseCard>
@@ -47,15 +47,15 @@
 <script>
 import BaseCard from "@/components/cards/BaseCard.vue";
 import SelectInput from "@/components/inputs/SelectInput.vue";
-import TextInput from "@/components/inputs/TextInput.vue";
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
+// import TextInput from "@/components/inputs/TextInput.vue";
+// import DefaultButton from "@/components/buttons/DefaultButton.vue";
 export default {
   name: "SearchCard",
   components: {
     BaseCard,
     SelectInput,
-    TextInput,
-    DefaultButton,
+    // TextInput,
+    // DefaultButton,
   },
   data() {
     return {
@@ -63,7 +63,7 @@ export default {
         company: "",
         location: "",
         user: "",
-        message: "",
+        review: "",
       },
       companyList: [],
       locationList: [],
@@ -88,6 +88,7 @@ export default {
     getLocationList(id) {
       this.$store.dispatch("getLocationsAction", { id }).then((res) => {
         if (res.success) {
+          this.locationList = [];
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
               this.locationList.push({
@@ -102,6 +103,7 @@ export default {
     getUserList(location) {
       this.$store.dispatch("getEmployeesAction", { location }).then((res) => {
         if (res.success) {
+          this.users = [];
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
               if (res.data[key]._id !== this.$route.params.id)
@@ -115,7 +117,9 @@ export default {
       });
     },
     sendReview() {
-      console.log("ll");
+      this.searchInfo.from = this.$route.params.id;
+      this.searchInfo.date = Date.now();
+      this.$store.dispatch("sendReviewAction", this.searchInfo);
     },
   },
   watch: {
@@ -140,6 +144,7 @@ export default {
 .search-card {
   height: 100%;
   width: 100%;
+  padding: 15px;
   &__content {
     display: flex;
     flex-direction: column;

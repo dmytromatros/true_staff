@@ -124,6 +124,9 @@ export default {
   &__sidebar {
     display: grid;
     grid-template-rows: 2.5fr repeat(2, 1fr);
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: flex-start;
 
     gap: 15px;
     height: 100%;
@@ -149,11 +152,11 @@ export default {
     }
   }
   &__content {
-    padding: 15px;
+    // padding: 15px;
     flex: 4;
-    @media (max-width: 1600px) {
-      flex: 3;
-    }
+    // @media (max-width: 1600px) {
+    //   flex: 3;
+    // }
   }
   &__send-review {
     height: 100%;

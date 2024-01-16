@@ -9,6 +9,7 @@
             :location="rec.locationAddress"
             :position="rec.position"
             :editable="!rec.rejected && !rec.accepted"
+            :message="rec.message"
             @accept-request="acceptReceiveRequest(rec._id)"
             @reject-request="rejectReceiveRequest(rec._id)"
             @delete-request="deleteReceiveRequest(rec._id)"
@@ -40,7 +41,7 @@ export default {
     return {
       sent: {},
       receive: {},
-      page: 2,
+      page: 1,
     };
   },
   components: { ReceiveRequest, SentRequest },

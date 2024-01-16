@@ -64,4 +64,9 @@ exports = module.exports = (app) => {
     app.post('/api/upload-image', app.upload.single('file'), require('./routes/images/upload-image'));
     app.get('/api/get-image/:id', require('./routes/images/get-image'));
 
+    // Reviews
+
+    app.post('/api/send-review', require('./routes/reviews/send-review'));
+    app.get('/api/get-reviews-list/:id', require('./routes/reviews/get-reviews-list'));
+
 }

@@ -2,6 +2,7 @@
   <MainBackground />
   <div class="header">
     <UserHeader v-if="role == 'user'" />
+    <CompanyHeader v-if="role == 'company'" />
   </div>
   <div class="main-container">
     <router-view class="main-router-view" />
@@ -10,6 +11,7 @@
 
 <script>
 import UserHeader from "@/components/headers/UserHeader.vue";
+import CompanyHeader from "@/components/headers/CompanyHeader.vue";
 import MainBackground from "./views/System/MainBackground.vue";
 const {
   isAuth,
@@ -31,6 +33,7 @@ export default {
 
   components: {
     UserHeader,
+    CompanyHeader,
     MainBackground,
   },
 

@@ -39,6 +39,8 @@ const routes = [{
     {
         path: '/company',
         redirect: { name: 'company-dashboard' },
+        component: () =>
+            import ('@/views/Company/Dashboard.vue'),
         children: [{
                 path: ':id',
                 redirect: { name: 'company-dashboard' },
@@ -46,7 +48,7 @@ const routes = [{
                         path: 'dashboard',
                         name: 'company-dashboard',
                         component: () =>
-                            import ('@/views/Company/Dashboard.vue'),
+                            import ('@/views/Company/LocationsList.vue'),
                     },
                     {
                         path: 'locations',

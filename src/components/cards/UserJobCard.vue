@@ -9,7 +9,8 @@
       </div>
 
       <div class="user-job-card__info">
-        <div class="user-job-card__company">{{ job.companyName }}</div>
+        <div class="user-job-card__company">"{{ job.companyName }}"</div>
+
         <div class="user-job-card__location">{{ job.locationAddress }}</div>
         <div class="user-job-card__position">{{ job.position }}</div>
       </div>
@@ -34,7 +35,7 @@ export default {
 .user-job-card {
   &__container {
     flex: 1;
-    background-color: $light-grey;
+    background-color: rgba($color: $light-grey, $alpha: 0.3);
     @include main-shadow;
     padding: 15px;
     border-radius: $border-radius;
@@ -43,6 +44,7 @@ export default {
     gap: 15px;
 
     &--active {
+      background-color: rgba($color: $green-color, $alpha: 0.2);
     }
   }
   &__img {

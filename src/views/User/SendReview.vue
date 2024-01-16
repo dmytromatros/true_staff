@@ -1,11 +1,11 @@
 <template>
   <div class="send-review-card">
     <div class="send-review-card__content">
-      <SearchCard class="send-review-card__card" @selected="showUserInfo" />
       <UserInfoCard
         class="send-review-card__card send-review-card__card-user-info"
         :user="userId"
       />
+      <SearchCard class="send-review-card__card" @selected="showUserInfo" />
     </div>
   </div>
 </template>
@@ -41,12 +41,18 @@ export default {
   height: 100%;
   &__content {
     width: 100%;
+    // max-width: 1050px;
     height: 100%;
     display: flex;
     gap: 15px;
   }
   &__card {
-    flex: 1;
+    &:first-child {
+      flex: 2.3;
+    }
+    &:last-child {
+      flex: 1;
+    }
     height: fit-content;
     &-user-info {
       height: 100%;

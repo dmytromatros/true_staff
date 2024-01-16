@@ -417,6 +417,34 @@ export default createStore({
             })
         },
 
+
+        // Reviews
+
+
+        sendReviewAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/send-review`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+        getReviewsListAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-reviews-list/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+
+
+
+
     },
     modules: {}
 })

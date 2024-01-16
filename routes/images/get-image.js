@@ -17,7 +17,7 @@ module.exports = async(req, res) => {
                 data: `data:${image.contentType};base64,${image.data.toString('base64')}`
             });
         } else {
-            res.status(404).json({
+            res.status(200).json({
                 success: false,
                 message: 'Image not found',
             });

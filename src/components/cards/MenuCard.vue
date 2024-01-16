@@ -47,6 +47,8 @@ export default {
 .menu-card {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
   &__button {
     border-radius: $border-radius;
     @include main-shadow;
@@ -59,6 +61,7 @@ export default {
     position: relative;
     backdrop-filter: blur(25px);
     gap: 15px;
+    max-height: 120px;
   }
   &__label {
     font-weight: 600;

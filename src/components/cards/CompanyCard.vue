@@ -1,11 +1,11 @@
 <template>
-  <div class="user-card">
-    <button class="user-card__button" @click="goToLink">
+  <div class="company-card">
+    <button class="company-card__button" @click="goToLink">
       <img v-if="image" :src="image" :alt="image" />
       <img v-else src="@/assets/img/profile-img.webp" :alt="image" />
-      <div class="user-card__bottom">
-        <!-- <span class="user-card__label">{{ label }}</span> -->
-        <span class="user-card__name">{{ name }}</span>
+      <div class="company-card__bottom">
+        <!-- <span class="company-card__label">{{ label }}</span> -->
+        <span class="company-card__name">{{ name }}</span>
       </div>
     </button>
   </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "UserCard",
+  name: "CompanyCard",
   props: {
     label: {
       type: String,
@@ -47,10 +47,11 @@ export default {
   },
   mounted() {
     this.$store
-      .dispatch("getUserAction", { id: this.$route.params.id })
+      .dispatch("getCompanyAction", { id: this.$route.params.id })
       .then((res) => {
         if (res.success) {
-          this.name = `${res.data.name} ${res.data.surname}`;
+          this.name = `${res.data.name}`;
+          console.log(res);
           this.$store
             .dispatch("getImageAction", { id: this.$route.params.id })
             .then((res) => {
@@ -64,7 +65,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
-.user-card {
+.company-card {
   width: 100%;
   height: 100%;
   min-height: 310px;
@@ -88,7 +89,7 @@ export default {
     background-color: rgba($color: $white, $alpha: 0.4);
     backdrop-filter: blur(25px);
     width: 100%;
-    height: 15%;
+    min-height: 25%;
     max-height: 100px;
     border-radius: $border-radius;
     display: flex;

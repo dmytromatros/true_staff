@@ -7,6 +7,7 @@
       id="select"
       v-model="internalValue"
     >
+      <!-- <option value="null" disabled selected hidden>{{ placeholder }}</option> -->
       <option v-for="(option, key) in options" :key="key" :value="option.value">
         {{ option.label }}
       </option>
@@ -29,6 +30,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    placeholder: {
+      type: String,
+      default: "",
     },
     modelValue: String,
   },

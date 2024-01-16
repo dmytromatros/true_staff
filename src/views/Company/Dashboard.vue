@@ -1,6 +1,172 @@
 <template>
+  <div class="company-dashboard">
+    <div class="company-dashboard__body">
+      <div class="company-dashboard__sidebar">
+        <CompanyCard
+          class="company-dashboard__sidebar-link"
+          label="Профіль"
+          link="company-settings"
+          :background_1="checkRoute('company-settings') ? '#00243f' : '#93dff5'"
+          :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'"
+          :class="[
+            {
+              'company-dashboard__sidebar-link--active':
+                checkRoute('company-settings'),
+            },
+          ]"
+        />
+
+        <MenuCard
+          class="company-dashboard__sidebar-link"
+          label="Локації"
+          link="company-locations"
+          :background_1="checkRoute('company-locations') ? '#00243f' : '#fff'"
+          :background_2="checkRoute('company-locations') ? '#0a5a99 ' : '#fff'"
+          :class="[
+            {
+              'company-dashboard__sidebar-link--active':
+                checkRoute('company-locations'),
+            },
+          ]"
+        >
+          <template v-slot:image>
+            <img
+              src="@/assets/img/reviews-img.avif"
+              alt="Налаштування профілю"
+            />
+          </template>
+        </MenuCard>
+
+        <MenuCard
+          class="company-dashboard__sidebar-link"
+          label="Працівники"
+          link="company-employees"
+          :background_1="checkRoute('company-employees') ? '#00243f' : '#fff'"
+          :background_2="checkRoute('company-employees') ? '#0a5a99 ' : '#fff'"
+          :class="[
+            {
+              'company-dashboard__sidebar-link--active':
+                checkRoute('company-employees'),
+            },
+          ]"
+        >
+          <template v-slot:image>
+            <img
+              src="@/assets/img/m-glass.avif"
+              alt="Знайти користувача"
+              style="object-position: left"
+            />
+          </template>
+        </MenuCard>
+
+        <MenuCard
+          class="company-dashboard__sidebar-link"
+          label="Запити до співпраці"
+          link="company-requests"
+          :background_1="checkRoute('company-requests') ? '#00243f' : '#fff'"
+          :background_2="checkRoute('company-requests') ? '#0a5a99 ' : '#fff'"
+          :class="[
+            {
+              'company-dashboard__sidebar-link--active':
+                checkRoute('company-requests'),
+            },
+          ]"
+        >
+          <template v-slot:image>
+            <img
+              src="@/assets/img/cooperation.avif"
+              alt="Запити до співпраці"
+            />
+          </template>
+        </MenuCard>
+      </div>
+      <div class="company-dashboard__content">
+        <router-view />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import MenuCard from "@/components/cards/MenuCard.vue";
+import CompanyCard from "@/components/cards/CompanyCard.vue";
+export default {
+  name: "CompanyDashboard",
+  components: { MenuCard, CompanyCard },
+  methods: {
+    settingsFn() {
+      this.$router.push({
+        name: "company-settings",
+      });
+    },
+    requestsFn() {
+      this.$router.push({
+        name: "company-requests",
+      });
+    },
+    checkRoute(route) {
+      return this.$route.name == route;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/styles/main.scss";
+
+.company-dashboard {
+  height: 100%;
+  &__body {
+    height: 100%;
+    gap: 20px;
+    display: flex;
+  }
+  &__sidebar {
+    display: grid;
+    grid-template-rows: 2.5fr repeat(2, 1fr);
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: flex-start;
+
+    gap: 15px;
+    height: 100%;
+    overflow: auto;
+    padding: 15px;
+    flex: 1;
+    &-link--active {
+      :deep(.menu-card__label) {
+        color: $white !important;
+      }
+      :deep(.menu-card__name) {
+        color: $white !important;
+      }
+      :deep(.company-card__label) {
+        color: $white !important;
+      }
+      :deep(.company-card__name) {
+        color: $white !important;
+      }
+      :deep(.company-card__bottom) {
+        background-color: rgba($color: $main-color, $alpha: 0.4);
+      }
+    }
+  }
+  &__content {
+    // padding: 15px;
+    flex: 4;
+    // @media (max-width: 1600px) {
+    //   flex: 3;
+    // }
+  }
+  &__send-review {
+    height: 100%;
+  }
+}
+</style>
+
+<!-- 
+<template>
   <div class="copmany-dashboard">
-    <button @click="logoutFn">Log out</button>
     <button @click="locationsFn">Locations</button>
     <button @click="employeesFn">Employees</button>
     <button @click="requestsFn">Requests</button>
@@ -33,9 +199,9 @@
       @close="closePopup"
     />
   </div>
-</template>
+</template> -->
 
-<script>
+<!-- <script>
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import ChangeCompanyPasswordPopup from "@/components/popups/ChangeCompanyPasswordPopup.vue";
@@ -107,31 +273,4 @@ export default {
       });
   },
 };
-</script>
-
-<style lang="scss" scoped>
-.copmany-dashboard {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100%;
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  &__pass {
-    display: flex;
-    gap: 15px;
-    align-items: flex-end;
-  }
-  &__photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: auto;
-  }
-}
-</style>
+</script> -->

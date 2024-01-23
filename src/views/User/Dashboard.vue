@@ -79,6 +79,7 @@
             />
           </template>
         </MenuCard>
+
       </div>
       <div class="user-dashboard__content">
         <router-view />
@@ -127,7 +128,6 @@ export default {
     // display: flex;
     // flex-direction: column;
     // justify-content: flex-start;
-
     gap: 15px;
     height: 100%;
     overflow: auto;

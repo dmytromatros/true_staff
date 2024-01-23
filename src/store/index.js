@@ -313,7 +313,25 @@ export default createStore({
             })
         },
 
+        getLocationEmployeesAction: async(context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-location-employees/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
 
+        getDeleteLocationAction: async(context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-location/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
 
         // Requests //////////////////////////////////////////////
 

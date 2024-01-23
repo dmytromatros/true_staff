@@ -40,6 +40,7 @@ export default {
           image: this.image,
           address: this.address,
           company: this.$route.params.id,
+          employees: 0,
         })
         .then(() => {
           this.$emit("added");
@@ -50,5 +51,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

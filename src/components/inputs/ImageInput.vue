@@ -25,25 +25,29 @@
       <label class="image-input__label-1" for="image-input__input">+</label>
     </div>
 
-    <DefaultButton
+    <!-- <DefaultButton
       v-if="savable"
       class="image-input__button"
       @click="saveImage"
       label="Зберегти зображення"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
+// import DefaultButton from "@/components/buttons/DefaultButton.vue";
 
 export default {
   name: "ImageInput",
   components: {
-    DefaultButton,
+    // DefaultButton,
   },
   props: {
     imageLink: {
+      type: String,
+      default: "",
+    },
+    id: {
       type: String,
       default: "",
     },
@@ -57,18 +61,24 @@ export default {
   },
   methods: {
     handleFileChange(event) {
+      let self = this;
       this.image = event.target.files[0];
       this.savable = true;
 
       const fileInput = event.target;
       const file = fileInput.files?.[0];
-      // console.log(fileInput.files?.[0]);
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
           this.imagePreview = reader.result;
         };
         reader.readAsDataURL(file);
+
+        const formData = new FormData();
+        formData.append("userId", self.$route.params.id);
+        formData.append("file", self.image);
+
+        self.$emit("changed", formData);
       } else {
         this.imagePreview = undefined;
       }
@@ -78,9 +88,11 @@ export default {
       formData.append("userId", this.$route.params.id);
       formData.append("file", this.image);
 
-      this.$store.dispatch("uploadImageAction", formData).then((res) => {
-        if (res.success) this.$router.go(0);
-      });
+      this.$emit("changed", formData);
+
+      // this.$store.dispatch("uploadImageAction", formData).then((res) => {
+      //   if (res.success) this.$router.go(0);
+      // });
     },
   },
 };

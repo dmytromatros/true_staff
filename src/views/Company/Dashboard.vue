@@ -40,13 +40,13 @@
         <MenuCard
           class="company-dashboard__sidebar-link"
           label="Працівники"
-          link="company-employees"
-          :background_1="checkRoute('company-employees') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('company-employees') ? '#0a5a99 ' : '#fff'"
+          link="company-dashboard"
+          :background_1="checkRoute('company-dashboard') ? '#00243f' : '#fff'"
+          :background_2="checkRoute('company-dashboard') ? '#0a5a99 ' : '#fff'"
           :class="[
             {
               'company-dashboard__sidebar-link--active':
-                checkRoute('company-employees'),
+                checkRoute('company-dashboard'),
             },
           ]"
         >

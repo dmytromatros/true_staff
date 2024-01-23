@@ -35,7 +35,9 @@ exports = module.exports = (app) => {
     app.post('/api/add-location', require('./routes/location/add-location'))
     app.get('/api/get-location/:locationId', require('./routes/location/get-location'))
     app.post('/api/edit-location', require('./routes/location/edit-location'))
+    app.post('/api/delete-location/:id', require('./routes/location/delete-location'))
 
+    app.get('/api/get-location-employees/:id', require('./routes/location/get-location-employees'))
 
     // Employees
 

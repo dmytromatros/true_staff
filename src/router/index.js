@@ -48,7 +48,15 @@ const routes = [{
                         path: 'dashboard',
                         name: 'company-dashboard',
                         component: () =>
-                            import ('@/views/Company/LocationsList.vue'),
+                            import ('@/views/Company/EmployeesList.vue'),
+                        children: [{
+                            path: 'add',
+                            name: 'add_employee',
+                            components: {
+                                add_employee: () =>
+                                    import ('@/components/popups/AddEmployeePopup.vue'),
+                            }
+                        }, ]
                     },
                     {
                         path: 'locations',
@@ -73,20 +81,7 @@ const routes = [{
                             },
                         ]
                     },
-                    {
-                        path: 'employees',
-                        name: 'company-employees',
-                        component: () =>
-                            import ('@/views/Company/EmployeesList.vue'),
-                        children: [{
-                            path: 'add',
-                            name: 'add_employee',
-                            components: {
-                                add_employee: () =>
-                                    import ('@/components/popups/AddEmployeePopup.vue'),
-                            }
-                        }, ]
-                    },
+
                     {
                         path: 'requests',
                         name: 'company-requests',

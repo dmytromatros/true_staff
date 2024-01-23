@@ -1,29 +1,55 @@
 <template>
   <div class="locations-list">
-    <div
-      class="locations-list__location"
-      v-for="(location, key) in locations"
-      :key="key"
-    >
-      <span>{{ location.address }}</span>
-      <DefaultButton label="Edit" @click="openEditPopupFN(location._id)" />
-    </div>
-    <DefaultButton label="Add location" @click="openAddPopupFN" />
+    <div class="locations-list__container">
+      <BaseCard class="locations-list__locations-card">
+        <template v-slot:body
+          ><div class="locations-list__locations">
+            <div
+              class="locations-list__location"
+              v-for="(location, key) in locations"
+              :key="key"
+            >
+              <LocationCard :location="location" @edited="getLocations" />
+            </div></div
+        ></template>
+      </BaseCard>
 
-    <router-view name="edit_location" @edited="getLocations" />
-    <router-view name="add_location" @added="getLocations" />
+      <BaseCard class="locations-list__new-location-card">
+        <template v-slot:body
+          ><div class="locations-list__new-location">
+            <ImageInput v-model="newLocation.image" @changed="handleImage" />
+
+            <TextInput
+              label="Location address"
+              type="text"
+              v-model="newLocation.address"
+            />
+
+            <DefaultButton
+              label="Add location"
+              @click="addLocation"
+            /></div></template
+      ></BaseCard>
+    </div>
   </div>
 </template>
 
 <script>
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
-
+import LocationCard from "@/components/cards/LocationCard.vue";
+import BaseCard from "@/components/cards/BaseCard.vue";
+import ImageInput from "@/components/inputs/ImageInput.vue";
+import TextInput from "@/components/inputs/TextInput.vue";
 export default {
   name: "LocationsList",
-  components: { DefaultButton },
+  components: { TextInput, DefaultButton, LocationCard, BaseCard, ImageInput },
   data() {
     return {
       locations: {},
+      newLocation: {
+        image: "",
+        address: "",
+      },
     };
   },
   methods: {
@@ -39,6 +65,31 @@ export default {
         })
         .then((res) => {
           this.locations = res.data;
+        });
+    },
+    handleImage(data) {
+      this.newLocation.image = data;
+    },
+    addLocation() {
+      this.$store
+        .dispatch("addLocationAction", {
+          image: this.newLocation.image,
+          address: this.newLocation.address,
+          company: this.$route.params.id,
+          employees: 0,
+        })
+        .then((res) => {
+          this.newLocation.image.set("userId", res.data.new._id);
+          this.$store.dispatch("uploadImageAction", this.newLocation.image);
+          // this.$store
+          //   .dispatch("getLocationsAction", {
+          //     id: this.$route.params.id,
+          //   })
+          //   .then((res) => {
+
+          //   });
+
+          this.getLocations();
         });
     },
     openEditPopupFN(id) {
@@ -58,8 +109,26 @@ export default {
 
 <style lang="scss" scoped>
 .locations-list {
-  &__location {
+  width: 100%;
+  height: 100%;
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+  &__new-location-card {
+    height: fit-content;
+  }
+  &__locations-card {
+    overflow: auto;
+    max-height: 100%;
+  }
+  &__locations {
     display: flex;
+    flex-direction: column;
     gap: 15px;
   }
 }

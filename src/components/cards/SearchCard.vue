@@ -101,20 +101,22 @@ export default {
       });
     },
     getUserList(location) {
-      this.$store.dispatch("getEmployeesAction", { location }).then((res) => {
-        if (res.success) {
-          this.users = [];
-          for (const key in res.data) {
-            if (Object.hasOwnProperty.call(res.data, key)) {
-              if (res.data[key]._id !== this.$route.params.id)
-                this.users.push({
-                  label: `${res.data[key].name} ${res.data[key].surname}`,
-                  value: res.data[key]._id,
-                });
+      this.$store
+        .dispatch("getLocationEmployeesAction", { id: location })
+        .then((res) => {
+          if (res.success) {
+            this.users = [];
+            for (const key in res.data) {
+              if (Object.hasOwnProperty.call(res.data, key)) {
+                if (res.data[key]._id !== this.$route.params.id)
+                  this.users.push({
+                    label: `${res.data[key].name} ${res.data[key].surname}`,
+                    value: res.data[key]._id,
+                  });
+              }
             }
           }
-        }
-      });
+        });
     },
     sendReview() {
       this.searchInfo.from = this.$route.params.id;

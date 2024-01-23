@@ -36,7 +36,7 @@
         <BaseCard>
           <template v-slot:body
             ><div class="user-settings__image">
-              <ImageInput :imageLink="imageUrl" />
+              <ImageInput :imageLink="imageUrl" @changed="han" />
             </div> </template
         ></BaseCard>
       </div>
@@ -72,26 +72,23 @@ export default {
     };
   },
   methods: {
-    handleFileChange(event) {
-      this.image = event.target.files[0];
+    handleImage(data) {
+      this.image = data;
     },
-    saveImage() {
-      const formData = new FormData();
-      formData.append("userId", this.$route.params.id);
-      formData.append("file", this.image);
 
-      this.$store.dispatch("uploadImageAction", formData);
-    },
     editUser() {
       const data = {
         id: this.$route.params.id,
         name: this.user.name,
         surname: this.user.surname,
-        image: this.user.image,
         isEmployee: this.user.isEmployee,
       };
 
-      this.$store.dispatch("editUserAction", data);
+      this.$store.dispatch("editUserAction", data).then((res) => {
+        if (res.success) {
+          this.$store.dispatch("uploadImageAction", this.user.image);
+        }
+      });
     },
 
     getImageFn() {

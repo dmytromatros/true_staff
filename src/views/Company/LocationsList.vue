@@ -19,9 +19,13 @@
           ><div class="locations-list__new-location">
             <ImageInput v-model="newLocation.image" @changed="handleImage" />
 
-            <TextInput
-              label="Location address"
-              type="text"
+            <span class="locations-list__new-location-text"> 
+              Адреса локації
+            </span>
+
+            <TextInput class="locations-list__new-location-input"
+            type="text"
+            placeholder="Введіть адресу локації"
               v-model="newLocation.address"
             />
 
@@ -115,7 +119,7 @@ export default {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 2.5fr 1fr;
     gap: 15px;
     padding: 15px;
   }
@@ -131,5 +135,27 @@ export default {
     flex-direction: column;
     gap: 15px;
   }
-}
+  &__new-location-text{
+    font-size: 36px;
+    display: block;
+    margin: 25px 0 25px 7px;
+    font-weight: 600;
+  }
+  &__new-location-input{
+    margin-bottom: 10px;
+  }
+  :deep(.image-input__image){
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+  :deep(.image-input__wrapper){
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin: auto;
+  }
+  }
 </style>

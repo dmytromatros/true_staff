@@ -36,7 +36,7 @@
         <BaseCard>
           <template v-slot:body
             ><div class="user-settings__image">
-              <ImageInput :imageLink="imageUrl" @changed="han" />
+              <ImageInput :imageLink="imageUrl" @changed="handleImage" />
             </div> </template
         ></BaseCard>
       </div>
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     handleImage(data) {
-      this.image = data;
+      this.user.image = data;
     },
 
     editUser() {

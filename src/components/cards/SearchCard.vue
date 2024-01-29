@@ -1,46 +1,35 @@
 <template>
   <div class="search-card">
-    <BaseCard>
-      <template v-slot:body>
-        <div class="search-card__content">
-          <SelectInput
-            class="requests__input"
-            label="Компанія"
-            v-model="searchInfo.company"
-            :options="companyList"
-          />
-
-          <SelectInput
-            class="requests__input"
-            label="Локація"
-            :disabled="!searchInfo.company || !locationList.length"
-            v-model="searchInfo.location"
-            :options="locationList"
-          />
-
-          <SelectInput
-            label="Робітник"
-            :disabled="!searchInfo.location || !users.length"
-            v-model="searchInfo.user"
-            :options="users"
-          />
-
-          <!-- <TextInput
-            label="Залиште відгук"
-            :disabled="!searchInfo.user"
-            v-model="searchInfo.review"
-            :textarea="true"
-          />
-
-          <DefaultButton
-            class="search-card__button"
-            label="Залишити відгук"
-            @click="sendReview"
-            :disabled="!searchInfo.review"
-          /> -->
+    <div class="search-card__container">
+      <div class="search-card__switcher">
+        <div class="search-card__switch " :class="{ 'search-card__switch--active': page === 1 }" @click="switchPage(1)">
+          Компанія</div>
+        <div class="search-card__switch" :class="{ 'search-card__switch--active': page === 2 }" @click="switchPage(2)">ID
         </div>
-      </template>
-    </BaseCard>
+        <div class="search-card__switch" :class="{ 'search-card__switch--active': page === 3 }" @click="switchPage(3)">
+          Ім'я</div>
+      </div>
+
+      <div class="search-card__company" v-if="page === 1">
+        <BaseCard>
+          <template v-slot:body>
+            <div class="search-card__content">
+              <SelectInput class="requests__input" label="Компанія" v-model="searchInfo.company" :options="companyList" />
+
+              <SelectInput class="requests__input" label="Локація" :disabled="!searchInfo.company || !locationList.length"
+                v-model="searchInfo.location" :options="locationList" />
+
+              <SelectInput label="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user"
+                :options="users" />
+            </div>
+          </template>
+        </BaseCard>
+      </div>
+
+      <div class="search-card__id" v-if="page === 2"></div>
+      <div class="search-card__name" v-if="page === 3"></div>
+    </div>
+
   </div>
 </template>
 
@@ -54,8 +43,6 @@ export default {
   components: {
     BaseCard,
     SelectInput,
-    // TextInput,
-    // DefaultButton,
   },
   data() {
     return {
@@ -68,6 +55,7 @@ export default {
       companyList: [],
       locationList: [],
       users: [],
+      page: 1
     };
   },
   methods: {
@@ -108,11 +96,10 @@ export default {
             this.users = [];
             for (const key in res.data) {
               if (Object.hasOwnProperty.call(res.data, key)) {
-                if (res.data[key]._id !== this.$route.params.id)
-                  this.users.push({
-                    label: `${res.data[key].name} ${res.data[key].surname}`,
-                    value: res.data[key]._id,
-                  });
+                this.users.push({
+                  label: `${res.data[key].name} ${res.data[key].surname}`,
+                  value: res.data[key]._id,
+                });
               }
             }
           }
@@ -123,6 +110,21 @@ export default {
       this.searchInfo.date = Date.now();
       this.$store.dispatch("sendReviewAction", this.searchInfo);
     },
+    switchPage(page) {
+      this.page = page;
+      this.clearSearch()
+    },
+    clearSearch() {
+      this.searchInfo = {
+        company: "",
+        location: "",
+        user: "",
+        review: "",
+      };
+      this.companyList = [];
+      this.locationList = [];
+      this.users = [];
+    }
   },
   watch: {
     "searchInfo.company"() {
@@ -143,17 +145,47 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .search-card {
   height: 100%;
   width: 100%;
   padding: 15px;
+
   &__content {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
+
   &__button {
     margin-top: 20px;
+  }
+
+  &__switcher {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  &__switch {
+    flex: 1;
+    text-align: center;
+    background: $white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      @include main-shadow;
+
+    }
+
+    &--active {
+      opacity: 1;
+      @include main-shadow;
+    }
   }
 }
 </style>

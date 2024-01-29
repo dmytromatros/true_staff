@@ -1,39 +1,34 @@
 <template>
   <div class="locations-list">
     <div class="locations-list__container">
-      <BaseCard class="locations-list__locations-card">
-        <template v-slot:body
-          ><div class="locations-list__locations">
-            <div
-              class="locations-list__location"
-              v-for="(location, key) in locations"
-              :key="key"
-            >
-              <LocationCard :location="location" @edited="getLocations" />
-            </div></div
-        ></template>
-      </BaseCard>
+      <div class="locations-list__locations-card">
+        <div class="locations-list__locations">
+          <div class="locations-list__location" v-for="(location, key) in locations" :key="key">
+            <LocationCard :location="location" @edited="getLocations" />
+          </div>
+        </div>
+      </div>
 
-      <BaseCard class="locations-list__new-location-card">
-        <template v-slot:body
-          ><div class="locations-list__new-location">
-            <ImageInput v-model="newLocation.image" @changed="handleImage" />
+      <div class="locations-list__new-location-wrapper">
+        <BaseCard class="locations-list__new-location-card">
+          <template v-slot:body>
+            <div class="locations-list__new-location">
+              <ImageInput v-model="newLocation.image" @changed="handleImage" />
 
-            <span class="locations-list__new-location-text"> 
-              Адреса локації
-            </span>
+              <span class="locations-list__new-location-text">
+                Адреса локації
+              </span>
 
-            <TextInput class="locations-list__new-location-input"
-            type="text"
-            placeholder="Введіть адресу локації"
-              v-model="newLocation.address"
-            />
+              <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації"
+                v-model="newLocation.address" />
 
-            <DefaultButton
-              label="Add location"
-              @click="addLocation"
-            /></div></template
-      ></BaseCard>
+              <DefaultButton label="Add location" @click="addLocation" />
+            </div>
+          </template>
+        </BaseCard>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -115,47 +110,60 @@ export default {
 .locations-list {
   width: 100%;
   height: 100%;
+
   &__container {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 2.5fr 1fr;
     gap: 15px;
-    padding: 15px;
+    // padding: 15px;
   }
+
   &__new-location-card {
-    height: fit-content;
+    height: fit-content !important;
   }
+
   &__locations-card {
     overflow: auto;
     max-height: 100%;
   }
+
   &__locations {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    padding: 15px;
   }
-  &__new-location-text{
+
+  &__new-location-wrapper {
+    padding: 15px;
+  }
+
+  &__new-location-text {
     font-size: 36px;
     display: block;
     margin: 25px 0 25px 7px;
     font-weight: 600;
   }
-  &__new-location-input{
+
+  &__new-location-input {
     margin-bottom: 10px;
   }
-  :deep(.image-input__image){
+
+  :deep(.image-input__image) {
     width: 250px;
     height: 250px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
   }
-  :deep(.image-input__wrapper){
+
+  :deep(.image-input__wrapper) {
     width: 250px;
     height: 250px;
     border-radius: 50%;
     margin: auto;
   }
-  }
+}
 </style>

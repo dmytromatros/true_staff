@@ -10,19 +10,11 @@
                 <TextInput label="Ім'я" v-model="user.name" />
                 <TextInput label="Прізвище" v-model="user.surname" />
                 <div class="user-settings__data-pass">
-                  <TextInput
-                    class="user-settings__data-pass-input"
-                    label="Пароль"
-                    type="password"
-                    v-model="user.password"
-                    :disabled="true"
-                  />
+                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="user.password"
+                    :disabled="true" />
                   <DefaultButton label="Змінити пароль" @click="openPopup" />
                 </div>
-                <CheckboxInput
-                  label="Is an employee"
-                  v-model="user.isEmployee"
-                />
+                <CheckboxInput label="Is an employee" v-model="user.isEmployee" />
 
                 <div class="user-settings__buttons">
                   <DefaultButton label="Зберегти зміни" @click="editUser" />
@@ -34,11 +26,12 @@
       </div>
       <div class="user-settings__content">
         <BaseCard>
-          <template v-slot:body
-            ><div class="user-settings__image">
-              <ImageInput :imageLink="imageUrl" @changed="handleImage" />
-            </div> </template
-        ></BaseCard>
+          <template v-slot:body>
+            <div class="user-settings__image">
+              <ImageInput :imageLink="imageUrl" @changed="handleImage" :id="$route.params.id" />
+            </div>
+          </template>
+        </BaseCard>
       </div>
     </div>
     <ChangeUserPasswordPopup :isShown="changePassPopup" @close="closePopup" />
@@ -136,12 +129,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .user-settings {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   padding: 15px;
+
   &__form {
     display: flex;
     width: 100%;
@@ -149,12 +144,15 @@ export default {
     gap: 25px;
     justify-content: center;
   }
+
   &__content {
     &:first-child {
       min-width: 500px;
     }
+
     height: fit-content;
   }
+
   &__image {
     max-width: 250px;
     max-height: 500px;
@@ -166,13 +164,16 @@ export default {
     gap: 25px;
     padding: 25px;
   }
+
   &__data-title {
     @include main-title;
   }
+
   &__data-pass {
     display: flex;
     align-items: flex-end;
     gap: 15px;
+
     &-input {
       flex: 1;
     }

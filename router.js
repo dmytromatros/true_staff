@@ -13,6 +13,8 @@ exports = module.exports = (app) => {
     app.get('/api/get-user-list', require('./routes/employee/get-employees'))
     app.post('/api/add-user', require('./routes/employee/add-user'))
     app.get('/api/get-user/:id', require('./routes/employee/get-user'))
+    app.post('/api/find-by-name', require('./routes/employee/find-by-name'))
+    app.get('/api/check-user/:id', require('./routes/employee/get-user'))
     app.get('/api/get-user-info/:id', require('./routes/employee/get-user-info'))
     app.post('/api/edit-user', require('./routes/employee/edit-user'))
     app.post('/api/send-user-request', require('./routes/employee/send-request'))

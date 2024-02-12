@@ -1,7 +1,7 @@
 'use strict';
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
     let error = [];
 
     const file = req.file;
@@ -23,13 +23,6 @@ module.exports = async(req, res) => {
 
         if (isImage == null) {
             try {
-
-                console.log({
-                    userId: userId,
-                    filename: file.originalname,
-                    contentType: file.mimetype,
-                    data: file.buffer,
-                })
                 await req.app.db.collection('images').insertOne({
                     userId: userId,
                     filename: file.originalname,

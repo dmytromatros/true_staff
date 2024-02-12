@@ -2,7 +2,8 @@
   <div class="location-card">
     <BaseCard>
       <template v-slot:body>
-        <div class="location-card__container">
+        <LoaderComponent v-if="loading" />
+        <div v-if="!loading" class="location-card__container">
           <div class="location-card__img">
             <img v-if="imageUrl" :src="imageUrl" alt="" />
             <img v-else src="../../assets/img/profile-img.webp" alt="" />
@@ -12,54 +13,50 @@
             <div class="location-card__amount">Кількість працівників: 0</div>
           </div>
         </div>
-        <div class="location-card__buttons">
-          <DefaultButton
-            class="location-card__button"
-            label="Видалити"
-            :danger="true"
-            @click="deleteLocationFn(location._id)"
-          />
-          <DefaultButton
-            class="location-card__button"
-            label="Редагувати"
-            @click="openEditPopupFN(location._id)"
-          />
+        <div v-if="!loading" class="location-card__buttons">
+          <DefaultButton class="location-card__button" label="Видалити" :danger="true"
+            @click="deleteLocationFn(location._id)" />
+          <DefaultButton class="location-card__button" label="Редагувати" @click="openEditPopupFN()" />
         </div>
       </template>
     </BaseCard>
 
-    <router-view name="edit_location" @edited="getLocations" />
+    <Transition name="slide-fade">
+      <EditLocationPopup v-if="editPopupOpen" @edited="getLocations" :id="location._id"
+        @close="() => { this.editPopupOpen = false }" />
+    </Transition>
+
   </div>
 </template>
 
 <script>
 import DefaultButton from "../buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/BaseCard.vue";
+import EditLocationPopup from "@/components/popups/EditLocationPopup.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
 export default {
   name: "LocationCard",
-  components: { DefaultButton, BaseCard },
+  components: { DefaultButton, BaseCard, EditLocationPopup, LoaderComponent },
   props: {
     location: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {
     return {
       imageUrl: "",
+      editPopupOpen: false,
+      loading: true
     };
   },
   methods: {
     getLocations() {
       this.$emit("edited");
+      this.getImage();
     },
-    openEditPopupFN(id) {
-      this.$router.push({
-        name: "edit_location",
-        params: {
-          locationId: id,
-        },
-      });
+    openEditPopupFN() {
+      this.editPopupOpen = true
     },
     deleteLocationFn(id) {
       this.$store
@@ -76,6 +73,7 @@ export default {
         .then((res) => {
           if (res.success) {
             this.imageUrl = res.data;
+            this.loading = false
           }
         });
     },
@@ -83,6 +81,8 @@ export default {
   mounted() {
     if (this.location.isImage) {
       this.getImage();
+    } else {
+      this.loading = false
     }
   },
 };
@@ -90,6 +90,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .location-card {
   width: 100%;
   height: 100%;
@@ -99,6 +100,7 @@ export default {
     gap: 15px;
     align-items: center;
   }
+
   &__img {
     img {
       width: 100px;
@@ -108,19 +110,36 @@ export default {
       object-position: center;
     }
   }
+
   &__name {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
   }
+
   &__buttons {
     display: flex;
     gap: 15px;
     margin: 10px;
   }
+
   &__button {
     flex: 1;
   }
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(50%);
+  opacity: 0;
 }
 </style>
 

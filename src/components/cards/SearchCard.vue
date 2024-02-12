@@ -14,20 +14,30 @@
         <BaseCard>
           <template v-slot:body>
             <div class="search-card__content">
-              <SelectInput class="requests__input" label="Компанія" v-model="searchInfo.company" :options="companyList" />
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company"
+                :options="companyList" />
 
-              <SelectInput class="requests__input" label="Локація" :disabled="!searchInfo.company || !locationList.length"
-                v-model="searchInfo.location" :options="locationList" />
+              <SelectInput class="requests__input" placeholder="Локація"
+                :disabled="!searchInfo.company || !locationList.length" v-model="searchInfo.location"
+                :options="locationList" />
 
-              <SelectInput label="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user"
-                :options="users" />
+              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length"
+                v-model="searchInfo.user" :options="users" />
             </div>
           </template>
         </BaseCard>
       </div>
 
-      <div class="search-card__id" v-if="page === 2"></div>
-      <div class="search-card__name" v-if="page === 3"></div>
+      <div class="search-card__id" v-if="page === 2">
+        <BaseCard>
+          <template v-slot:body>
+            <SearchById @find="findById" />
+          </template>
+        </BaseCard>
+      </div>
+      <div class="search-card__name" v-if="page === 3">
+        <SearchByName @find="findUserByName" />
+      </div>
     </div>
 
   </div>
@@ -36,13 +46,16 @@
 <script>
 import BaseCard from "@/components/cards/BaseCard.vue";
 import SelectInput from "@/components/inputs/SelectInput.vue";
-// import TextInput from "@/components/inputs/TextInput.vue";
+import SearchById from "@/components/UserSearch/SearchById.vue";
+import SearchByName from "@/components/UserSearch/SearchByName.vue";
 // import DefaultButton from "@/components/buttons/DefaultButton.vue";
 export default {
   name: "SearchCard",
   components: {
     BaseCard,
     SelectInput,
+    SearchById,
+    SearchByName
   },
   data() {
     return {
@@ -112,6 +125,9 @@ export default {
     },
     switchPage(page) {
       this.page = page;
+      if (page == 1) {
+        this.getCompanyList()
+      }
       this.clearSearch()
     },
     clearSearch() {
@@ -124,6 +140,17 @@ export default {
       this.companyList = [];
       this.locationList = [];
       this.users = [];
+    },
+    findById(id) {
+      this.$store.dispatch('checkUserAction', { id: id }).then(res => {
+        if (res.success) {
+          this.$emit("selected", { user: id });
+        }
+      })
+    },
+    findUserByName(id) {
+      this.$emit("selected", { user: id });
+
     }
   },
   watch: {

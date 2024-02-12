@@ -1,11 +1,15 @@
 <template>
   <div class="employees-list">
 
-    <div class="employees-list__switcher">
-      <button @click="switchPage(1)">All</button>
-      <button @click="switchPage(2)">find</button>
+    <LoaderComponent v-if="loading" />
+
+    <div v-if="!loading" class="employees-list__switcher">
+      <button class="employees-list__switch" @click="switchPage(1)"
+        :class="{ 'employees-list__switch--active': page == 1 }">Робітники</button>
+      <button class="employees-list__switch" @click="switchPage(2)"
+        :class="{ 'employees-list__switch--active': page == 2 }">Знайти користувача</button>
     </div>
-    <div class="employees-list__container" v-if="page == 1">
+    <div class="employees-list__container" v-if="page == 1 && !loading">
       <div class="employees-list__list" v-for="(emp, key) in employees" :key="key">
         <EmployeeCard :employeeId="emp.employeeId" :location="emp.locationAddress" :position="emp.position"
           :employee-name="emp.employeeName" />
@@ -16,19 +20,19 @@
 
         <BaseCard class="employees-list__new-card">
           <template v-slot:body>
-            <div>Додати нового співробітника</div>
-            <SelectInput label="Select location" :options="locations" v-model="newEmployee.location" />
-            <TextInput label="User id code" type="text" v-model="userId" />
-            <TextInput label="Message" type="text" v-model="newEmployee.message" :textarea="true" />
-            <TextInput label="Position" type="text" v-model="newEmployee.position" />
+            <div class="employees-list__new-card-title">Додати нового співробітника</div>
+            <SelectInput placeholder="Локація" :options="locations" v-model="newEmployee.location" />
+            <TextInput placeholder="ID користувача" type="text" v-model="userId" />
+            <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
+            <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
 
             <DefaultButton label="Add employee" @click="addEmployee" />
           </template>
         </BaseCard>
       </div>
     </div>
-    <div class="employees-list__find" v-if="page == 2">
-      <SearchCard />
+    <div class="employees-list__find" v-if="page == 2 && !loading">
+      <UserSearch />
     </div>
   </div>
 </template>
@@ -39,10 +43,11 @@ import EmployeeCard from "@/components/cards/EmployeeCard.vue";
 import SelectInput from "@/components/inputs/SelectInput.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import BaseCard from "@/components/cards/BaseCard.vue";
-import SearchCard from "@/components/cards/SearchCard.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
+import UserSearch from "@/components/UserSearch/UserSearch.vue";
 export default {
   name: "EmployeesList",
-  components: { DefaultButton, EmployeeCard, TextInput, SelectInput, BaseCard, SearchCard },
+  components: { DefaultButton, EmployeeCard, TextInput, SelectInput, BaseCard, LoaderComponent, UserSearch },
   data() {
     return {
       employees: [],
@@ -50,9 +55,10 @@ export default {
       newEmployee: {
         location: '',
         position: '',
-        message: ''
+        message: '',
       },
-      page: 1
+      page: 2,
+      loading: true,
     };
   },
   methods: {
@@ -76,7 +82,10 @@ export default {
           id: this.$route.params.id,
         })
         .then((res) => {
-          if (res.success) this.employees = res.data;
+          if (res.success) {
+            this.employees = res.data;
+            this.loading = false;
+          }
         });
     },
     getLocations() {
@@ -109,14 +118,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
+
 .employees-list {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
 
   &__container {
     display: grid;
     grid-template-columns: 3fr 1fr;
     gap: 15px;
-    height: 100%;
+
+  }
+
+  &__find {
+    flex: 1;
+    max-height: calc(100% - 55px);
   }
 
   &__list {
@@ -135,6 +154,59 @@ export default {
 
   &__new-card {
     height: fit-content !important;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__new-card-title {
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 23px;
+    margin-bottom: 25px;
+  }
+
+  &__switcher {
+    background: $white;
+    width: calc(100% - 15px);
+    border-radius: 10px;
+    padding: 0 15px;
+    height: 55px;
+    @include main-shadow;
+  }
+
+  &__switch {
+    padding: 12px 15px;
+    font-size: 18px;
+    transition: 0.25s ease-in-out all;
+    background: transparent;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: calc(100% - 30px);
+      border: 3px;
+      background: $main-color-hover;
+      bottom: 15px;
+      left: 15px;
+      transition: 0.25s ease-in-out all;
+      opacity: 0;
+    }
+
+    &:hover {
+      color: $main-color-hover;
+    }
+
+    &--active {
+      color: $main-color-hover;
+
+      &::after {
+        opacity: 1;
+      }
+
+    }
   }
 }
 </style>

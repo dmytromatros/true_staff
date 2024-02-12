@@ -6,11 +6,7 @@
         <div class="user-header__image">img</div>
         <div class="user-header__name">Company name</div>
       </div>
-      <DefaultButton
-        class="user-header-button"
-        @click="logoutFn"
-        label="Вийти"
-      />
+      <DefaultButton class="user-header-button" @click="logoutFn" label="Вийти" />
     </div>
   </div>
 </template>
@@ -33,6 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .user-header {
   padding: 15px 20px;
   background-color: $white;
@@ -43,12 +40,16 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-top: none;
+  height: 70px;
+  overflow: hidden;
+
   &__info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
   }
+
   &__right {
     display: flex;
     gap: 70px;

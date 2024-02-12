@@ -1,14 +1,9 @@
 <template>
-  <DefaultPopup
-    :isShown="true"
-    @close="close"
-    title="Edit location"
-    @confirm="editLocation"
-  >
+  <DefaultPopup :isShown="true" @close="close" title="Редагуання локації" @confirm="editLocation">
     <template v-slot:body>
-      <div class="change-password">
-        <TextInput label="Image" type="test" v-model="image" :disabled="true" />
-        <TextInput label="Location address" type="test" v-model="address" />
+      <div class="edit-location__container">
+        <ImageInput class="edit-location__image" :imageLink="imageUrl" @changed="handleImage" :id="id" />
+        <TextInput class="edit-location__input" label="Адреса локації" type="test" v-model="address" />
       </div>
     </template>
   </DefaultPopup>
@@ -17,49 +12,92 @@
 <script>
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultPopup from "@/components/popups/DefaultPopup.vue";
-
+import ImageInput from "@/components/inputs/ImageInput.vue";
 export default {
   name: "EditLocationPopup",
-  components: { TextInput, DefaultPopup },
-  props: {
-    isShown: Boolean,
-  },
+  components: { TextInput, DefaultPopup, ImageInput },
   data() {
     return {
-      image: "",
+      image: '',
       address: "",
+      imageUrl: null,
+      isShown: false,
     };
+  },
+  props: {
+    id: { type: String, default: "" }
   },
   methods: {
     close() {
-      this.$router.go(-1);
+      this.$emit('close');
+    },
+    handleImage(data) {
+      this.image = data
     },
     editLocation() {
       this.$store
         .dispatch("editLocationAction", {
-          image: this.image,
+          image: this.image ? true : false,
           address: this.address,
           companyId: this.$route.params.id,
-          id: this.$route.params.locationId,
+          id: this.id,
         })
         .then(() => {
-          this.$emit("edited");
-          this.close();
+          if (this.image)
+            this.$store.dispatch("uploadImageAction", this.image).then((res) => {
+              if (res.success) {
+                this.$emit("edited");
+                this.close();
+              }
+            });
         });
     },
+    getImageFn(id) {
+      this.$store.dispatch('getImageAction', { id: id }).then(res => {
+        if (res.success) {
+          this.imageUrl = res.data
+        }
+      });
+    }
   },
   mounted() {
     this.$store
       .dispatch("getLocationAction", {
-        locationId: this.$route.params.locationId,
+        locationId: this.id,
       })
       .then((res) => {
         this.address = res.data.address;
-        this.image = res.data.image;
+        if (res.data.image) {
+          this.getImageFn(this.id)
+        }
       });
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.edit-location {
+  &__image {
+    width: 100px;
+    height: 100px;
+
+    :deep(.image-input__label-1) {
+      font-size: 15px;
+      height: 15px;
+      border-radius: 5px 5px 0 0;
+    }
+  }
+
+  &__container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  &__input {
+    flex: 1;
+  }
+
+
+}
 </style>

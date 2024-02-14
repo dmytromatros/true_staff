@@ -4,12 +4,11 @@
     <LoaderComponent v-if="loading" />
 
     <div v-if="!loading" class="employees-list__switcher">
-      <button class="employees-list__switch" @click="switchPage(1)"
-        :class="{ 'employees-list__switch--active': page == 1 }">Робітники</button>
-      <button class="employees-list__switch" @click="switchPage(2)"
-        :class="{ 'employees-list__switch--active': page == 2 }">Знайти користувача</button>
+      <button class="employees-list__switch employees-list__switch--active">Робітники</button>
+      <button class="employees-list__switch" @click="() => { this.$router.push({ name: 'company-search-user' }) }">Знайти
+        користувача</button>
     </div>
-    <div class="employees-list__container" v-if="page == 1 && !loading">
+    <div class="employees-list__container" v-if="!loading">
       <div class="employees-list__list" v-for="(emp, key) in employees" :key="key">
         <EmployeeCard :employeeId="emp.employeeId" :location="emp.locationAddress" :position="emp.position"
           :employee-name="emp.employeeName" />
@@ -22,7 +21,7 @@
           <template v-slot:body>
             <div class="employees-list__new-card-title">Додати нового співробітника</div>
             <SelectInput placeholder="Локація" :options="locations" v-model="newEmployee.location" />
-            <TextInput placeholder="ID користувача" type="text" v-model="userId" />
+            <TextInput placeholder="ID користувача" type="text" v-model="newEmployee.userId" />
             <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
             <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
 
@@ -30,9 +29,6 @@
           </template>
         </BaseCard>
       </div>
-    </div>
-    <div class="employees-list__find" v-if="page == 2 && !loading">
-      <UserSearch />
     </div>
   </div>
 </template>
@@ -44,10 +40,9 @@ import SelectInput from "@/components/inputs/SelectInput.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import BaseCard from "@/components/cards/BaseCard.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
-import UserSearch from "@/components/UserSearch/UserSearch.vue";
 export default {
   name: "EmployeesList",
-  components: { DefaultButton, EmployeeCard, TextInput, SelectInput, BaseCard, LoaderComponent, UserSearch },
+  components: { DefaultButton, EmployeeCard, TextInput, SelectInput, BaseCard, LoaderComponent },
   data() {
     return {
       employees: [],
@@ -56,16 +51,50 @@ export default {
         location: '',
         position: '',
         message: '',
+        userId: '',
       },
-      page: 1,
       loading: true,
     };
   },
   methods: {
-    addEmployee() {
-      this.$router.push({
-        name: "add_employee",
+    async addEmployee() {
+      const employeeName = await this.getUserName(this.newEmployee.userId);
+      let data = {
+        companyId: this.companyId,
+        companyName: this.companyName,
+        locationId: this.selectedLocation,
+        locationAddress: this.getLocationAddress(this.selectedLocation),
+        employeeId: this.userId,
+        employeeName: employeeName,
+        message: this.message,
+        position: this.position,
+        type: 1,
+      };
+
+      this.$store.dispatch("addCompanyRequestAction", data);
+    },
+
+    async getUserName(id) {
+      try {
+        const res = await this.$store.dispatch("getUserAction", { id });
+        if (res.success) {
+          return `${res.data.name} ${res.data.surname}`;
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle error as needed, e.g., return a default value or throw an error
+        return "";
+      }
+    },
+
+    getLocationAddress(id) {
+      let address = "";
+      this.locations.forEach((loc) => {
+        if (loc.value == id) {
+          address = loc.label;
+        }
       });
+      return address;
     },
     async deleteEmployee(id) {
       let data = {
@@ -106,9 +135,7 @@ export default {
           }
         });
     },
-    switchPage(page) {
-      this.page = page
-    }
+
   },
   mounted() {
     this.getEmployees();
@@ -130,6 +157,8 @@ export default {
     display: grid;
     grid-template-columns: 3fr 1fr;
     gap: 15px;
+    flex: 1;
+    max-height: 91%;
 
   }
 
@@ -146,6 +175,7 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     padding: 15px;
+    overflow-x: hidden;
   }
 
   &__new {

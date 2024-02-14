@@ -4,7 +4,7 @@
             <div class="employee-card__employee">
                 <img :src="employeeImage" alt="">
                 <span class="employee-card__name">{{ employeeName }}</span>
-                <span class="employee-card__id" @click="copyId(employeeId)">{{ employeeId }}</span>
+                <span class="employee-card__id" @click="copyId(employeeId)" title="Скопіювати">{{ employeeId }}</span>
             </div>
 
             <div class="employee-card__location">
@@ -15,6 +15,7 @@
             </div>
 
             <div class="employee-card__buttons">
+                <CircleButton class="employee-card__button" icon="visibility" @click="viewUser" />
                 <CircleButton class="employee-card__button" icon="edit" />
                 <CircleButton class="employee-card__button" :danger="true" icon="delete" />
             </div>
@@ -24,6 +25,7 @@
 
 <script>
 import CircleButton from '@/components/buttons/CircleButton.vue'
+
 export default {
     name: "EmployeeCard",
     components: { CircleButton },
@@ -67,6 +69,9 @@ export default {
                 alert("Cannot copy");
             }
         },
+        viewUser() {
+            this.$router.push({ name: 'company-search-user', query: { userId: this.employeeId } })
+        }
     },
     mounted() {
         this.getImage(this.employeeId)
@@ -87,7 +92,7 @@ export default {
         background-color: $white;
         border-radius: 10px;
         @include main-shadow;
-        padding: 25px;
+        overflow: hidden;
     }
 
     &__employee {
@@ -95,7 +100,11 @@ export default {
         flex-direction: column;
         width: 100%;
         align-items: center;
-        margin-bottom: 50px;
+        margin-bottom: 25px;
+        padding: 25px;
+        color: $white;
+
+        background: lighten($main-color, 2.0%);
 
         img {
             width: 100px;
@@ -112,17 +121,22 @@ export default {
     &__name {
         font-weight: 600;
         font-size: 20px;
+        white-space: nowrap;
+        max-width: 215px;
+        text-overflow: ellipsis;
     }
 
     &__location {
         margin-bottom: 15px;
         font-size: 18px;
         text-align: center;
+        padding: 0 25px;
     }
 
     &__position {
         margin-bottom: 40px;
         text-align: center;
+        padding: 0 25px;
     }
 
     &__bold {
@@ -136,17 +150,26 @@ export default {
         align-items: center;
         justify-content: flex-end;
         flex-wrap: wrap;
-
+        padding: 10px 15px;
     }
 
     &__id {
-        opacity: 0.7;
-        border: 1px solid $main-color;
+        opacity: 0.9;
+        border: 1px solid $white;
         border-radius: 5px;
         padding: 5px 10px;
         cursor: pointer;
         font-size: 12px;
-        margin: 10px;
+        margin-top: 15px;
+        background: $white;
+        color: $main-color;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: 0.25s ease-in-out all;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }
 

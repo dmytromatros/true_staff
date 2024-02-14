@@ -1,6 +1,7 @@
 <template>
   <div class="search-card">
-    <div class="search-card__container">
+    <LoaderComponent v-if="loading" />
+    <div v-else class="search-card__container">
       <CustomSwitch :options="{ 'Компанія': 1, 'ID': 2, 'ім\'я': 3 }" v-model="page" />
       <div class="search-card__company" v-if="page === 1">
         <BaseCard>
@@ -41,6 +42,7 @@ import SelectInput from "@/components/inputs/SelectInput.vue";
 import SearchById from "@/components/UserSearch/SearchById.vue";
 import SearchByName from "@/components/UserSearch/SearchByName.vue";
 import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
 export default {
   name: "SearchCard",
   components: {
@@ -48,7 +50,8 @@ export default {
     SelectInput,
     SearchById,
     SearchByName,
-    CustomSwitch
+    CustomSwitch,
+    LoaderComponent
   },
   data() {
     return {
@@ -61,13 +64,20 @@ export default {
       companyList: [],
       locationList: [],
       users: [],
-      page: 1
+      page: 1,
+      loading: true,
     };
+  },
+  computed: {
+    queryUserId() {
+      return this.$route.query.userId
+    }
   },
   methods: {
     getCompanyList() {
       this.$store.dispatch("getCompanyListAction").then((res) => {
         if (res.success) {
+          this.loading = false
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
               this.companyList.push({
@@ -137,6 +147,7 @@ export default {
     findById(id) {
       this.$store.dispatch('checkUserAction', { id: id }).then(res => {
         if (res.success) {
+          this.loading = false
           this.$emit("selected", { user: id });
         }
       })
@@ -159,6 +170,10 @@ export default {
   },
   mounted() {
     this.getCompanyList();
+    if (this.queryUserId) {
+      this.loading = true
+      this.findById(this.queryUserId)
+    }
   },
 };
 </script>

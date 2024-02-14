@@ -1,5 +1,6 @@
 <template>
-  <div class="user-info-card">
+  <LoaderComponent v-if="loading" />
+  <div v-else class="user-info-card">
     <div v-if="Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
@@ -75,6 +76,8 @@ import ReviewCard from "@/components/cards/ReviewCard.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
+
 export default {
   name: "UserInfoCard",
   props: {
@@ -89,6 +92,7 @@ export default {
       selected: 1,
       reviews: {},
       review: "",
+      loading: true,
     };
   },
   components: {
@@ -97,7 +101,8 @@ export default {
     ReviewCard,
     TextInput,
     DefaultButton,
-    CustomSwitch
+    CustomSwitch,
+    LoaderComponent
   },
   methods: {
     getUserFn(user) {
@@ -110,6 +115,7 @@ export default {
           } else {
             this.imageUrl = "";
           }
+          this.loading = false
         }
       });
     },
@@ -146,9 +152,14 @@ export default {
   },
   watch: {
     user() {
+      this.loading = true
       this.getUserFn(this.user);
     },
   },
+  mounted() {
+    if (!this.user)
+      this.loading = false
+  }
 };
 </script>
 
@@ -323,4 +334,5 @@ export default {
   &__review-container {
     height: 30%;
   }
-}</style>
+}
+</style>

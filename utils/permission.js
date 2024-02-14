@@ -36,7 +36,7 @@ function isAuth() {
 
 function checkRoutePermission() {
     const userRoutes = ['user', 'user-dashboard', 'user-settings', 'user-requests']
-    const companyRoutes = ['company', 'company-dashboard', 'company-locations', 'edit_location', 'add_location', 'company-employees', 'add_employee', 'company-requests']
+    const companyRoutes = ['company', 'company-dashboard', 'company-locations', 'edit_location', 'add_location', 'company-employees', 'add_employee', 'company-requests', 'company-search-user']
 
     const role = localStorage.getItem('role')
     const token = localStorage.getItem('token')

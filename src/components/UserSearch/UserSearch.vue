@@ -17,12 +17,15 @@ export default {
             userId: null
         }
     },
-    computed: {},
+    computed: {
+
+    },
     methods: {
         showUserInfo(info) {
             this.userId = info.user;
         },
-    }
+    },
+
 }
 </script>
 

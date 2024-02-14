@@ -80,6 +80,12 @@ const routes = [{
             name: 'company-requests',
             component: () =>
                 import('@/views/Company/Requests.vue'),
+        },
+        {
+            path: 'search-user',
+            name: 'company-search-user',
+            component: () =>
+                import('@/views/Company/SearchUser.vue'),
         }
 
         ]

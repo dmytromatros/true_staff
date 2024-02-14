@@ -4,7 +4,7 @@
             <template v-slot:body>
                 <TextInput placeholder="Ім'я" v-model="user.name" />
                 <TextInput placeholder="Прізвище" v-model="user.lname" />
-                <DefaultButton label="Шукати користувача" @click="startSearch" />
+                <DefaultButton label="Шукати" @click="startSearch" />
             </template>
         </BaseCard>
         <BaseCard v-if="foundUsers.length" class="search-by-name__result">

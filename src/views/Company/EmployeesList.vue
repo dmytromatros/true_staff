@@ -57,7 +57,7 @@ export default {
         position: '',
         message: '',
       },
-      page: 2,
+      page: 1,
       loading: true,
     };
   },

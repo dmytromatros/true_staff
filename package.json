@@ -8,6 +8,7 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
+        "@vueuse/core": "^10.7.2",
         "axios": "^1.6.1",
         "body-parser": "^1.20.2",
         "bootstrap-vue": "^2.23.1",

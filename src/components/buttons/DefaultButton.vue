@@ -1,10 +1,6 @@
 <template>
   <div class="default-button">
-    <button
-      @click.stop="action"
-      class="default-button__button"
-      :class="{ danger, success, warning, disabled }"
-    >
+    <button @click.stop="action" class="default-button__button" :class="{ danger, success, warning, disabled }">
       {{ label }}
     </button>
   </div>
@@ -66,20 +62,23 @@ export default {
     &.danger {
       background-color: $red-color;
     }
+
     &.success {
       background-color: $green-color;
     }
+
     &.warning {
       background-color: $yellow-color;
     }
+
     &.disabled {
       background-color: grey;
       pointer-events: none;
     }
+
     &:hover {
-      background-color: $white;
-      color: $main-color;
-      outline: 1px solid $main-color;
+      opacity: 0.8;
+      box-shadow: 0 0 10px 1px rgba($color: $black, $alpha: 0.3);
     }
   }
 }

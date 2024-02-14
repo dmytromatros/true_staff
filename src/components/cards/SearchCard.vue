@@ -1,15 +1,7 @@
 <template>
   <div class="search-card">
     <div class="search-card__container">
-      <div class="search-card__switcher">
-        <div class="search-card__switch " :class="{ 'search-card__switch--active': page === 1 }" @click="switchPage(1)">
-          Компанія</div>
-        <div class="search-card__switch" :class="{ 'search-card__switch--active': page === 2 }" @click="switchPage(2)">ID
-        </div>
-        <div class="search-card__switch" :class="{ 'search-card__switch--active': page === 3 }" @click="switchPage(3)">
-          Ім'я</div>
-      </div>
-
+      <CustomSwitch :options="{ 'Компанія': 1, 'ID': 2, 'ім\'я': 3 }" v-model="page" />
       <div class="search-card__company" v-if="page === 1">
         <BaseCard>
           <template v-slot:body>
@@ -48,14 +40,15 @@ import BaseCard from "@/components/cards/BaseCard.vue";
 import SelectInput from "@/components/inputs/SelectInput.vue";
 import SearchById from "@/components/UserSearch/SearchById.vue";
 import SearchByName from "@/components/UserSearch/SearchByName.vue";
-// import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
 export default {
   name: "SearchCard",
   components: {
     BaseCard,
     SelectInput,
     SearchById,
-    SearchByName
+    SearchByName,
+    CustomSwitch
   },
   data() {
     return {
@@ -186,33 +179,6 @@ export default {
 
   &__button {
     margin-top: 20px;
-  }
-
-  &__switcher {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-
-  &__switch {
-    flex: 1;
-    text-align: center;
-    background: $white;
-    border-radius: 5px;
-    padding: 10px 15px;
-    opacity: 0.7;
-    transition: all 0.3s ease;
-    cursor: pointer;
-
-    &:hover {
-      @include main-shadow;
-
-    }
-
-    &--active {
-      opacity: 1;
-      @include main-shadow;
-    }
   }
 }
 </style>

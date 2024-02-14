@@ -1,7 +1,7 @@
 <template>
     <div class="search-by-id">
         <TextInput placeholder="Введіть ID користувача" v-model="id" />
-        <DefaultButton label="Знайти" @click="$emit('find', id)" />
+        <DefaultButton label="Шукати" @click="$emit('find', id)" />
     </div>
 </template>
 

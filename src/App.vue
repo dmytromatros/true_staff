@@ -71,6 +71,7 @@ export default {
     z-index: 2;
     position: relative;
   }
+
   .header {
     margin-bottom: 0px;
     z-index: 3;

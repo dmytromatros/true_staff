@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import "@/styles/null.scss";
 @import "@/styles/variables.scss";
 @import "@/styles/fonts.scss";
 @import "@/styles/mixins.scss";
+
 * {
     font-family: $font_family;
 }
@@ -11,9 +13,11 @@ div {
         width: 3px;
         height: 3px;
     }
+
     &::-webkit-scrollbar-track {
         background: $white;
     }
+
     &::-webkit-scrollbar-thumb {
         background: $main-color;
     }

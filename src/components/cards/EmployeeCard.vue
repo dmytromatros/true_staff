@@ -15,18 +15,18 @@
             </div>
 
             <div class="employee-card__buttons">
-                <DefaultButton class="employee-card__button" label="Редагувати" />
-                <DefaultButton class="employee-card__button" label="Звільнити" :danger="true" />
+                <CircleButton class="employee-card__button" icon="edit" />
+                <CircleButton class="employee-card__button" :danger="true" icon="delete" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DefaultButton from '@/components/buttons/DefaultButton.vue'
+import CircleButton from '@/components/buttons/CircleButton.vue'
 export default {
     name: "EmployeeCard",
-    components: { DefaultButton },
+    components: { CircleButton },
     props: {
         employeeId: {
             type: String,
@@ -134,13 +134,9 @@ export default {
         display: flex;
         gap: 15px;
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-end;
         flex-wrap: wrap;
 
-    }
-
-    &__button {
-        flex: 1;
     }
 
     &__id {
@@ -152,5 +148,9 @@ export default {
         font-size: 12px;
         margin: 10px;
     }
+}
+
+.material-symbols-outlined {
+    user-select: none;
 }
 </style>

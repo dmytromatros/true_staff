@@ -85,6 +85,15 @@ export default {
       pointer-events: none;
       opacity: 0.5;
     }
+
+    &:hover {
+      box-shadow: 0 0 10px 1px rgba($color: $black, $alpha: 0.2);
+    }
+
+    &:focus,
+    &:focus-visible {
+      border: 1px solid $input-focus;
+    }
   }
 
   textarea {

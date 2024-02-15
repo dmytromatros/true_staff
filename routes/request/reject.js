@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -16,8 +16,8 @@ module.exports = async(req, res) => {
     let updateData = {};
 
     updateData.rejected = true
-    if (req.body.type == 1) updateData.companyDeleted = true
-    if (req.body.type == 2) updateData.userDeleted = true
+    // if (req.body.type == 1) updateData.companyDeleted = true
+    // if (req.body.type == 2) updateData.userDeleted = true
 
     if (error.length === 0) {
         try {

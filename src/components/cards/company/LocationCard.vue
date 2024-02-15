@@ -6,7 +6,7 @@
         <div v-if="!loading" class="location-card__container">
           <div class="location-card__img">
             <img v-if="imageUrl" :src="imageUrl" alt="" />
-            <img v-else src="../../assets/img/profile-img.webp" alt="" />
+            <img v-else src="../../../assets/img/profile-img.webp" alt="" />
           </div>
           <div class="location-card__info">
             <div class="location-card__name">{{ location.address }}</div>
@@ -21,17 +21,15 @@
       </template>
     </BaseCard>
 
-    <Transition name="slide-fade">
-      <EditLocationPopup v-if="editPopupOpen" @edited="getLocations" :id="location._id"
-        @close="() => { this.editPopupOpen = false }" />
-    </Transition>
+    <EditLocationPopup :isShown="editPopupOpen" @edited="getLocations" :id="location._id"
+      @close="() => { this.editPopupOpen = false }" />
 
   </div>
 </template>
 
 <script>
-import DefaultButton from "../buttons/DefaultButton.vue";
-import BaseCard from "@/components/cards/BaseCard.vue";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import BaseCard from "@/components/cards/system/BaseCard.vue";
 import EditLocationPopup from "@/components/popups/EditLocationPopup.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
 export default {
@@ -126,20 +124,6 @@ export default {
   &__button {
     flex: 1;
   }
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(50%);
-  opacity: 0;
 }
 </style>
 

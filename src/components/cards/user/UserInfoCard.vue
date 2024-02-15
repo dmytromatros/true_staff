@@ -10,7 +10,7 @@
             <div class="user-info-card__flex">
               <div class="user-info-card__img">
                 <img v-if="imageUrl" :src="imageUrl" alt="" />
-                <img v-else src="../../assets/img/profile-img.webp" alt="" />
+                <img v-else src="../../../assets/img/profile-img.webp" alt="" />
               </div>
 
               <div class="user-info-card__flex-inner">
@@ -64,15 +64,15 @@
     </div>
 
     <div v-else class="user-info-card__text">
-      <img src="../../assets/img/search-image.jpg" alt="" />
+      <img src="../../../assets/img/search-image.jpg" alt="" />
     </div>
   </div>
 </template>
 
 <script>
-import BaseCard from "@/components/cards/BaseCard.vue";
-import UserJobCard from "@/components/cards/UserJobCard.vue";
-import ReviewCard from "@/components/cards/ReviewCard.vue";
+import BaseCard from "@/components/cards/system/BaseCard.vue";
+import UserJobCard from "@/components/cards/user/UserJobCard.vue";
+import ReviewCard from "@/components/cards/system/ReviewCard.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import CustomSwitch from "@/components/inputs/CustomSwitch.vue";

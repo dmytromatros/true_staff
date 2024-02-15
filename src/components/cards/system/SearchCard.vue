@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import BaseCard from "@/components/cards/BaseCard.vue";
+import BaseCard from "@/components/cards/system/BaseCard.vue";
 import SelectInput from "@/components/inputs/SelectInput.vue";
 import SearchById from "@/components/UserSearch/SearchById.vue";
 import SearchByName from "@/components/UserSearch/SearchByName.vue";

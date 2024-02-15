@@ -1,11 +1,8 @@
 <template>
   <div class="user-job-card">
-    <div
-      class="user-job-card__container"
-      :class="{ 'user-job-card__container--active': !job.deleted }"
-    >
+    <div class="user-job-card__container" :class="{ 'user-job-card__container--active': !job.deleted }">
       <div class="user-job-card__img">
-        <img src="../../assets/img/profile-img.webp" alt="" />
+        <img src="../../../assets/img/profile-img.webp" alt="" />
       </div>
 
       <div class="user-job-card__info">
@@ -24,7 +21,7 @@ export default {
   props: {
     job: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
 };
@@ -32,6 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .user-job-card {
   &__container {
     flex: 1;
@@ -47,6 +45,7 @@ export default {
       background-color: rgba($color: $green-color, $alpha: 0.2);
     }
   }
+
   &__img {
     img {
       width: 75px;
@@ -57,21 +56,24 @@ export default {
       @include main-shadow;
     }
   }
+
   &__info {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
+
   &__company {
     font-weight: 600;
     font-size: 20px;
   }
+
   &__location {
     font-size: 12px;
     font-weight: 600;
   }
+
   &__position {
     font-weight: 600;
   }
-}
-</style>
+}</style>

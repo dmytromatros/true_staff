@@ -17,11 +17,8 @@
       Статус: <span class="receive-request-card__bold">{{ status }}</span>
     </div>
 
-    <DefaultButton
-      label="Видалити"
-      @click="handleDeleteRequest"
-      :danger="true"
-    />
+    <DefaultButton v-if="status !== 'Очікується на відповідь'" label="Видалити" @click="handleDeleteRequest"
+      :danger="true" />
   </div>
 </template>
 
@@ -63,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .receive-request-card {
   border-radius: 15px;
   padding: 15px;
@@ -70,6 +68,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   &__bold {
     font-weight: 600;
   }

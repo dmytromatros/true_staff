@@ -2,81 +2,51 @@
   <div class="company-dashboard">
     <div class="company-dashboard__body">
       <div class="company-dashboard__sidebar">
-        <CompanyCard
-          class="company-dashboard__sidebar-link"
-          label="Профіль"
-          link="company-settings"
+        <CompanyCard class="company-dashboard__sidebar-link" label="Профіль" link="company-settings"
           :background_1="checkRoute('company-settings') ? '#00243f' : '#93dff5'"
-          :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'"
-          :class="[
+          :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'" :class="[
             {
               'company-dashboard__sidebar-link--active':
                 checkRoute('company-settings'),
             },
-          ]"
-        />
+          ]" />
 
-        <MenuCard
-          class="company-dashboard__sidebar-link"
-          label="Локації"
-          link="company-locations"
+        <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations"
           :background_1="checkRoute('company-locations') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('company-locations') ? '#0a5a99 ' : '#fff'"
-          :class="[
+          :background_2="checkRoute('company-locations') ? '#0a5a99 ' : '#fff'" :class="[
             {
               'company-dashboard__sidebar-link--active':
                 checkRoute('company-locations'),
             },
-          ]"
-        >
+          ]">
           <template v-slot:image>
-            <img
-              src="@/assets/img/reviews-img.avif"
-              alt="Налаштування профілю"
-            />
+            <img src="@/assets/img/reviews-img.avif" alt="Налаштування профілю" />
           </template>
         </MenuCard>
 
-        <MenuCard
-          class="company-dashboard__sidebar-link"
-          label="Працівники"
-          link="company-dashboard"
+        <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard"
           :background_1="checkRoute('company-dashboard') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('company-dashboard') ? '#0a5a99 ' : '#fff'"
-          :class="[
+          :background_2="checkRoute('company-dashboard') ? '#0a5a99 ' : '#fff'" :class="[
             {
               'company-dashboard__sidebar-link--active':
                 checkRoute('company-dashboard'),
             },
-          ]"
-        >
+          ]">
           <template v-slot:image>
-            <img
-              src="@/assets/img/m-glass.avif"
-              alt="Знайти користувача"
-              style="object-position: left"
-            />
+            <img src="@/assets/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
           </template>
         </MenuCard>
 
-        <MenuCard
-          class="company-dashboard__sidebar-link"
-          label="Запити до співпраці"
-          link="company-requests"
+        <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests"
           :background_1="checkRoute('company-requests') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('company-requests') ? '#0a5a99 ' : '#fff'"
-          :class="[
+          :background_2="checkRoute('company-requests') ? '#0a5a99 ' : '#fff'" :class="[
             {
               'company-dashboard__sidebar-link--active':
                 checkRoute('company-requests'),
             },
-          ]"
-        >
+          ]">
           <template v-slot:image>
-            <img
-              src="@/assets/img/cooperation.avif"
-              alt="Запити до співпраці"
-            />
+            <img src="@/assets/img/cooperation.avif" alt="Запити до співпраці" />
           </template>
         </MenuCard>
       </div>
@@ -88,8 +58,8 @@
 </template>
 
 <script>
-import MenuCard from "@/components/cards/MenuCard.vue";
-import CompanyCard from "@/components/cards/CompanyCard.vue";
+import MenuCard from "@/components/cards/system/MenuCard.vue";
+import CompanyCard from "@/components/cards/company/CompanyCard.vue";
 export default {
   name: "CompanyDashboard",
   components: { MenuCard, CompanyCard },
@@ -116,11 +86,13 @@ export default {
 
 .company-dashboard {
   height: 100%;
+
   &__body {
     height: 100%;
     gap: 20px;
     display: flex;
   }
+
   &__sidebar {
     display: grid;
     grid-template-rows: 2.5fr repeat(2, 1fr);
@@ -133,24 +105,30 @@ export default {
     overflow: auto;
     padding: 15px;
     flex: 1;
+
     &-link--active {
       :deep(.menu-card__label) {
         color: $white !important;
       }
+
       :deep(.menu-card__name) {
         color: $white !important;
       }
+
       :deep(.company-card__label) {
         color: $white !important;
       }
+
       :deep(.company-card__name) {
         color: $white !important;
       }
+
       :deep(.company-card__bottom) {
         background-color: rgba($color: $main-color, $alpha: 0.4);
       }
     }
   }
+
   &__content {
     // padding: 15px;
     flex: 4;
@@ -158,6 +136,7 @@ export default {
     //   flex: 3;
     // }
   }
+
   &__send-review {
     height: 100%;
   }

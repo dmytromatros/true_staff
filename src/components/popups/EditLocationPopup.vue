@@ -1,9 +1,13 @@
 <template>
-  <DefaultPopup :isShown="true" @close="close" title="Редагуання локації" @confirm="editLocation">
+  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання локації" @confirm="editLocation">
     <template v-slot:body>
       <div class="edit-location__container">
         <ImageInput class="edit-location__image" :imageLink="imageUrl" @changed="handleImage" :id="id" />
         <TextInput class="edit-location__input" label="Адреса локації" type="test" v-model="address" />
+      </div>
+
+      <div class="edit-location__button" @click="addEmployee">
+        <span>Додати працівника</span>
       </div>
     </template>
   </DefaultPopup>
@@ -21,11 +25,11 @@ export default {
       image: '',
       address: "",
       imageUrl: null,
-      isShown: false,
     };
   },
   props: {
-    id: { type: String, default: "" }
+    id: { type: String, default: "" },
+    isShown: { type: Boolean, default: false }
   },
   methods: {
     close() {
@@ -58,6 +62,9 @@ export default {
           this.imageUrl = res.data
         }
       });
+    },
+    addEmployee() {
+      this.$router.push({ name: 'company-dashboard', query: { locationId: this.id } })
     }
   },
   mounted() {
@@ -76,6 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
+
 .edit-location {
   &__image {
     width: 100px;
@@ -96,6 +105,25 @@ export default {
 
   &__input {
     flex: 1;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: 600;
+    margin-top: 20px;
+
+    span {
+      border-bottom: 1px solid $main-color;
+      padding-bottom: 5px;
+      transition: 0.25s ease-in-out all;
+      cursor: pointer;
+
+      &:hover {
+        color: $main-color-hover;
+        border-color: $main-color-hover;
+      }
+    }
   }
 
 

@@ -6,16 +6,10 @@
           <div class="requests__receive-title">Отримані</div>
           <div class="requests__receive-content">
             <div v-for="(rec, key) in receive" :key="key">
-              <ReceiveRequest
-                :from="rec.companyName"
-                :location="rec.locationAddress"
-                :position="rec.position"
-                :message="rec.message"
-                :editable="!rec.rejected && !rec.accepted"
-                @accept-request="acceptReceiveRequest(rec._id)"
-                @reject-request="rejectReceiveRequest(rec._id)"
-                @delete-request="deleteReceiveRequest(rec._id)"
-              />
+              <ReceiveRequest :from="rec.companyName" :location="rec.locationAddress" :position="rec.position"
+                :message="rec.message" :editable="!rec.rejected && !rec.accepted"
+                @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
+                @delete-request="deleteReceiveRequest(rec._id)" />
             </div>
           </div>
         </div>
@@ -23,14 +17,9 @@
           <div class="requests__receive-title">Відправлені</div>
           <div class="requests__receive-content">
             <div v-for="(rec, key) in sent" :key="key">
-              <SentRequest
-                :to="rec.companyName"
-                :location="rec.locationAddress"
-                :position="rec.position"
-                :message="rec.message"
-                @delete-request="deleteSentRequest(rec._id)"
-                :status="sentStatus(rec.rejected, rec.accepted)"
-              />
+              <SentRequest :to="rec.companyName" :location="rec.locationAddress" :position="rec.position"
+                :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
+                :status="sentStatus(rec.rejected, rec.accepted)" />
             </div>
           </div>
         </div>
@@ -39,11 +28,7 @@
         <div class="requests__receive-title">Відравити запит</div>
         <div class="requests__receive-content">
           <div class="user-settings__companies">
-            <div
-              class="user-settings__companies-item"
-              v-for="(company, key) in enteredCompanies"
-              :key="key"
-            >
+            <div class="user-settings__companies-item" v-for="(company, key) in enteredCompanies" :key="key">
               <div>Name: {{ company.companyName }}</div>
               <div>Faired: {{ company.deleted }}</div>
               <div>Position: {{ company.position }}</div>
@@ -52,40 +37,16 @@
 
           <div v-if="isEmployee" class="user-settings__organization">
             <div>
-              <SelectInput
-                class="requests__input"
-                label="Компанія"
-                v-model="company"
-                :options="companyList"
-              />
+              <SelectInput class="requests__input" label="Компанія" v-model="company" :options="companyList" />
               <div>
-                <SelectInput
-                  class="requests__input"
-                  label="Локація"
-                  v-model="location"
-                  :options="locationList"
-                  :disabled="!company"
-                />
+                <SelectInput class="requests__input" label="Локація" v-model="location" :options="locationList"
+                  :disabled="!company" />
                 <div>
-                  <TextInput
-                    class="requests__input"
-                    label="Позиція"
-                    v-model="position"
-                    :disabled="!location"
-                  />
+                  <TextInput class="requests__input" label="Позиція" v-model="position" :disabled="!location" />
                   <div>
-                    <TextInput
-                      class="requests__input"
-                      label="Повідомлення"
-                      :textarea="true"
-                      v-model="message"
-                      :disabled="!position"
-                    />
-                    <DefaultButton
-                      class="requests__input"
-                      label="Відправити запит"
-                      @click="sendRequest"
-                    />
+                    <TextInput class="requests__input" label="Повідомлення" :textarea="true" v-model="message"
+                      :disabled="!position" />
+                    <DefaultButton class="requests__input" label="Відправити запит" @click="sendRequest" />
                   </div>
                 </div>
               </div>
@@ -99,8 +60,8 @@
 
 <script>
 import SelectInput from "@/components/inputs/SelectInput.vue";
-import ReceiveRequest from "@/components/cards/ReceiveRequest.vue";
-import SentRequest from "@/components/cards/SentRequest.vue";
+import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
+import SentRequest from "@/components/cards/system/SentRequest.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 export default {
@@ -273,16 +234,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .requests {
   height: 100%;
   width: 100%;
   padding: 15px;
+
   &__container {
     width: 100%;
     height: 100%;
     display: flex;
     gap: 25px;
   }
+
   &__top {
     display: flex;
     flex-direction: column;
@@ -290,6 +254,7 @@ export default {
     width: 100%;
     gap: 25px;
   }
+
   &__receive {
     flex: 1;
     border-radius: $border-radius;
@@ -299,14 +264,20 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   &__receive-title {
     @include main-title;
   }
+
   &__receive-content {
     overflow: auto;
     padding: 25px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
+
   &__bottom {
     flex: 1;
     width: 100%;
@@ -317,10 +288,12 @@ export default {
     display: flex;
     flex-direction: column;
     height: fit-content;
+
     @media (max-height: 714px) {
       height: 100%;
     }
   }
+
   &__input {
     margin-bottom: 20px;
   }

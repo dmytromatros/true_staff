@@ -4,7 +4,7 @@
       <div class="review-card__sender">
         <div class="review-card__img">
           <img v-if="sender.image" :src="sender.image" alt="" />
-          <img v-else src="../../assets/img/profile-img.webp" alt="" />
+          <img v-else src="../../../assets/img/profile-img.webp" alt="" />
         </div>
         <div class="review-card__name">
           {{ sender.name }}
@@ -26,7 +26,7 @@ export default {
   props: {
     review: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {
@@ -80,6 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .review-card {
   background-color: $white;
   @include main-shadow;
@@ -88,9 +89,11 @@ export default {
   overflow: auto;
   display: flex;
   gap: 15px;
+
   &__container {
     width: 100%;
   }
+
   &__sender {
     display: flex;
     align-items: center;
@@ -102,6 +105,7 @@ export default {
     border-bottom: 1px solid $main-color;
     width: fit-content;
   }
+
   &__img {
     img {
       width: 50px;
@@ -111,6 +115,7 @@ export default {
       object-position: center;
     }
   }
+
   &__review {
     width: 100%;
     // max-height: 75px;
@@ -126,5 +131,4 @@ export default {
     width: 100%;
     text-align: right;
   }
-}
-</style>
+}</style>

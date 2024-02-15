@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -13,7 +13,7 @@ module.exports = async(req, res) => {
     if (error.length === 0) {
 
         try {
-            await req.app.db.collection('workplaces').updateOne({ companyId: req.body.id, employeeId: req.body.employeeId }, { $set: { deleted: true } });
+            await req.app.db.collection('workplaces').updateOne({ companyId: req.body.id, employeeId: req.body.employeeId, deleted: false }, { $set: { deleted: true } });
         } catch (err) {
             error.push(err);
         }

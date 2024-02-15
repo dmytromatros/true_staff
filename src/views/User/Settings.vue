@@ -43,7 +43,7 @@ import TextInput from "@/components/inputs/TextInput.vue";
 import CheckboxInput from "@/components/inputs/CheckboxInput.vue";
 import ChangeUserPasswordPopup from "@/components/popups/ChangeUserPasswordPopup.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import BaseCard from "@/components/cards/BaseCard.vue";
+import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
 
 export default {

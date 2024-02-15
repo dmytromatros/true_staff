@@ -2,7 +2,8 @@
     <div class="employee-card">
         <div class="employee-card__container">
             <div class="employee-card__employee">
-                <img :src="employeeImage" alt="">
+                <img v-if="employeeImage" :src="employeeImage" alt="">
+                <img v-else src="../../../assets/img/profile-img.webp" alt="">
                 <span class="employee-card__name">{{ employeeName }}</span>
                 <span class="employee-card__id" @click="copyId(employeeId)" title="Скопіювати">{{ employeeId }}</span>
             </div>
@@ -17,18 +18,20 @@
             <div class="employee-card__buttons">
                 <CircleButton class="employee-card__button" icon="visibility" @click="viewUser" />
                 <CircleButton class="employee-card__button" icon="edit" />
-                <CircleButton class="employee-card__button" :danger="true" icon="delete" />
+                <CircleButton class="employee-card__button" :danger="true" icon="delete" @click="deleteUserConfirm" />
             </div>
         </div>
+        <ConfirmPopupVue :is-shown="isConfirming" :text="`Ви дійсно хочете видали ${employeeName} із списку працівників?`"
+            @close="isConfirming = false" @confirm="deleteUser" />
     </div>
 </template>
 
 <script>
 import CircleButton from '@/components/buttons/CircleButton.vue'
-
+import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
 export default {
     name: "EmployeeCard",
-    components: { CircleButton },
+    components: { CircleButton, ConfirmPopupVue },
     props: {
         employeeId: {
             type: String,
@@ -49,7 +52,8 @@ export default {
     },
     data() {
         return {
-            employeeImage: ''
+            employeeImage: '',
+            isConfirming: false,
         }
     },
     computed: {},
@@ -71,6 +75,18 @@ export default {
         },
         viewUser() {
             this.$router.push({ name: 'company-search-user', query: { userId: this.employeeId } })
+        },
+
+        deleteUserConfirm() {
+            this.isConfirming = true;
+        },
+
+        deleteUser() {
+            this.$store.dispatch('deleteEmployeeAction', { id: this.$route.params.id, employeeId: this.employeeId }).then(res => {
+                if (res.success) {
+                    this.$emit('deleted')
+                }
+            });
         }
     },
     mounted() {

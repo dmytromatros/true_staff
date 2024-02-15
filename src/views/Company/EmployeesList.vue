@@ -9,93 +9,34 @@
         користувача</button>
     </div>
     <div class="employees-list__container" v-if="!loading">
-      <div class="employees-list__list" v-for="(emp, key) in employees" :key="key">
-        <EmployeeCard :employeeId="emp.employeeId" :location="emp.locationAddress" :position="emp.position"
-          :employee-name="emp.employeeName" />
-
+      <div class="employees-list__list">
+        <EmployeeCard v-for="(emp, key) in employees" :key="key" :employeeId="emp.employeeId"
+          :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
+          @deleted="getEmployees" />
       </div>
 
       <div class="employees-list__new">
-
-        <BaseCard class="employees-list__new-card">
-          <template v-slot:body>
-            <div class="employees-list__new-card-title">Додати нового співробітника</div>
-            <SelectInput placeholder="Локація" :options="locations" v-model="newEmployee.location" />
-            <TextInput placeholder="ID користувача" type="text" v-model="newEmployee.userId" />
-            <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
-            <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
-
-            <DefaultButton label="Add employee" @click="addEmployee" />
-          </template>
-        </BaseCard>
+        <AddEmployeeCard :locations="locations" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import EmployeeCard from "@/components/cards/EmployeeCard.vue";
-import SelectInput from "@/components/inputs/SelectInput.vue";
-import TextInput from "@/components/inputs/TextInput.vue";
-import BaseCard from "@/components/cards/BaseCard.vue";
+import EmployeeCard from "@/components/cards/company/EmployeeCard.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
+import AddEmployeeCard from "@/components/cards/company/AddEmployeeCard.vue";
 export default {
   name: "EmployeesList",
-  components: { DefaultButton, EmployeeCard, TextInput, SelectInput, BaseCard, LoaderComponent },
+  components: { EmployeeCard, LoaderComponent, AddEmployeeCard },
   data() {
     return {
       employees: [],
       locations: [],
-      newEmployee: {
-        location: '',
-        position: '',
-        message: '',
-        userId: '',
-      },
       loading: true,
     };
   },
   methods: {
-    async addEmployee() {
-      const employeeName = await this.getUserName(this.newEmployee.userId);
-      let data = {
-        companyId: this.companyId,
-        companyName: this.companyName,
-        locationId: this.selectedLocation,
-        locationAddress: this.getLocationAddress(this.selectedLocation),
-        employeeId: this.userId,
-        employeeName: employeeName,
-        message: this.message,
-        position: this.position,
-        type: 1,
-      };
-
-      this.$store.dispatch("addCompanyRequestAction", data);
-    },
-
-    async getUserName(id) {
-      try {
-        const res = await this.$store.dispatch("getUserAction", { id });
-        if (res.success) {
-          return `${res.data.name} ${res.data.surname}`;
-        }
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed, e.g., return a default value or throw an error
-        return "";
-      }
-    },
-
-    getLocationAddress(id) {
-      let address = "";
-      this.locations.forEach((loc) => {
-        if (loc.value == id) {
-          address = loc.label;
-        }
-      });
-      return address;
-    },
     async deleteEmployee(id) {
       let data = {
         id: this.$route.params.id,
@@ -180,20 +121,6 @@ export default {
 
   &__new {
     padding: 15px;
-  }
-
-  &__new-card {
-    height: fit-content !important;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  &__new-card-title {
-    padding: 0 10px;
-    font-weight: 600;
-    font-size: 23px;
-    margin-bottom: 25px;
   }
 
   &__switcher {

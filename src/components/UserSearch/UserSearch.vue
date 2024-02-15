@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import UserInfoCard from '@/components/cards/UserInfoCard.vue';
-import SearchCard from '@/components/cards/SearchCard.vue';
+import UserInfoCard from '@/components/cards/user/UserInfoCard.vue';
+import SearchCard from '@/components/cards/system/SearchCard.vue';
 export default {
     name: "UserSearch",
     components: { UserInfoCard, SearchCard },

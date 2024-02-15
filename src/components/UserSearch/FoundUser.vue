@@ -3,7 +3,7 @@
         <LoaderComponent v-if="loading" />
         <BaseCard v-else class="found-user__card" @click="$emit('find', user._id)">
             <template v-slot:body>
-                <img class="found-user__image" :src="image || '../../assets/img/profile-img.webp'" alt="">
+                <img class="found-user__image" :src="image || '../../../assets/img/profile-img.webp'" alt="">
                 <div class="found-user__name">{{ user.name }} {{ user.surname }}</div>
             </template>
         </BaseCard>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import BaseCard from '../cards/BaseCard.vue';
+import BaseCard from '../cards/system/BaseCard.vue';
 import LoaderComponent from '../other/LoaderComponent.vue';
 export default {
     name: "FoundUser",

@@ -36,8 +36,8 @@
 
 <script>
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import LocationCard from "@/components/cards/LocationCard.vue";
-import BaseCard from "@/components/cards/BaseCard.vue";
+import LocationCard from "@/components/cards/company/LocationCard.vue";
+import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";

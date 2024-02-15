@@ -3,7 +3,7 @@
     <span v-if="label" class="select-input__label">{{ label }}</span>
     <label v-if="!internalValue" class="select-input__placeholder">{{ placeholder }}</label>
     <select class="select-input__input" name="select" id="select" v-model="internalValue">
-      <option v-for="(option, key) in options" :key="key" :value="option.value">
+      <option v-for="(option, key) in options" :key="key" :value="option.value" :selected="option.value == internalValue">
         {{ option.label }}
       </option>
     </select>

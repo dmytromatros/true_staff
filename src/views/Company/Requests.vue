@@ -4,28 +4,18 @@
       <div class="requests__receive" v-if="page == 1">
         <h2>Received:</h2>
         <div v-for="(rec, key) in receive" :key="key">
-          <ReceiveRequest
-            :from="rec.employeeName"
-            :location="rec.locationAddress"
-            :position="rec.position"
-            :editable="!rec.rejected && !rec.accepted"
-            :message="rec.message"
-            @accept-request="acceptReceiveRequest(rec._id)"
-            @reject-request="rejectReceiveRequest(rec._id)"
-            @delete-request="deleteReceiveRequest(rec._id)"
-          />
+          <ReceiveRequest :from="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
+            :editable="!rec.rejected && !rec.accepted" :message="rec.message"
+            @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
+            @delete-request="deleteReceiveRequest(rec._id)" />
         </div>
       </div>
       <div class="requests__receive" v-if="page == 2">
         <h2>Sent:</h2>
         <div v-for="(rec, key) in sent" :key="key">
-          <SentRequest
-            :to="rec.employeeName"
-            :location="rec.locationAddress"
-            :position="rec.position"
-            @delete-request="deleteSentRequest(rec._id)"
-            :status="sentStatus(rec.rejected, rec.accepted)"
-          />
+          {{ rec }}
+          <SentRequest :to="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
+            @delete-request="deleteSentRequest(rec._id)" :status="sentStatus(rec.rejected, rec.accepted)" />
         </div>
       </div>
     </div>
@@ -33,15 +23,15 @@
 </template>
 
 <script>
-import ReceiveRequest from "@/components/cards/ReceiveRequest.vue";
-import SentRequest from "@/components/cards/SentRequest.vue";
+import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
+import SentRequest from "@/components/cards/system/SentRequest.vue";
 export default {
   name: "UserRequests",
   data() {
     return {
       sent: {},
       receive: {},
-      page: 1,
+      page: 2,
     };
   },
   components: { ReceiveRequest, SentRequest },

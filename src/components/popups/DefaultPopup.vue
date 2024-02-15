@@ -1,30 +1,32 @@
 <template>
-  <div v-if="isShown" class="default-popup">
-    <div class="default-popup__back"></div>
-    <div class="default-popup__window">
-      <div class="default-popup__header">
-        <span>{{ title }}</span>
-        <svg class="default-popup__close" @click="closePopup" width="29" height="29" viewBox="0 0 29 29" fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.4749 6.72803L7.15283 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
-          <path d="M7.15283 6.72803L22.4749 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-      </div>
-      <div class="default-popup__body">
-        <slot name="body"></slot>
-      </div>
-      <div class="default-popup__footer">
-        <DefaultButton label="Закрити" @click="closePopup" :danger="true" />
-        <DefaultButton :label="confirmLabel" @click="confirmFn" :success="true" />
+  <Transition name="slide-fade">
+    <div v-if="isShown" class="default-popup">
+      <div class="default-popup__back"></div>
+      <div class="default-popup__window">
+        <div class="default-popup__header">
+          <span>{{ title }}</span>
+          <svg class="default-popup__close" @click="closePopup" width="29" height="29" viewBox="0 0 29 29" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.4749 6.72803L7.15283 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M7.15283 6.72803L22.4749 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="default-popup__body">
+          <slot name="body"></slot>
+        </div>
+        <div class="default-popup__footer">
+          <DefaultButton label="Закрити" @click="closePopup" :danger="true" />
+          <DefaultButton :label="confirmLabel" @click="confirmFn" :success="true" />
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
-import DefaultButton from "../buttons/DefaultButton.vue";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
 
 export default {
   name: "DefaultPopup",
@@ -102,5 +104,19 @@ export default {
   &__close {
     cursor: pointer;
   }
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(50%);
+  opacity: 0;
 }
 </style>

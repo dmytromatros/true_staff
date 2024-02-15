@@ -2,19 +2,14 @@
   <div class="user-dashboard">
     <div class="user-dashboard__body">
       <div class="user-dashboard__sidebar">
-        <UserCard
-          class="user-dashboard__sidebar-link"
-          label="Профіль"
-          link="user-settings"
+        <UserCard class="user-dashboard__sidebar-link" label="Профіль" link="user-settings"
           :background_1="checkRoute('user-settings') ? '#00243f' : '#93dff5'"
-          :background_2="checkRoute('user-settings') ? '#00243f' : '#2aafd4'"
-          :class="[
+          :background_2="checkRoute('user-settings') ? '#00243f' : '#2aafd4'" :class="[
             {
               'user-dashboard__sidebar-link--active':
                 checkRoute('user-settings'),
             },
-          ]"
-        />
+          ]" />
 
         <!-- <MenuCard
           class="user-dashboard__sidebar-link"
@@ -37,46 +32,29 @@
           </template>
         </MenuCard> -->
 
-        <MenuCard
-          class="user-dashboard__sidebar-link"
-          label="Знайти користувача"
-          link="user-dashboard"
+        <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard"
           :background_1="checkRoute('user-dashboard') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'"
-          :class="[
+          :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'" :class="[
             {
               'user-dashboard__sidebar-link--active':
                 checkRoute('user-dashboard'),
             },
-          ]"
-        >
+          ]">
           <template v-slot:image>
-            <img
-              src="@/assets/img/m-glass.avif"
-              alt="Знайти користувача"
-              style="object-position: left"
-            />
+            <img src="@/assets/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
           </template>
         </MenuCard>
 
-        <MenuCard
-          class="user-dashboard__sidebar-link"
-          label="Запити до співпраці"
-          link="user-requests"
+        <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests"
           :background_1="checkRoute('user-requests') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-requests') ? '#0a5a99 ' : '#fff'"
-          :class="[
+          :background_2="checkRoute('user-requests') ? '#0a5a99 ' : '#fff'" :class="[
             {
               'user-dashboard__sidebar-link--active':
                 checkRoute('user-requests'),
             },
-          ]"
-        >
+          ]">
           <template v-slot:image>
-            <img
-              src="@/assets/img/cooperation.avif"
-              alt="Запити до співпраці"
-            />
+            <img src="@/assets/img/cooperation.avif" alt="Запити до співпраці" />
           </template>
         </MenuCard>
 
@@ -89,8 +67,8 @@
 </template>
 
 <script>
-import MenuCard from "@/components/cards/MenuCard.vue";
-import UserCard from "@/components/cards/UserCard.vue";
+import MenuCard from "@/components/cards/system/MenuCard.vue";
+import UserCard from "@/components/cards/user/UserCard.vue";
 export default {
   name: "UserDashboard",
   components: { MenuCard, UserCard },
@@ -117,11 +95,13 @@ export default {
 
 .user-dashboard {
   height: 100%;
+
   &__body {
     height: 100%;
     gap: 20px;
     display: flex;
   }
+
   &__sidebar {
     display: grid;
     grid-template-rows: 2.5fr repeat(2, 1fr);
@@ -133,24 +113,30 @@ export default {
     overflow: auto;
     padding: 15px;
     flex: 1;
+
     &-link--active {
       :deep(.menu-card__label) {
         color: $white !important;
       }
+
       :deep(.menu-card__name) {
         color: $white !important;
       }
+
       :deep(.user-card__label) {
         color: $white !important;
       }
+
       :deep(.user-card__name) {
         color: $white !important;
       }
+
       :deep(.user-card__bottom) {
         background-color: rgba($color: $main-color, $alpha: 0.4);
       }
     }
   }
+
   &__content {
     // padding: 15px;
     flex: 4;
@@ -158,6 +144,7 @@ export default {
     //   flex: 3;
     // }
   }
+
   &__send-review {
     height: 100%;
   }

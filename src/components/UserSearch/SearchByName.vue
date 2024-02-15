@@ -17,7 +17,7 @@
 
 <script>
 import TextInput from '@/components/inputs/TextInput.vue';
-import BaseCard from '@/components/cards/BaseCard.vue';
+import BaseCard from '@/components/cards/system/BaseCard.vue';
 import DefaultButton from '../buttons/DefaultButton.vue';
 import FoundUser from '@/components/UserSearch/FoundUser.vue';
 export default {

@@ -15,21 +15,15 @@
     </div>
 
     <div class="receive-request-card__buttons" v-if="editable">
-      <DefaultButton
-        class="receive-request-card__button"
-        label="Прийняти"
-        :success="true"
-        @click="handleAcceptRequest"
-      />
-      <DefaultButton
-        class="receive-request-card__button"
-        label="Відхилити"
-        :danger="true"
-        @click="handleRejectRequest"
-      />
+      <DefaultButton class="receive-request-card__button" label="Прийняти" :success="true" @click="handleAcceptRequest" />
+      <DefaultButton class="receive-request-card__button" label="Відхилити" :danger="true" @click="handleRejectRequest" />
     </div>
 
-    <div v-else>You hav respond on this request perviously</div>
+    <div v-else>
+      <div class="receive-request-card__delete">Ви відповіли на цей запит.</div>
+      <DefaultButton class="receive-request-card__button" label="Видалити" :danger="true" @click="handleDeleteRequest" />
+
+    </div>
   </div>
 </template>
 
@@ -77,6 +71,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .receive-request-card {
   border-radius: 15px;
   padding: 15px;
@@ -84,15 +79,24 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   &__bold {
     font-weight: 600;
   }
+
   &__buttons {
     display: flex;
     gap: 15px;
   }
+
   &__button {
     flex: 1;
+  }
+
+  &__delete {
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 }
 </style>

@@ -1,10 +1,7 @@
 <template>
   <div class="menu-card">
-    <button
-      class="menu-card__button"
-      @click="goToLink"
-      :style="`background: linear-gradient(-45deg, ${background_1} 0%, ${background_2} 70%)`"
-    >
+    <button class="menu-card__button" @click="goToLink"
+      :style="`background: linear-gradient(-45deg, ${background_1} 0%, ${background_2} 70%)`">
       <slot name="image"> </slot>
       <span class="menu-card__label">{{ label }}</span>
     </button>
@@ -44,11 +41,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .menu-card {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
+
   &__button {
     border-radius: $border-radius;
     @include main-shadow;
@@ -63,6 +62,7 @@ export default {
     gap: 15px;
     max-height: 120px;
   }
+
   &__label {
     font-weight: 600;
     font-size: 16px;
@@ -70,13 +70,11 @@ export default {
   }
 }
 
-::v-deep {
-  img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: $border-radius;
-  }
+:deep(img) {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: $border-radius;
 }
 </style>

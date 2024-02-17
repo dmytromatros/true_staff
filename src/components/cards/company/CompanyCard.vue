@@ -65,6 +65,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .company-card {
   width: 100%;
   height: 100%;
@@ -85,6 +86,7 @@ export default {
     backdrop-filter: blur(25px);
     overflow: hidden;
   }
+
   &__bottom {
     background-color: rgba($color: $white, $alpha: 0.4);
     backdrop-filter: blur(25px);
@@ -97,6 +99,7 @@ export default {
     justify-content: center;
     @include main-shadow;
   }
+
   &__name {
     font-weight: 600;
     font-size: 20px;
@@ -105,18 +108,16 @@ export default {
   }
 }
 
-::v-deep {
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: $border-radius;
-    object-fit: cover;
-    object-position: center;
-    position: absolute;
-    opacity: 1;
-    z-index: -1;
-    top: 0;
-    left: 0;
-  }
+:deep(img) {
+  width: 100%;
+  height: 100%;
+  border-radius: $border-radius;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  opacity: 1;
+  z-index: -1;
+  top: 0;
+  left: 0;
 }
 </style>

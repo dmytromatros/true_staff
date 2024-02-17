@@ -100,8 +100,7 @@ export default {
         'locations.length'() {
             this.locations.forEach(loc => {
                 if (loc.value == this.queryLocationId) {
-                    console.log(loc.label)
-                    this.newEmployee.location = loc.label;
+                    this.newEmployee.location = loc.value;
                 }
             })
         }
@@ -109,7 +108,7 @@ export default {
     mounted() {
         this.locations.forEach(loc => {
             if (loc.value == this.queryLocationId) {
-                this.newEmployee.location = loc.label;
+                this.newEmployee.location = loc.value;
             }
         })
     }

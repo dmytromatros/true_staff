@@ -17,7 +17,7 @@
 
             <div class="employee-card__buttons">
                 <CircleButton class="employee-card__button" icon="visibility" @click="viewUser" />
-                <CircleButton class="employee-card__button" icon="edit" />
+                <CircleButton class="employee-card__button" icon="edit" @click="editUser" />
                 <CircleButton class="employee-card__button" :danger="true" icon="delete" @click="deleteUserConfirm" />
             </div>
         </div>
@@ -75,6 +75,10 @@ export default {
         },
         viewUser() {
             this.$router.push({ name: 'company-search-user', query: { userId: this.employeeId } })
+        },
+
+        editUser() {
+            this.$store.dispatch('showNotification', { message: 'lalala', type: 'success' })
         },
 
         deleteUserConfirm() {

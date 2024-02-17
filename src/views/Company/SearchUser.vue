@@ -5,7 +5,7 @@
                 @click="() => { this.$router.push({ name: 'company-dashboard' }) }">Робітники</button>
             <button class="search-user__switch search-user__switch--active">Знайти користувача</button>
         </div>
-        <UserSearchVue />
+        <UserSearchVue class="search-user__container" />
     </div>
 </template>
   

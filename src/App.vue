@@ -7,12 +7,14 @@
   <div class="main-container">
     <router-view class="main-router-view" />
   </div>
+  <NotificationMessage />
 </template>
 
 <script>
 import UserHeader from "@/components/headers/UserHeader.vue";
 import CompanyHeader from "@/components/headers/CompanyHeader.vue";
 import MainBackground from "./views/System/MainBackground.vue";
+import NotificationMessage from "./components/other/NotificationMessage.vue";
 const {
   isAuth,
   checkRoutePermission,
@@ -35,6 +37,7 @@ export default {
     UserHeader,
     CompanyHeader,
     MainBackground,
+    NotificationMessage
   },
 
   watch: {

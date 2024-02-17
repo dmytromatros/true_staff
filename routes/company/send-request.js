@@ -2,16 +2,16 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     req.body;
     let error = [];
 
-    if (!req.body.companyId || !req.body.companyName) error.push('Company is required');
     if (!req.body.locationId || !req.body.locationAddress) error.push('Location is required');
-    if (!req.body.position) error.push('Position is required');
-    if (!req.body.message) error.push('Message is required');
+    if (!req.body.companyId || !req.body.companyName) error.push('Company is required');
     if (!req.body.employeeId) error.push('Receiver is required');
+    if (!req.body.message) error.push('Message is required');
+    if (!req.body.position) error.push('Position is required');
 
     // Check the user
 
@@ -25,7 +25,7 @@ module.exports = async(req, res) => {
         try {
             user = await req.app.db.collection('users').findOne({
                 _id: objectId
-            }, );
+            },);
         } catch (err) {
             error.push('No such user')
         }
@@ -44,7 +44,7 @@ module.exports = async(req, res) => {
             deleted: false
         });
 
-        if (workplace) error.push('The account is already in the company!');
+        if (workplace) error.push('The employee is already in the company!');
 
     }
 
@@ -99,7 +99,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
 
-        sendData = {...req.body }
+        sendData = { ...req.body }
         sendData.accepted = false
         sendData.rejected = false
         sendData.companyDeleted = false
@@ -119,7 +119,7 @@ module.exports = async(req, res) => {
         });
     } else {
         res.status(417).json({
-            message: error,
+            message: error[0],
             success: false
         });
     }

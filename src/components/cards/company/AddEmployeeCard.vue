@@ -59,7 +59,14 @@ export default {
                 type: 1,
             };
 
-            this.$store.dispatch("addCompanyRequestAction", data);
+            this.$store.dispatch("addCompanyRequestAction", data).then(res => {
+                if (res.success) {
+                    this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+                } else {
+                    console.log(res)
+                    this.$store.dispatch('showNotification', { message: res.response.data.message, type: 'error' })
+                }
+            });
         },
 
         async getUserName(id) {

@@ -3,6 +3,13 @@ import axios from "axios";
 
 const { isAuth } = require("../../utils/permission");
 
+const hashCode = (s) => {
+    return s.split('').reduce(function (a, b) {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return (a & a) + Date.now();
+    }, 0);
+};
+
 
 export default createStore({
     state: {
@@ -10,7 +17,8 @@ export default createStore({
         user: {},
         copmany: {},
         role: '',
-        locations: []
+        locations: [],
+        notifications: []
     },
     getters: {},
     mutations: {
@@ -27,11 +35,19 @@ export default createStore({
         },
         setLocations: (state, data) => {
             state.locations = data.data;
+        },
+        addNotification: (state, data) => {
+            state.notifications.push(data);
+        },
+        deleteNotification: (state, data) => {
+            const index = state.notifications.findIndex((item) => item.id === data);
+            if (index > -1)
+                state.notifications.splice(index, 1);
         }
     },
     actions: {
 
-        // System actios /////////////////////////////////////////////////////////////////////////////
+        // System actions /////////////////////////////////////////////////////////////////////////////
 
         logInUserAction: async ({ commit }, data) => {
             return new Promise(done => {
@@ -74,6 +90,19 @@ export default createStore({
             localStorage.setItem('role', '');
             commit('setUser', {})
             isAuth()
+        },
+
+        showNotification: (context, data) => {
+            data.id = hashCode(data.message).toString()
+            context.commit('addNotification', data);
+
+            setTimeout(() => {
+                context.commit('deleteNotification', data.id)
+            }, 3000);
+        },
+
+        deleteNotification: ({ commit }, data) => {
+            commit('deleteNotification', data);
         },
 
         // User action ////////////////////////////////////////////////////////////////////////////////////

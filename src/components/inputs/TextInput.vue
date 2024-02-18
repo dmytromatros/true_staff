@@ -72,7 +72,7 @@ export default {
   &__input,
   textarea {
     width: 100%;
-    padding: 7.5px 15px;
+    padding: 9px 15px;
     border-radius: 5px;
     @include main-shadow;
     color: $dark_text;

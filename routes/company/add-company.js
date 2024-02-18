@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     const { name, login, password } = req.body;
     let error = [];
 
     if (name == '' || name == undefined) error.push('Name is required');
-    if (password == '' || password == undefined) error.push('Password is required');
     if (login == '' || login == undefined) error.push('Login is required');
+    if (password == '' || password == undefined) error.push('Password is required');
 
     let nameCheck, loginCheck;
 

@@ -58,6 +58,8 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+  background: $white;
+  border-radius: 5px;
 
   &::after {
     content: '';

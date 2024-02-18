@@ -1,5 +1,5 @@
 <template>
-  <MainBackground />
+  <MainBackground v-if="!isAuthorized" />
   <div class="header">
     <UserHeader v-if="role == 'user'" />
     <CompanyHeader v-if="role == 'company'" />
@@ -22,9 +22,15 @@ const {
 } = require("../utils/permission");
 
 export default {
+  computed: {
+    isAuthorized() {
+      return isAuth()
+    }
+  },
   mounted() {
     this.role = checkRole();
     isAuth();
+    console.log(isAuth())
   },
 
   data() {

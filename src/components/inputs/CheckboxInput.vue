@@ -1,19 +1,10 @@
 <template>
   <div class="checkbox-input">
-    <input
-      class="checkbox-input__input"
-      type="checkbox"
-      :id="id"
-      v-model="internalValue"
-    />
+    <input class="checkbox-input__input" type="checkbox" :id="id" v-model="internalValue" />
     <label class="checkbox-input__text" v-if="label" :for="id">{{
       label
     }}</label>
-    <label
-      class="checkbox-input__label"
-      :for="id"
-      :class="{ 'checkbox-input__label--active': internalValue }"
-    >
+    <label class="checkbox-input__label" :for="id" :class="{ 'checkbox-input__label--active': internalValue }">
     </label>
   </div>
 </template>
@@ -51,20 +42,23 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
 .checkbox-input {
   display: flex;
   align-items: center;
   gap: 15px;
   padding: 15px 0;
+
   &__input {
     display: none;
   }
+
   &__label {
     display: block;
     width: 50px;
     height: 25px;
     border-radius: 50px;
-    // background-color: $main-color;
+    background-color: $main-color;
     border: 2px solid $main-color;
     position: relative;
     transition: 0.3s ease-in-out all;
@@ -77,9 +71,10 @@ export default {
       position: absolute;
       transform: translate(1px, 1px);
       border-radius: 50%;
-      background-color: $red-color;
+      background-color: $placeholder-color;
       transition: 0.3s ease-in-out all;
     }
+
     &--active {
       &::before {
         transform: translate(26px, 1px);
@@ -88,6 +83,7 @@ export default {
       }
     }
   }
+
   &__text {
     cursor: pointer;
     margin-left: 10px;

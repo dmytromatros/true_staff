@@ -7,6 +7,7 @@ function isAuth() {
 
     if (!auth) {
         router.push('/');
+        return false
     } else if (auth && role) {
 
         const token = localStorage.getItem('token')
@@ -31,6 +32,8 @@ function isAuth() {
                     break;
             }
         }
+
+        return true
     }
 }
 

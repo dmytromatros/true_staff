@@ -1,6 +1,6 @@
 <template>
   <div class="user-header">
-    <div class="user-header__logo">True Staff</div>
+    <div class="user-header__logo">reputa</div>
     <div class="user-header__right">
       <div class="user-header__info">
         <div class="user-header__image">img</div>

@@ -3,7 +3,7 @@
         <div class="employee-card__container">
             <div class="employee-card__employee">
                 <img v-if="employeeImage" :src="employeeImage" alt="">
-                <img v-else src="../../../assets/img/profile-img.webp" alt="">
+                <img v-else src="/img/profile-img.webp" alt="">
                 <span class="employee-card__name">{{ employeeName }}</span>
                 <span class="employee-card__id" @click="copyId(employeeId)" title="Скопіювати">{{ employeeId }}</span>
             </div>
@@ -124,7 +124,7 @@ export default {
         padding: 25px;
         color: $white;
 
-        background: lighten($main-color, 2.0%);
+        background: $main-gradient;
 
         img {
             width: 100px;

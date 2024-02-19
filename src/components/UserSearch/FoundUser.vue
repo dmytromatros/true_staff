@@ -3,7 +3,7 @@
         <LoaderComponent v-if="loading" />
         <BaseCard v-else class="found-user__card" @click="$emit('find', user._id)">
             <template v-slot:body>
-                <img class="found-user__image" :src="image || '../../../assets/img/profile-img.webp'" alt="">
+                <img class="found-user__image" :src="image || '/img/profile-img.webp'" alt="">
                 <div class="found-user__name">{{ user.name }} {{ user.surname }}</div>
             </template>
         </BaseCard>

@@ -6,7 +6,7 @@
         <div v-if="!loading" class="location-card__container">
           <div class="location-card__img">
             <img v-if="imageUrl" :src="imageUrl" alt="" />
-            <img v-else src="../../../assets/img/profile-img.webp" alt="" />
+            <img v-else src="/img/profile-img.webp" alt="" />
           </div>
           <div class="location-card__info">
             <div class="location-card__name">{{ location.address }}</div>
@@ -15,8 +15,8 @@
         </div>
         <div v-if="!loading" class="location-card__buttons">
           <DefaultButton class="location-card__button" label="Видалити" :danger="true"
-            @click="deleteLocationFn(location._id)" />
-          <DefaultButton class="location-card__button" label="Редагувати" @click="openEditPopupFN()" />
+            @action="deleteLocationFn(location._id)" />
+          <DefaultButton class="location-card__button" label="Редагувати" @action="openEditPopupFN()" />
         </div>
       </template>
     </BaseCard>

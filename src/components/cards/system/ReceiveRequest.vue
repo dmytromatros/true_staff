@@ -15,13 +15,15 @@
     </div>
 
     <div class="receive-request-card__buttons" v-if="editable">
-      <DefaultButton class="receive-request-card__button" label="Прийняти" :success="true" @click="handleAcceptRequest" />
-      <DefaultButton class="receive-request-card__button" label="Відхилити" :danger="true" @click="handleRejectRequest" />
+      <DefaultButton class="receive-request-card__button" label="Прийняти" :success="true"
+        @action="handleAcceptRequest" />
+      <DefaultButton class="receive-request-card__button" label="Відхилити" :danger="true"
+        @action="handleRejectRequest" />
     </div>
 
     <div v-else>
       <div class="receive-request-card__delete">Ви відповіли на цей запит.</div>
-      <DefaultButton class="receive-request-card__button" label="Видалити" :danger="true" @click="handleDeleteRequest" />
+      <DefaultButton class="receive-request-card__button" label="Видалити" :danger="true" @action="handleDeleteRequest" />
 
     </div>
   </div>

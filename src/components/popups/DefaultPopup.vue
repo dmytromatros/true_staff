@@ -17,8 +17,8 @@
           <slot name="body"></slot>
         </div>
         <div class="default-popup__footer">
-          <DefaultButton label="Закрити" @click="closePopup" :danger="true" />
-          <DefaultButton :label="confirmLabel" @click="confirmFn" :success="true" />
+          <DefaultButton label="Закрити" @action="closePopup" :danger="true" />
+          <DefaultButton :label="confirmLabel" @action="confirmFn" :success="true" />
         </div>
       </div>
     </div>

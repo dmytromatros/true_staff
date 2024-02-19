@@ -5,7 +5,7 @@
     <div class="image-input__wrapper">
       <img v-if="imagePreview || imageLink" class="image-input__image" :src="imagePreview ? imagePreview : imageLink"
         alt="img" />
-      <img v-else class="image-input__image" src="@/assets/img/profile-img.webp" alt="img" />
+      <img v-else class="image-input__image" src="/img/profile-img.webp" alt="img" />
       <label class="image-input__label" for="image-input__input"></label>
       <label class="image-input__label-1" for="image-input__input">+</label>
     </div>

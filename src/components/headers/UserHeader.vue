@@ -6,7 +6,7 @@
         <div class="user-header__image">img</div>
         <div class="user-header__name">User name</div>
       </div>
-      <DefaultButton class="user-header-button" @click="logoutFn" label="Вийти" />
+      <DefaultButton class="user-header-button" @action="logoutFn" label="Вийти" />
     </div>
   </div>
 </template>

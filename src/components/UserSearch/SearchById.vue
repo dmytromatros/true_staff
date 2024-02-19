@@ -1,7 +1,7 @@
 <template>
     <div class="search-by-id">
         <TextInput placeholder="Введіть ID користувача" v-model="id" />
-        <DefaultButton label="Шукати" @click="$emit('find', id)" />
+        <DefaultButton label="Шукати" @action="$emit('find', id)" :loading="loading" :disabled="!Boolean(id.length)" />
     </div>
 </template>
 
@@ -11,10 +11,12 @@ import DefaultButton from '../buttons/DefaultButton.vue';
 export default {
     name: "SearchById",
     components: { TextInput, DefaultButton },
-    props: {},
+    props: {
+        loading: { type: Boolean, default: false }
+    },
     data() {
         return {
-            id: ''
+            id: '',
         }
     },
     computed: {},

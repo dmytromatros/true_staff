@@ -2,7 +2,7 @@
   <div class="company-card">
     <button class="company-card__button" @click="goToLink">
       <img v-if="image" :src="image" :alt="image" />
-      <img v-else src="@/assets/img/profile-img.webp" :alt="image" />
+      <img v-else src="/img/profile-img.webp" :alt="image" />
       <div class="company-card__bottom">
         <!-- <span class="company-card__label">{{ label }}</span> -->
         <span class="company-card__name">{{ name }}</span>

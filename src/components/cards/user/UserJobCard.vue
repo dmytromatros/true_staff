@@ -2,7 +2,7 @@
   <div class="user-job-card">
     <div class="user-job-card__container" :class="{ 'user-job-card__container--active': !job.deleted }">
       <div class="user-job-card__img">
-        <img src="../../../assets/img/profile-img.webp" alt="" />
+        <img src="/img/profile-img.webp" alt="" />
       </div>
 
       <div class="user-job-card__info">
@@ -76,4 +76,5 @@ export default {
   &__position {
     font-weight: 600;
   }
-}</style>
+}
+</style>

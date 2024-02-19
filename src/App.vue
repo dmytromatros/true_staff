@@ -30,7 +30,6 @@ export default {
   mounted() {
     this.role = checkRole();
     isAuth();
-    console.log(isAuth())
   },
 
   data() {

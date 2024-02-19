@@ -4,13 +4,13 @@
     <div v-if="Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
-      <div class="user-info-card__user">
+      <div class="user-info-card__user" :style="{ height: !isUser ? '93%' : '70%' }">
         <BaseCard class="user-info-card__small">
           <template v-slot:body>
             <div class="user-info-card__flex">
               <div class="user-info-card__img">
                 <img v-if="imageUrl" :src="imageUrl" alt="" />
-                <img v-else src="../../../assets/img/profile-img.webp" alt="" />
+                <img v-else src="/img/profile-img.webp" alt="" />
               </div>
 
               <div class="user-info-card__flex-inner">
@@ -54,17 +54,17 @@
         </BaseCard>
       </div>
 
-      <BaseCard class="user-info-card__review-container"><template v-slot:body>
+      <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"><template v-slot:body>
           <div class="user-info-card__send-review">
             <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" />
-            <DefaultButton class="user-info-card__button" label="Залишити відгук" @click="sendReview"
-              :disabled="!review" />
+            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review"
+              :loading="loadingReview" />
           </div>
         </template></BaseCard>
     </div>
 
     <div v-else class="user-info-card__text">
-      <img src="../../../assets/img/search-image.jpg" alt="" />
+      <img src="/img/search-image.jpg" alt="" />
     </div>
   </div>
 </template>
@@ -77,6 +77,8 @@ import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
+
+import { checkRole } from "../../../../utils/permission";
 
 export default {
   name: "UserInfoCard",
@@ -93,6 +95,7 @@ export default {
       reviews: {},
       review: "",
       loading: true,
+      loadingReview: false
     };
   },
   components: {
@@ -103,6 +106,14 @@ export default {
     DefaultButton,
     CustomSwitch,
     LoaderComponent
+  },
+  computed: {
+    isUser() {
+      return checkRole() === 'user'
+    },
+    canSendReview() {
+      return this.$route.params.id === this.info._id
+    }
   },
   methods: {
     getUserFn(user) {
@@ -141,13 +152,23 @@ export default {
       }
     },
     sendReview() {
+      this.loadingReview = true
       let data = {
         from: this.$route.params.id,
         to: this.info._id,
-        review: this.review,
+        review: this.review
       };
       data.date = Date.now();
-      this.$store.dispatch("sendReviewAction", data);
+      this.$store.dispatch("sendReviewAction", data).then(res => {
+        this.loadingReview = false;
+        this.review = '';
+        if (!res.success) {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+        } else {
+          this.getReviewsListFn(this.info._id);
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+        }
+      });
     },
   },
   watch: {

@@ -24,7 +24,7 @@
       <div class="search-card__id" v-if="page === 2">
         <BaseCard>
           <template v-slot:body>
-            <SearchById @find="findById" />
+            <SearchById @find="findById" :loading="buttonLoading" />
           </template>
         </BaseCard>
       </div>
@@ -66,6 +66,7 @@ export default {
       users: [],
       page: 1,
       loading: true,
+      buttonLoading: false
     };
   },
   computed: {
@@ -145,10 +146,14 @@ export default {
       this.users = [];
     },
     findById(id) {
+      this.buttonLoading = true
       this.$store.dispatch('checkUserAction', { id: id }).then(res => {
+        this.buttonLoading = false
         if (res.success) {
           this.loading = false
           this.$emit("selected", { user: id });
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
       })
     },

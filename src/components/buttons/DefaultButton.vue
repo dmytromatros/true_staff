@@ -1,12 +1,14 @@
 <template>
   <div class="default-button">
     <button @click.stop="action" class="default-button__button" :class="{ danger, success, warning, disabled }">
-      {{ label }}
+      <span v-if="!loading">{{ label }}</span>
+      <LoaderComponent v-else color="#fff" width="25px" />
     </button>
   </div>
 </template>
 
 <script>
+import LoaderComponent from '../other/LoaderComponent.vue';
 export default {
   name: "DefaultButton",
   props: {
@@ -30,10 +32,19 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
+
+  components: { LoaderComponent },
   methods: {
     action() {
-      this.$emit("click");
+      console.log(this.disabled)
+      if (!this.disabled)
+        this.$emit("action");
     },
   },
 };

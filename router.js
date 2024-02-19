@@ -4,7 +4,6 @@ exports = module.exports = (app) => {
 
     // System
 
-    app.post('/api/registration', require('./routes/system/registration'))
     app.post('/api/login-user', require('./routes/system/loginUser'))
     app.post('/api/login-company', require('./routes/system/loginCompany'))
 
@@ -14,7 +13,7 @@ exports = module.exports = (app) => {
     app.post('/api/add-user', require('./routes/employee/add-user'))
     app.get('/api/get-user/:id', require('./routes/employee/get-user'))
     app.post('/api/find-by-name', require('./routes/employee/find-by-name'))
-    app.get('/api/check-user/:id', require('./routes/employee/get-user'))
+    app.get('/api/check-user/:id', require('./routes/employee/check-user'))
     app.get('/api/get-user-info/:id', require('./routes/employee/get-user-info'))
     app.post('/api/edit-user', require('./routes/employee/edit-user'))
     app.post('/api/send-user-request', require('./routes/employee/send-request'))

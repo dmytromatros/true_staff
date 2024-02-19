@@ -4,7 +4,7 @@
       <div class="review-card__sender">
         <div class="review-card__img">
           <img v-if="sender.image" :src="sender.image" alt="" />
-          <img v-else src="../../../assets/img/profile-img.webp" alt="" />
+          <img v-else src="/img/profile-img.webp" alt="" />
         </div>
         <div class="review-card__name">
           {{ sender.name }}
@@ -131,4 +131,5 @@ export default {
     width: 100%;
     text-align: right;
   }
-}</style>
+}
+</style>

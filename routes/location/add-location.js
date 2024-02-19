@@ -1,12 +1,12 @@
 'use strict';
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     const { company, address } = req.body;
     let error = [];
 
     if (company == '' || company == undefined) error.push('Company id is required');
-    if (address == '' || address == undefined) error.push('Address is required');
+    if (address == '' || address == undefined) error.push('Введіть адресу локації');
 
     let addressCheck;
 
@@ -14,7 +14,9 @@ module.exports = async(req, res) => {
         try {
 
             addressCheck = await req.app.db.collection('locations').findOne({ address, company });
-            if (addressCheck) error.push('The location with such an address is already registered');
+            if (addressCheck) {
+                error.push('Локація з такою адресою вже існує')
+            };
 
         } catch (err) {
             error.push(err);
@@ -51,8 +53,8 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'New location was successfully added',
-            data: {...locations, new: {...currentLocation } },
+            message: 'Локація додана!',
+            data: { ...locations, new: { ...currentLocation } },
             success: true
         });
     } else {

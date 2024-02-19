@@ -15,10 +15,10 @@ module.exports = async (req, res) => {
             const isPasswordMatch = copmany.password === password;
 
             if (!isPasswordMatch) {
-                error.push('Incorrect password');
+                error.push('Не правильний пароль');
             }
         } else {
-            error.push('Company not found');
+            error.push('Компанію з таким логіном на паролен не знайдено');
         }
 
     } catch (error) {
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     if (!error.length) {
         res.status(200).json({
             data: copmany,
-            success: true
+            success: true,
         });
     } else {
         res.status(417).json({

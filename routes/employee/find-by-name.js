@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
     let error = [];
     let users;
 
-    if (!req.body.name && !req.body.lname) error.push('Name or Surname required!!!')
+    if (!req.body.name && !req.body.lname) error.push('Введіть ім\'я та прізвище')
 
     if (error.length === 0) {
         try {
@@ -18,7 +18,6 @@ module.exports = async (req, res) => {
                     query.$or = query.$or || [];
                     query.$or.push({ surname: { $regex: surnameRegex }, name: { $regex: nameRegex } });
                 } else {
-
                     query.$or = [{ name: { $regex: nameRegex } }];
                 }
             }
@@ -33,6 +32,11 @@ module.exports = async (req, res) => {
         } catch (err) {
             error.push(err);
         }
+    }
+
+    if (users.length === 0) {
+        error.push('Користувача не знайдено. Перевірте правельність введених даних');
+
     }
 
 

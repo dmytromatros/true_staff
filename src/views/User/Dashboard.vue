@@ -41,7 +41,7 @@
             },
           ]">
           <template v-slot:image>
-            <img src="@/assets/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
+            <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
           </template>
         </MenuCard>
 
@@ -54,7 +54,7 @@
             },
           ]">
           <template v-slot:image>
-            <img src="@/assets/img/cooperation.avif" alt="Запити до співпраці" />
+            <img src="/img/cooperation.avif" alt="Запити до співпраці" />
           </template>
         </MenuCard>
 

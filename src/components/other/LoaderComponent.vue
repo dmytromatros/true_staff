@@ -1,6 +1,7 @@
 <template>
     <div class="loader">
-        <span class="loader__loader"></span>
+        <span class="loader__loader"
+            :style="{ 'border-top-color': color, 'border-left-color': color, 'border-right-color': color, 'width': width, 'height': width }"></span>
     </div>
 </template>
 
@@ -8,7 +9,10 @@
 export default {
     name: "LoaderComponent",
     components: {},
-    props: {},
+    props: {
+        color: String,
+        width: String
+    },
     data() {
         return {}
     },

@@ -12,12 +12,12 @@
                 <div class="user-settings__data-pass">
                   <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="user.password"
                     :disabled="true" />
-                  <DefaultButton label="Змінити пароль" @click="openPopup" />
+                  <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
                 <CheckboxInput label="Is an employee" v-model="user.isEmployee" />
 
                 <div class="user-settings__buttons">
-                  <DefaultButton label="Зберегти зміни" @click="editUser" />
+                  <DefaultButton label="Зберегти зміни" @action="editUser" />
                 </div>
               </div>
             </div>

@@ -17,7 +17,7 @@
       Статус: <span class="receive-request-card__bold">{{ status }}</span>
     </div>
 
-    <DefaultButton v-if="status !== 'Очікується на відповідь'" label="Видалити" @click="handleDeleteRequest"
+    <DefaultButton v-if="status !== 'Очікується на відповідь'" label="Видалити" @action="handleDeleteRequest"
       :danger="true" />
   </div>
 </template>

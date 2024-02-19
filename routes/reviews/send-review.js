@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     console.log(req.body)
 
@@ -11,7 +11,7 @@ module.exports = async(req, res) => {
     // if (company == '' || company == undefined) error.push('company is required');
     // if (location == '' || location == undefined) error.push('location is required');
     if (from == '' || from == undefined) error.push('from is required');
-    if (review == '' || review == undefined) error.push('review is required');
+    if (review == '' || review == undefined) error.push('Заповнять поле для відгуку');
     if (to == '' || to == undefined) error.push('to is required');
     if (date == '' || date == undefined) error.push('date is required');
 
@@ -20,14 +20,14 @@ module.exports = async(req, res) => {
         try {
             await req.app.db.collection('reviews').insertOne(req.body);
         } catch (err) {
-            error.push(err);
+            error.push('Не вдалось відправити відгук. Спробуйте ще раз)');
         }
     }
 
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Review has been sent!',
+            message: 'Відгук відправлено!',
             success: true
         });
     } else {

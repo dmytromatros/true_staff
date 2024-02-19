@@ -46,7 +46,7 @@
                   <div>
                     <TextInput class="requests__input" label="Повідомлення" :textarea="true" v-model="message"
                       :disabled="!position" />
-                    <DefaultButton class="requests__input" label="Відправити запит" @click="sendRequest" />
+                    <DefaultButton class="requests__input" label="Відправити запит" @action="sendRequest" />
                   </div>
                 </div>
               </div>

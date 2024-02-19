@@ -1,10 +1,11 @@
 <template>
   <div class="menu-card">
-    <button class="menu-card__button" @click="goToLink"
-      :style="`background: linear-gradient(-45deg, ${background_1} 0%, ${background_2} 70%)`">
+    <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active">
       <slot name="image"> </slot>
       <span class="menu-card__label">{{ label }}</span>
-    </button>
+      <div class="menu-card__back"></div>
+    </router-link>
+
   </div>
 </template>
 
@@ -19,14 +20,6 @@ export default {
     link: {
       type: String,
       default: "",
-    },
-    background_1: {
-      type: String,
-      default: "#ffffff",
-    },
-    background_2: {
-      type: String,
-      default: "#ffffff",
     },
   },
   methods: {
@@ -47,6 +40,19 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
+  position: relative;
+
+  &__back {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background: $main-gradient;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transition: 0.25s ease-in-out all;
+  }
 
   &__button {
     border-radius: $border-radius;
@@ -61,12 +67,36 @@ export default {
     backdrop-filter: blur(25px);
     gap: 15px;
     max-height: 120px;
+    background: white;
+    outline: 1px solid transparent;
+    overflow: hidden;
+
+    &:hover {
+      outline-color: $second-color;
+    }
+
+    &--active .menu-card__back {
+      opacity: 1;
+    }
+
+    &--active {
+      &:hover {
+        outline-color: transparent;
+      }
+    }
+
+    &--active .menu-card__label {
+      color: $white;
+    }
   }
 
   &__label {
     font-weight: 600;
     font-size: 16px;
     color: $dark_text;
+    transition: 0.25s ease-in-out all;
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -76,5 +106,7 @@ export default {
   object-fit: cover;
   object-position: center;
   border-radius: $border-radius;
+  position: relative;
+  z-index: 1;
 }
 </style>

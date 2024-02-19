@@ -6,7 +6,7 @@ const { isAuth } = require("../../utils/permission");
 const hashCode = (s) => {
     return s.split('').reduce(function (a, b) {
         a = (a << 5) - a + b.charCodeAt(0);
-        return (a & a) + Date.now();
+        return (a & a);
     }, 0);
 };
 
@@ -37,7 +37,9 @@ export default createStore({
             state.locations = data.data;
         },
         addNotification: (state, data) => {
-            state.notifications.push(data);
+            const index = state.notifications.findIndex((item) => item.id === data.id);
+            if (index <= -1)
+                state.notifications.push(data);
         },
         deleteNotification: (state, data) => {
             const index = state.notifications.findIndex((item) => item.id === data);
@@ -141,6 +143,7 @@ export default createStore({
         },
 
         checkUserAction: async (context, data) => {
+            console.log(data)
             return new Promise(done => {
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/check-user/${data.id}`)
                     .then(res => {

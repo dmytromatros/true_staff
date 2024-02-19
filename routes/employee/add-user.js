@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     const { name, surname, email, password } = req.body;
     let error = [];
 
-    if (name == '' || name == undefined) error.push('Name is required');
-    if (password == '' || password == undefined) error.push('Password is required');
-    if (email == '' || email == undefined) error.push('Email is required');
+    if (name == '' || name == undefined) error.push('Введіть ім\'я');
+    if (email == '' || email == undefined) error.push('Введіть ваш Email');
+    if (password == '' || password == undefined) error.push('Придумайте та введіть пароль');
 
     let nameCheck, surnameCheck, emailCheck;
 
@@ -15,7 +15,7 @@ module.exports = async(req, res) => {
         try {
 
             emailCheck = await req.app.db.collection('users').findOne({ email });
-            if (emailCheck) error.push('The user with such an email is already registered');
+            if (emailCheck) error.push('Користувач з таким Email вже зареєстрований');
 
         } catch (error) {
             error.push(error);
@@ -37,7 +37,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'User has beed registered!',
+            message: 'Ви успішно зареєстувались!',
             success: true
         });
     } else {

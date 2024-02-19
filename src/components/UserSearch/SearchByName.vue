@@ -4,7 +4,8 @@
             <template v-slot:body>
                 <TextInput placeholder="Ім'я" v-model="user.name" />
                 <TextInput placeholder="Прізвище" v-model="user.lname" />
-                <DefaultButton label="Шукати" @click="startSearch" />
+                <DefaultButton label="Шукати" @action="startSearch" :loading="loading"
+                    :disabled="!Boolean(user.name.length) && !Boolean(user.lname.length)" />
             </template>
         </BaseCard>
         <BaseCard v-if="foundUsers.length" class="search-by-name__result">
@@ -31,15 +32,20 @@ export default {
                 lname: ''
             },
 
-            foundUsers: []
+            foundUsers: [],
+            loading: false
         }
     },
     computed: {},
     methods: {
         findUsersList() {
+            this.loading = true
             this.$store.dispatch('findByNameAction', this.user).then(res => {
+                this.loading = false
                 if (res.success) {
                     this.foundUsers = res.data
+                } else {
+                    this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                 }
             })
         },

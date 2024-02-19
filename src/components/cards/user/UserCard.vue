@@ -2,7 +2,7 @@
   <div class="user-card">
     <button class="user-card__button" @click="goToLink">
       <img v-if="image" :src="image" :alt="image" />
-      <img v-else src="@/assets/img/profile-img.webp" :alt="image" />
+      <img v-else src="/img/profile-img.webp" :alt="image" />
       <div class="user-card__bottom">
         <!-- <span class="user-card__label">{{ label }}</span> -->
         <span class="user-card__name">{{ name }}</span>
@@ -118,4 +118,5 @@ export default {
   z-index: -1;
   top: 0;
   left: 0;
-}</style>
+}
+</style>

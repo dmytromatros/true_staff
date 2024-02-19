@@ -8,7 +8,7 @@
                 <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
                 <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
 
-                <DefaultButton label="Add employee" @click="addEmployee" />
+                <DefaultButton label="Add employee" @action="addEmployee" />
             </template>
         </BaseCard>
     </div>

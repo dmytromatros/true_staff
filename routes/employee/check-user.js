@@ -6,11 +6,20 @@ module.exports = async (req, res) => {
 
     let error = [];
 
-    if (!req.params.id) error.push('Id is required');
+    if (!req.params.id) error.push('ВВедіть ID користувача');
+
+    if (!req.params.id || !ObjectId.isValid(req.params.id)) {
+        error.push('Введіть коректний ID користувача');
+    }
 
     let user;
 
-    const objectId = new ObjectId(req.params.id);
+    let objectId;
+
+
+    if (error.length === 0) {
+        objectId = new ObjectId(req.params.id);
+    }
 
     if (error.length === 0) {
         try {
@@ -18,7 +27,7 @@ module.exports = async (req, res) => {
                 _id: objectId
             },);
         } catch (err) {
-            error.push(err);
+            error.push('Користувача з таким ID не існує');
         }
     }
 
@@ -29,7 +38,7 @@ module.exports = async (req, res) => {
         });
     } else {
         res.status(417).json({
-            message: 'No users found !!!',
+            message: error,
             success: false
         });
     }

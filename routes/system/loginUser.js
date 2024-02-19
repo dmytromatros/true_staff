@@ -15,10 +15,10 @@ module.exports = async (req, res) => {
             const isPasswordMatch = user.password === password;
 
             if (!isPasswordMatch) {
-                error.push('Incorrect password');
+                error.push('Не правильний пароль');
             }
         } else {
-            error.push('User not found');
+            error.push('Користувача з таким логіном на паролем не знайдено');
         }
 
     } catch (error) {

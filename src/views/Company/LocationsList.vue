@@ -4,14 +4,14 @@
     <div v-else class="locations-list__container">
       <div class="locations-list__locations-card">
         <div class="locations-list__locations">
-          <div class="locations-list__location" v-for="(location, key) in locations" :key="key">
+          <div class="locations-list__location" v-for="(location, key) in locations" :key="key + reloadData">
             <LocationCard :location="location" @edited="getLocations" />
           </div>
         </div>
       </div>
 
       <div class="locations-list__new-location-wrapper">
-        <BaseCard class="locations-list__new-location-card">
+        <BaseCard class="locations-list__new-location-card" :key="reloadData">
           <template v-slot:body>
             <div class="locations-list__new-location">
               <ImageInput v-model="newLocation.image" @changed="handleImage" id="new" />
@@ -23,13 +23,11 @@
               <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації"
                 v-model="newLocation.address" />
 
-              <DefaultButton label="Add location" @click="addLocation" />
+              <DefaultButton label="Add location" @action="addLocation" :loading="loadingButton" />
             </div>
           </template>
         </BaseCard>
       </div>
-
-
     </div>
   </div>
 </template>
@@ -50,8 +48,10 @@ export default {
       newLocation: {
         image: "",
         address: "",
-        loading: true,
       },
+      loading: true,
+      loadingButton: false,
+      reloadData: Date.now()
     };
   },
   methods: {
@@ -68,12 +68,20 @@ export default {
         .then((res) => {
           this.locations = res.data;
           this.loading = false
+          this.clearData()
         });
     },
+    clearData() {
+      this.newLocation.address = '';
+      this.newLocation.image = '';
+      this.reloadData = Date.now()
+    },
+
     handleImage(data) {
       this.newLocation.image = data;
     },
     addLocation() {
+      this.loadingButton = true
       this.$store
         .dispatch("addLocationAction", {
           image: this.newLocation.image,
@@ -82,12 +90,21 @@ export default {
           employees: 0,
         })
         .then((res) => {
-          this.newLocation.image.set("userId", res.data.new._id);
-          this.$store.dispatch("uploadImageAction", this.newLocation.image).then((res) => {
-            if (res.success) {
+          this.loadingButton = false
+          if (res.success) {
+            if (this.newLocation.image) {
+              this.newLocation.image.set("userId", res.data.new._id);
+              this.$store.dispatch("uploadImageAction", this.newLocation.image).then((res) => {
+                if (res.success) {
+                  this.getLocations();
+                }
+              });
+            } else {
               this.getLocations();
             }
-          });
+          } else {
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+          }
         });
     },
     openEditPopupFN(id) {

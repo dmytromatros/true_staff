@@ -1,5 +1,13 @@
 'use strict';
 
+
+const generateUniqueId = (s) => {
+    return s.split('').reduce(function (a, b) {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return `${(a & a) + Date.now()}`;
+    }, 0);
+};
+
 module.exports = async (req, res) => {
 
     const { name, surname, email, password } = req.body;
@@ -25,6 +33,8 @@ module.exports = async (req, res) => {
     let newUser = req.body
 
     newUser.isImage = false
+
+    newUser.uniqueId = generateUniqueId(`${name} ${surname}`)
 
     if (error.length === 0) {
         try {

@@ -1,8 +1,13 @@
 <template>
   <MainBackground v-if="!isAuthorized" />
   <div class="header">
-    <UserHeader v-if="role == 'user'" />
-    <CompanyHeader v-if="role == 'company'" />
+    <Transition name="header" appear>
+      <UserHeader v-if="role == 'user'" />
+    </Transition>
+    <Transition name="header" appear>
+      <CompanyHeader v-if="role == 'company'" />
+    </Transition>
+
   </div>
   <div class="main-container">
     <router-view class="main-router-view" />
@@ -90,5 +95,27 @@ export default {
     overflow: hidden;
     flex: 1;
   }
+}
+
+.page-enter-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.page-enter-from {
+  transform: translateY(10vh);
+  opacity: 0.01;
+}
+
+.header-enter-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.header-enter-from {
+  transform: translateY(-10vh);
+  opacity: 0.01;
 }
 </style>

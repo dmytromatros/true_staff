@@ -8,7 +8,8 @@
                 <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
                 <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
 
-                <DefaultButton label="Add employee" @action="addEmployee" />
+                <DefaultButton label="Add employee" @action="addEmployee"
+                    :disabled="!newEmployee.location || !newEmployee.userId || !newEmployee.message || !newEmployee.position" />
             </template>
         </BaseCard>
     </div>
@@ -45,28 +46,34 @@ export default {
     },
     methods: {
         async addEmployee() {
-            const employeeName = await this.getUserName(this.newEmployee.userId);
-            const companyName = await this.getCompanyName(this.$route.params.id);
-            let data = {
-                companyId: this.$route.params.id,
-                companyName: companyName,
-                locationId: this.newEmployee.location,
-                locationAddress: this.getLocationAddress(this.newEmployee.location),
-                employeeId: this.newEmployee.userId,
-                employeeName: employeeName,
-                message: this.newEmployee.message,
-                position: this.newEmployee.position,
-                type: 1,
-            };
-
-            this.$store.dispatch("addCompanyRequestAction", data).then(res => {
+            this.$store.dispatch("checkUserAction", { id: this.newEmployee.userId || 'test' }).then(async res => {
                 if (res.success) {
-                    this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+                    const employeeName = await this.getUserName(res.data._id);
+                    const companyName = await this.getCompanyName(this.$route.params.id);
+                    let data = {
+                        companyId: this.$route.params.id,
+                        companyName: companyName,
+                        locationId: this.newEmployee.location,
+                        locationAddress: this.getLocationAddress(this.newEmployee.location),
+                        employeeId: res.data._id,
+                        employeeName: employeeName,
+                        message: this.newEmployee.message,
+                        position: this.newEmployee.position,
+                        type: 1,
+                    };
+
+                    this.$store.dispatch("addCompanyRequestAction", data).then(res => {
+                        if (res.success) {
+                            this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+                        } else {
+                            console.log(res)
+                            this.$store.dispatch('showNotification', { message: res.response.data.message, type: 'error' })
+                        }
+                    });
                 } else {
-                    console.log(res)
-                    this.$store.dispatch('showNotification', { message: res.response.data.message, type: 'error' })
+                    this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                 }
-            });
+            })
         },
 
         async getUserName(id) {

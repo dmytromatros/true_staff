@@ -1,36 +1,42 @@
 <template>
   <div class="company-dashboard">
     <div class="company-dashboard__body">
-      <div class="company-dashboard__sidebar">
-        <CompanyCard class="company-dashboard__sidebar-link" label="Профіль" link="company-settings"
-          :background_1="checkRoute('company-settings') ? '#00243f' : '#93dff5'"
-          :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'" :class="[
-            {
-              'company-dashboard__sidebar-link--active':
-                checkRoute('company-settings'),
-            },
-          ]" />
+      <Transition name="sidebar" appear>
+        <div class="company-dashboard__sidebar">
+          <CompanyCard class="company-dashboard__sidebar-link" label="Профіль" link="company-settings"
+            :background_1="checkRoute('company-settings') ? '#00243f' : '#93dff5'"
+            :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'" :class="[
+              {
+                'company-dashboard__sidebar-link--active':
+                  checkRoute('company-settings'),
+              },
+            ]" />
 
-        <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations">
-          <template v-slot:image>
-            <img src="/img/reviews-img.avif" alt="Налаштування профілю" />
-          </template>
-        </MenuCard>
+          <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations">
+            <template v-slot:image>
+              <img src="/img/reviews-img.avif" alt="Налаштування профілю" />
+            </template>
+          </MenuCard>
 
-        <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard">
-          <template v-slot:image>
-            <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
-          </template>
-        </MenuCard>
+          <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard">
+            <template v-slot:image>
+              <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
+            </template>
+          </MenuCard>
 
-        <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests">
-          <template v-slot:image>
-            <img src="/img/cooperation.avif" alt="Запити до співпраці" />
-          </template>
-        </MenuCard>
-      </div>
+          <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests">
+            <template v-slot:image>
+              <img src="/img/cooperation.avif" alt="Запити до співпраці" />
+            </template>
+          </MenuCard>
+        </div>
+      </Transition>
       <div class="company-dashboard__content">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <Transition name="content" appear>
+            <component :is="Component" />
+          </Transition>
+        </router-view>
       </div>
     </div>
   </div>
@@ -90,5 +96,23 @@ export default {
   &__send-review {
     height: 100%;
   }
+}
+
+.sidebar-enter-active,
+.content-enter-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.sidebar-enter-from {
+  transform: translateX(-10vh);
+  opacity: 0.01;
+}
+
+.content-enter-from,
+.content-leave-to {
+  transform: translateX(10vh);
+  opacity: 0.01;
 }
 </style>

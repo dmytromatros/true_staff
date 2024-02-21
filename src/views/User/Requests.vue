@@ -5,7 +5,8 @@
         <div class="requests__receive">
           <div class="requests__receive-title">Отримані</div>
           <div class="requests__receive-content">
-            <div v-for="(rec, key) in receive" :key="key">
+            <LoaderComponent v-if="loading" />
+            <div v-else v-for="(rec, key) in receive" :key="key">
               <ReceiveRequest :from="rec.companyName" :location="rec.locationAddress" :position="rec.position"
                 :message="rec.message" :editable="!rec.rejected && !rec.accepted"
                 @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
@@ -16,7 +17,8 @@
         <div class="requests__receive">
           <div class="requests__receive-title">Відправлені</div>
           <div class="requests__receive-content">
-            <div v-for="(rec, key) in sent" :key="key">
+            <LoaderComponent v-if="loading" />
+            <div v-else v-for="(rec, key) in sent" :key="key">
               <SentRequest :to="rec.companyName" :location="rec.locationAddress" :position="rec.position"
                 :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)" />
@@ -24,29 +26,36 @@
           </div>
         </div>
       </div>
-      <div class="requests__bottom">
-        <div class="requests__receive-title">Відравити запит</div>
-        <div class="requests__receive-content">
-          <div class="user-settings__companies">
-            <div class="user-settings__companies-item" v-for="(company, key) in enteredCompanies" :key="key">
-              <div>Name: {{ company.companyName }}</div>
-              <div>Faired: {{ company.deleted }}</div>
-              <div>Position: {{ company.position }}</div>
+      <div class="requests__bottom" :class="{ 'requests__bottom--active': opened }">
+        <button class="requests__add-button" @click="openAddNew">
+          <FontIcon v-if="opened" icon="disabled_by_default" font-size="34px" />
+          <FontIcon v-else icon="edit_square" font-size="34px" />
+        </button>
+        <div class="requests__add-new">
+          <div class=" requests__receive-title--add">Відравити запит</div>
+          <div class="requests__receive-content">
+            <div class="user-settings__companies">
+              <div class="user-settings__companies-item" v-for="(company, key) in enteredCompanies" :key="key">
+                <div>Name: {{ company.companyName }}</div>
+                <div>Faired: {{ company.deleted }}</div>
+                <div>Position: {{ company.position }}</div>
+              </div>
             </div>
-          </div>
 
-          <div v-if="isEmployee" class="user-settings__organization">
-            <div>
-              <SelectInput class="requests__input" label="Компанія" v-model="company" :options="companyList" />
+            <div v-if="isEmployee" class="user-settings__organization">
               <div>
-                <SelectInput class="requests__input" label="Локація" v-model="location" :options="locationList"
-                  :disabled="!company" />
+                <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
                 <div>
-                  <TextInput class="requests__input" label="Позиція" v-model="position" :disabled="!location" />
+                  <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList"
+                    :disabled="!company" />
                   <div>
-                    <TextInput class="requests__input" label="Повідомлення" :textarea="true" v-model="message"
-                      :disabled="!position" />
-                    <DefaultButton class="requests__input" label="Відправити запит" @action="sendRequest" />
+                    <TextInput class="requests__input" placeholder="Позиція" v-model="position" :disabled="!location" />
+                    <div>
+                      <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message"
+                        :disabled="!position" />
+                      <DefaultButton class="requests__input" label="Відправити запит" @action="sendRequest"
+                        :disabled="!company || !location || !position || !message" :loading="loadingButton" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -64,6 +73,8 @@ import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
 import SentRequest from "@/components/cards/system/SentRequest.vue";
 import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue"
+import FontIcon from "@/components/other/FontIcon.vue";
 export default {
   name: "UserRequests",
   data() {
@@ -82,6 +93,9 @@ export default {
       companyList: [],
       locationList: [],
       enteredCompanies: [],
+      loading: true,
+      loadingButton: false,
+      opened: false
     };
   },
   components: {
@@ -90,6 +104,8 @@ export default {
     SelectInput,
     TextInput,
     DefaultButton,
+    LoaderComponent,
+    FontIcon
   },
   methods: {
     sentStatus(rejected, accepted) {
@@ -130,6 +146,8 @@ export default {
             console.log(this.sent);
             this.receive = { ...res.data.receive };
           }
+        }).finally(() => {
+          this.loading = false;
         });
     },
 
@@ -190,6 +208,7 @@ export default {
       }
     },
     async sendRequest() {
+      this.loadingButton = true
       const companyName = await this.getCompanyName(this.company);
       const locationAddress = await this.getLocationAddress(this.location);
 
@@ -207,10 +226,18 @@ export default {
 
       this.$store.dispatch("addUserRequestAction", data).then((res) => {
         if (res.success) {
-          console.log(res);
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
+      }).finally(() => {
+        this.loadingButton = false
       });
     },
+
+    openAddNew() {
+      this.opened = !this.opened;
+    }
   },
   mounted() {
     this.getAllRequest();
@@ -249,14 +276,14 @@ export default {
 
   &__top {
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     flex: 1;
     width: 100%;
     gap: 25px;
   }
 
   &__receive {
-    flex: 1;
+    flex: 2;
     border-radius: $border-radius;
     @include main-shadow;
     overflow: hidden;
@@ -267,6 +294,17 @@ export default {
 
   &__receive-title {
     @include main-title;
+
+    &--add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 20px;
+      padding: 20px 15px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   &__receive-content {
@@ -279,23 +317,53 @@ export default {
   }
 
   &__bottom {
-    flex: 1;
-    width: 100%;
-    @include main-shadow;
-    border-radius: $border-radius;
-    background-color: $white;
+    width: fit-content;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    height: fit-content;
+    height: 100%;
 
     @media (max-height: 714px) {
       height: 100%;
     }
+
+    &>* {
+      white-space: nowrap;
+    }
+  }
+
+  &__bottom--active {
+    height: 100%;
+  }
+
+  &__bottom--active &__add-new {
+    width: 300px;
+  }
+
+  &__add-new {
+    width: 0;
+    height: fit-content;
+    border-radius: 0 $border-radius $border-radius $border-radius;
+    background-color: $white;
+    transition: 0.25s ease-in-out all;
   }
 
   &__input {
     margin-bottom: 20px;
+  }
+
+  &__add-button {
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 15px;
+    padding-top: 10px;
+    border-radius: 15px 0 0 15px;
+    background: $white;
+    transition: 0.25s ease-in-out all;
+    color: $main-color;
+
+    &:hover {
+      color: $second-color;
+    }
   }
 }
 </style>

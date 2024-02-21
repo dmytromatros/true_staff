@@ -29,5 +29,6 @@ export default {
 
 .material-symbols-outlined {
     user-select: none;
+    font-size: v-bind(fontSize);
 }
 </style>

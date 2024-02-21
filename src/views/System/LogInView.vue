@@ -1,22 +1,24 @@
 <template>
   <section class="log-in-page">
-    <div class="log-in-page__container" :style="`max-width: ${action == 'login' ? '600px' : '750px'}`">
-      <div class="log-in-page__left">
-        <div class="log-in-page__left-container">
-          <div class="log-in-page__select" :class="{
-            'log-in-page__select--registration': action == 'registration',
-          }">
-            <span class="log-in-page__selector" @click="select('login')"
-              :class="{ 'log-in-page__selector--active': action == 'login' }">Увійти</span>
-            <span class="log-in-page__selector" @click="select('registration')" :class="{
-              'log-in-page__selector--active': action == 'registration',
-            }">Реєстрація</span>
+    <Transition name="appear" appear>
+      <div class="log-in-page__container" :style="`max-width: ${action == 'login' ? '600px' : '750px'}`">
+        <div class="log-in-page__left">
+          <div class="log-in-page__left-container">
+            <div class="log-in-page__select" :class="{
+              'log-in-page__select--registration': action == 'registration',
+            }">
+              <span class="log-in-page__selector" @click="select('login')"
+                :class="{ 'log-in-page__selector--active': action == 'login' }">Увійти</span>
+              <span class="log-in-page__selector" @click="select('registration')" :class="{
+                'log-in-page__selector--active': action == 'registration',
+              }">Реєстрація</span>
+            </div>
+            <LogInFormVue class="log-in-page__form" v-if="action == 'login'" />
+            <RegistrationFormVue class="log-in-page__form" v-if="action == 'registration'" @registered="registered" />
           </div>
-          <LogInFormVue class="log-in-page__form" v-if="action == 'login'" />
-          <RegistrationFormVue class="log-in-page__form" v-if="action == 'registration'" @registered="registered" />
         </div>
       </div>
-    </div>
+    </Transition>
   </section>
 </template>
 
@@ -130,5 +132,16 @@ export default {
       }
     }
   }
+}
+
+.appear-enter-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.appear-enter-from {
+  transform: scale(0.5);
+  opacity: 0.01;
 }
 </style>

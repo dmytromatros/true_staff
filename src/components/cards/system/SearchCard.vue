@@ -147,11 +147,11 @@ export default {
     },
     findById(id) {
       this.buttonLoading = true
-      this.$store.dispatch('checkUserAction', { id: id }).then(res => {
+      this.$store.dispatch('checkUserAction', { id: id || 'test' }).then(res => {
         this.buttonLoading = false
         if (res.success) {
           this.loading = false
-          this.$emit("selected", { user: id });
+          this.$emit("selected", { user: res.data._id });
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }

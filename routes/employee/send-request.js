@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     req.body;
     let error = [];
@@ -24,9 +24,9 @@ module.exports = async(req, res) => {
         try {
             company = await req.app.db.collection('companies').findOne({
                 _id: objectId
-            }, );
+            },);
         } catch (err) {
-            error.push('No such company')
+            error.push('Не існує такої компанії')
         }
     }
 
@@ -41,9 +41,9 @@ module.exports = async(req, res) => {
         try {
             location = await req.app.db.collection('locations').findOne({
                 _id: objectId
-            }, );
+            },);
         } catch (err) {
-            error.push('No such company')
+            error.push('Не існує такої локації')
         }
     }
 
@@ -59,9 +59,9 @@ module.exports = async(req, res) => {
         try {
             user = await req.app.db.collection('users').findOne({
                 _id: objectId
-            }, );
+            },);
         } catch (err) {
-            error.push('No such user')
+            error.push('Не існує такого користуввача')
         }
     }
 
@@ -74,7 +74,7 @@ module.exports = async(req, res) => {
             employeeId: req.body.employeeId,
             deleted: false
         })
-        if (workplace) error.push('The account is already in the company!');
+        if (workplace) error.push('Користувач вже знаходиться в компанії!');
     }
 
     let existingRequest;
@@ -89,7 +89,7 @@ module.exports = async(req, res) => {
                 rejected: false
             });
             if (existingRequest) {
-                error.push('There is already a request with the same details');
+                error.push('Ви вже відправили такий запит');
             }
         } catch (err) {
             error.push('Error checking for existing request');
@@ -108,7 +108,7 @@ module.exports = async(req, res) => {
                 rejected: false
             });
             if (existingCompanyRequest) {
-                error.push('There is already a company request with the same details');
+                error.push('Вже є такий запит від компанії Вам');
             }
         } catch (err) {
             error.push('Error checking for existing company request');
@@ -121,7 +121,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
 
-        sendData = {...req.body }
+        sendData = { ...req.body }
         sendData.accepted = false
         sendData.rejected = false
         sendData.companyDeleted = false
@@ -136,7 +136,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Request has been sent!',
+            message: 'Запит відправлено!',
             success: true
         });
     } else {

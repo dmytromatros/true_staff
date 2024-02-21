@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
     let errors = [];
 
     if (!req.params.id) {

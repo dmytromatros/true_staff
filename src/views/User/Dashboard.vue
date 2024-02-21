@@ -1,66 +1,51 @@
 <template>
   <div class="user-dashboard">
     <div class="user-dashboard__body">
-      <div class="user-dashboard__sidebar">
-        <UserCard class="user-dashboard__sidebar-link" label="Профіль" link="user-settings"
-          :background_1="checkRoute('user-settings') ? '#00243f' : '#93dff5'"
-          :background_2="checkRoute('user-settings') ? '#00243f' : '#2aafd4'" :class="[
-            {
-              'user-dashboard__sidebar-link--active':
-                checkRoute('user-settings'),
-            },
-          ]" />
+      <Transition name="sidebar" appear>
+        <div class="user-dashboard__sidebar">
+          <UserCard class="user-dashboard__sidebar-link" label="Профіль" link="user-settings"
+            :background_1="checkRoute('user-settings') ? '#00243f' : '#93dff5'"
+            :background_2="checkRoute('user-settings') ? '#00243f' : '#2aafd4'" :class="[
+              {
+                'user-dashboard__sidebar-link--active':
+                  checkRoute('user-settings'),
+              },
+            ]" />
 
-        <!-- <MenuCard
-          class="user-dashboard__sidebar-link"
-          label="Залишити відгук"
-          link="user-dashboard"
-          :background_1="checkRoute('user-dashboard') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'"
-          :class="[
-            {
-              'user-dashboard__sidebar-link--active':
-                checkRoute('user-dashboard'),
-            },
-          ]"
-        >
-          <template v-slot:image>
-            <img
-              src="@/assets/img/reviews-img.avif"
-              alt="Налаштування профілю"
-            />
-          </template>
-        </MenuCard> -->
+          <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard"
+            :background_1="checkRoute('user-dashboard') ? '#00243f' : '#fff'"
+            :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'" :class="[
+              {
+                'user-dashboard__sidebar-link--active':
+                  checkRoute('user-dashboard'),
+              },
+            ]">
+            <template v-slot:image>
+              <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
+            </template>
+          </MenuCard>
 
-        <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard"
-          :background_1="checkRoute('user-dashboard') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-dashboard') ? '#0a5a99 ' : '#fff'" :class="[
-            {
-              'user-dashboard__sidebar-link--active':
-                checkRoute('user-dashboard'),
-            },
-          ]">
-          <template v-slot:image>
-            <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
-          </template>
-        </MenuCard>
+          <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests"
+            :background_1="checkRoute('user-requests') ? '#00243f' : '#fff'"
+            :background_2="checkRoute('user-requests') ? '#0a5a99 ' : '#fff'" :class="[
+              {
+                'user-dashboard__sidebar-link--active':
+                  checkRoute('user-requests'),
+              },
+            ]">
+            <template v-slot:image>
+              <img src="/img/cooperation.avif" alt="Запити до співпраці" />
+            </template>
+          </MenuCard>
 
-        <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests"
-          :background_1="checkRoute('user-requests') ? '#00243f' : '#fff'"
-          :background_2="checkRoute('user-requests') ? '#0a5a99 ' : '#fff'" :class="[
-            {
-              'user-dashboard__sidebar-link--active':
-                checkRoute('user-requests'),
-            },
-          ]">
-          <template v-slot:image>
-            <img src="/img/cooperation.avif" alt="Запити до співпраці" />
-          </template>
-        </MenuCard>
-
-      </div>
+        </div>
+      </Transition>
       <div class="user-dashboard__content">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <Transition name="content" appear>
+            <component :is="Component" />
+          </Transition>
+        </router-view>
       </div>
     </div>
   </div>
@@ -148,5 +133,23 @@ export default {
   &__send-review {
     height: 100%;
   }
+}
+
+.sidebar-enter-active,
+.content-enter-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.sidebar-enter-from {
+  transform: translateX(-10vh);
+  opacity: 0.01;
+}
+
+.content-enter-from,
+.content-leave-to {
+  transform: translateX(10vh);
+  opacity: 0.01;
 }
 </style>

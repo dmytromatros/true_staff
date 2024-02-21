@@ -8,37 +8,33 @@ module.exports = async (req, res) => {
 
     if (!req.params.id) error.push('ВВедіть ID користувача');
 
-    if (!req.params.id || !ObjectId.isValid(req.params.id)) {
-        error.push('Введіть коректний ID користувача');
-    }
-
     let user;
 
-    let objectId;
-
-
-    if (error.length === 0) {
-        objectId = new ObjectId(req.params.id);
-    }
 
     if (error.length === 0) {
         try {
             user = await req.app.db.collection('users').findOne({
-                _id: objectId
-            },);
+                uniqueId: req.params.id
+            }, {
+                projection: {
+                    _id: 1
+                }
+            });
         } catch (err) {
             error.push('Користувача з таким ID не існує');
         }
     }
 
 
-    if (error.length === 0) {
+
+    if (error.length === 0 && user) {
         res.status(200).json({
+            data: user,
             success: true
         });
     } else {
         res.status(417).json({
-            message: error,
+            message: ['Користувача з таким ID не існує'],
             success: false
         });
     }

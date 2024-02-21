@@ -7,29 +7,30 @@ module.exports = async (req, res) => {
     req.body;
     let error = [];
 
-    if (!req.body.locationId || !req.body.locationAddress) error.push('Location is required');
+    if (!req.body.locationId || !req.body.locationAddress) error.push('Введіть адресу локації');
     if (!req.body.companyId || !req.body.companyName) error.push('Company is required');
-    if (!req.body.employeeId) error.push('Receiver is required');
-    if (!req.body.message) error.push('Message is required');
-    if (!req.body.position) error.push('Position is required');
+    if (!req.body.employeeId) error.push('Введіть ID користувача');
+    if (!req.body.message) error.push('Введіть повідомлення');
+    if (!req.body.position) error.push('Введіть посаду');
 
     // Check the user
 
     let user;
 
     if (error.length === 0) {
-        const objectId = new ObjectId(req.body.employeeId);
 
-        console.log(objectId)
+        const objectId = new ObjectId(req.body.employeeId);
 
         try {
             user = await req.app.db.collection('users').findOne({
                 _id: objectId
             },);
         } catch (err) {
-            error.push('No such user')
+            error.push('Користувача з таким ID не знайдено ')
         }
     }
+
+    if (!user) error.push('Користувача з таким ID не знайдено')
 
     // Check if the company includes the user
 
@@ -44,14 +45,14 @@ module.exports = async (req, res) => {
             deleted: false
         });
 
-        if (workplace) error.push('The employee is already in the company!');
+        if (workplace) error.push('Користувач вже є в списку компанії!');
 
     }
 
     // Check if the user in an employee
 
     if (error.length === 0) {
-        if (!user.isEmployee) error.push('The user is not an employee!');
+        if (!user.isEmployee) error.push('Користувач не є робітником!');
     }
 
     // Add new request
@@ -69,7 +70,7 @@ module.exports = async (req, res) => {
                 rejected: false
             });
             if (existingRequest) {
-                error.push('There is already an employee request with the same details');
+                error.push('Вже існує такий запит (від користувач компанії) . Перевірте сторінку запитів до співпраці');
             }
         } catch (err) {
             error.push('Error checking for existing request');
@@ -88,7 +89,7 @@ module.exports = async (req, res) => {
                 rejected: false
             });
             if (existingCompanyRequest) {
-                error.push('There is already a company request with the same details');
+                error.push('Вже існує такий запит (від компанії користувачу) . Перевірте сторінку запитів до співпраці');
             }
         } catch (err) {
             error.push('Error checking for existing company request');
@@ -114,7 +115,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Request has been sent!',
+            message: 'Запит вдало відправлено!',
             success: true
         });
     } else {

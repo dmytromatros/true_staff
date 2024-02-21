@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
             }
 
 
-            users = await req.app.db.collection('users').find(query, { projection: { name: 1, surname: 1, isImage: 1 } }).toArray();
+            users = await req.app.db.collection('users').find(query, { projection: { name: 1, surname: 1, isImage: 1, uniqueId: 1 } }).toArray();
         } catch (err) {
             error.push(err);
         }

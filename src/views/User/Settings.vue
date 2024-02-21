@@ -1,6 +1,8 @@
 <template>
   <section class="user-settings">
-    <div class="user-settings__form">
+    <LoaderComponent v-if="loading" />
+    <div v-else class="user-settings__form">
+
       <div class="user-settings__content">
         <BaseCard style="padding: 0">
           <template v-slot:body>
@@ -28,7 +30,8 @@
         <BaseCard>
           <template v-slot:body>
             <div class="user-settings__image">
-              <ImageInput :imageLink="imageUrl" @changed="handleImage" :id="$route.params.id" />
+              <LoaderComponent v-if="imageLoading" />
+              <ImageInput v-else :imageLink="imageUrl" @changed="handleImage" :id="$route.params.id" />
             </div>
           </template>
         </BaseCard>
@@ -45,6 +48,7 @@ import ChangeUserPasswordPopup from "@/components/popups/ChangeUserPasswordPopup
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue"
 
 export default {
   name: "UserSettings",
@@ -55,6 +59,7 @@ export default {
     DefaultButton,
     BaseCard,
     ImageInput,
+    LoaderComponent
   },
   data() {
     return {
@@ -62,6 +67,8 @@ export default {
       image: null,
       imageUrl: null,
       changePassPopup: false,
+      loading: true,
+      imageLoading: true
     };
   },
   methods: {
@@ -79,7 +86,16 @@ export default {
 
       this.$store.dispatch("editUserAction", data).then((res) => {
         if (res.success) {
-          this.$store.dispatch("uploadImageAction", this.user.image);
+          if (this.user.image) {
+            this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
+              if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+            });
+
+          }
+
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
       });
     },
@@ -89,6 +105,8 @@ export default {
         .dispatch("getImageAction", { id: this.$route.params.id })
         .then((res) => {
           this.imageUrl = res.data;
+        }).finally(() => {
+          this.imageLoading = false
         });
     },
     getWorkplacesFn() {
@@ -122,6 +140,8 @@ export default {
           }
           this.getWorkplacesFn();
         }
+      }).finally(() => {
+        this.loading = false
       });
   },
 };

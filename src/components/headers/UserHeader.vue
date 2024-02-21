@@ -1,6 +1,8 @@
 <template>
   <div class="user-header">
-    <div class="user-header__logo">reputa</div>
+    <div class="user-header__logo">
+      <img src="/img/logo_small_with_text.svg" alt="">
+    </div>
     <div class="user-header__right">
       <div class="user-header__info">
         <div class="user-header__image">img</div>
@@ -47,6 +49,17 @@ export default {
   border-top: none;
   height: 70px;
   overflow: hidden;
+
+  &__logo {
+    height: 45px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
 
   &__info {
     display: flex;

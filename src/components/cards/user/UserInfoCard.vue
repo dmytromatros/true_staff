@@ -19,14 +19,13 @@
                   <!-- Nikita Bibka -->
                 </div>
 
-                <div class="user-info-card__id" @click="copyId(info._id)">
-                  <span>{{ info._id }}</span>
-                  <!-- 6597f1e4a63d42f1d933d9e0 -->
+                <div class="user-info-card__id" @click="copyId(info.uniqueId)">
+                  <span>{{ info.uniqueId }}</span>
                 </div>
 
                 <div class="user-info-card__employee">
-                  <span v-if="info.isEmployee">На даний час працює</span>
-                  <span v-if="!info.isEmployee">На даний час не працює.</span>
+                  <span v-if="info.isEmployee">На даний момент працює</span>
+                  <span v-if="!info.isEmployee">На даний момент не працює.</span>
                 </div>
               </div>
             </div>

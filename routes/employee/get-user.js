@@ -2,9 +2,10 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
+
 
     if (!req.params.id) error.push('Id is required');
 
@@ -16,7 +17,7 @@ module.exports = async(req, res) => {
         try {
             user = await req.app.db.collection('users').findOne({
                 _id: objectId
-            }, );
+            },);
         } catch (err) {
             error.push(err);
         }
@@ -25,7 +26,7 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            data: {...user },
+            data: { ...user },
             success: true
         });
     } else {

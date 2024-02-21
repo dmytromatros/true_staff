@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -27,7 +27,7 @@ module.exports = async(req, res) => {
         try {
             result = await req.app.db.collection('users').updateOne({ _id: objectId }, { $set: updateData });
         } catch (err) {
-            error.push(err);
+            error.push('Не вийшло оновити дані. Спробуйте ще раз');
         }
     }
 
@@ -45,7 +45,8 @@ module.exports = async(req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            data: {...user },
+            data: { ...user },
+            message: 'Інформацію оновлено',
             success: true
         });
     } else {

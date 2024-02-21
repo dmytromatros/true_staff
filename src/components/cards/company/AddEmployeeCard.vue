@@ -8,7 +8,7 @@
                 <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
                 <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
 
-                <DefaultButton label="Add employee" @action="addEmployee"
+                <DefaultButton label="Add employee" @action="addEmployee" :loading="loadingButton"
                     :disabled="!newEmployee.location || !newEmployee.userId || !newEmployee.message || !newEmployee.position" />
             </template>
         </BaseCard>
@@ -36,7 +36,8 @@ export default {
                 position: '',
                 message: '',
                 userId: '',
-            }
+            },
+            loadingButton: false
         }
     },
     computed: {
@@ -46,6 +47,7 @@ export default {
     },
     methods: {
         async addEmployee() {
+            this.loadingButton = true
             this.$store.dispatch("checkUserAction", { id: this.newEmployee.userId || 'test' }).then(async res => {
                 if (res.success) {
                     const employeeName = await this.getUserName(res.data._id);
@@ -73,6 +75,8 @@ export default {
                 } else {
                     this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                 }
+            }).finally(() => {
+                this.loadingButton = false
             })
         },
 

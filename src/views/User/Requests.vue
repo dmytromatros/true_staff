@@ -12,6 +12,7 @@
                 @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
                 @delete-request="deleteReceiveRequest(rec._id)" />
             </div>
+            <div v-if="!isReceive" class="requests__receive-label">Немає отриманих запитів</div>
           </div>
         </div>
         <div class="requests__receive">
@@ -23,10 +24,11 @@
                 :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)" />
             </div>
+            <div v-if="!isSent" class="requests__receive-label">Немає відправлених запитів</div>
           </div>
         </div>
       </div>
-      <div class="requests__bottom" :class="{ 'requests__bottom--active': opened }">
+      <div class="requests__bottom" v-if="isEmployee" :class="{ 'requests__bottom--active': opened }">
         <button class="requests__add-button" @click="openAddNew">
           <FontIcon v-if="opened" icon="disabled_by_default" font-size="34px" />
           <FontIcon v-else icon="edit_square" font-size="34px" />
@@ -34,15 +36,7 @@
         <div class="requests__add-new">
           <div class=" requests__receive-title--add">Відравити запит</div>
           <div class="requests__receive-content">
-            <div class="user-settings__companies">
-              <div class="user-settings__companies-item" v-for="(company, key) in enteredCompanies" :key="key">
-                <div>Name: {{ company.companyName }}</div>
-                <div>Faired: {{ company.deleted }}</div>
-                <div>Position: {{ company.position }}</div>
-              </div>
-            </div>
-
-            <div v-if="isEmployee" class="user-settings__organization">
+            <div class="user-settings__organization">
               <div>
                 <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
                 <div>
@@ -95,7 +89,9 @@ export default {
       enteredCompanies: [],
       loading: true,
       loadingButton: false,
-      opened: false
+      opened: false,
+      isSent: true,
+      isReceive: true
     };
   },
   components: {
@@ -143,8 +139,19 @@ export default {
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };
-            console.log(this.sent);
             this.receive = { ...res.data.receive };
+
+            if (res.data.sent.length) {
+              this.isSent = true
+            } else {
+              this.isSent = false
+            }
+
+            if (res.data.receive.length) {
+              this.isReceive = true
+            } else {
+              this.isReceive = false
+            }
           }
         }).finally(() => {
           this.loading = false;
@@ -280,6 +287,9 @@ export default {
     flex: 1;
     width: 100%;
     gap: 25px;
+    height: min-content;
+    min-height: 300px;
+    max-height: 100%;
   }
 
   &__receive {
@@ -290,6 +300,13 @@ export default {
     background-color: $white;
     display: flex;
     flex-direction: column;
+
+    &-label {
+      text-align: center;
+      margin-top: 15%;
+      font-weight: 600;
+      opacity: 0.7;
+    }
   }
 
   &__receive-title {
@@ -314,6 +331,11 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
   }
 
   &__bottom {
@@ -321,6 +343,7 @@ export default {
     overflow: hidden;
     display: flex;
     height: 100%;
+
 
     @media (max-height: 714px) {
       height: 100%;
@@ -340,11 +363,13 @@ export default {
   }
 
   &__add-new {
-    width: 0;
+    width: 0px;
     height: fit-content;
     border-radius: 0 $border-radius $border-radius $border-radius;
     background-color: $white;
     transition: 0.25s ease-in-out all;
+
+
   }
 
   &__input {

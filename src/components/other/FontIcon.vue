@@ -26,6 +26,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+$material-symbols-font-path: '~material-symbols/';
+@import 'material-symbols';
 
 .material-symbols-outlined {
     user-select: none;

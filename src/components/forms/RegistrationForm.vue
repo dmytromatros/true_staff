@@ -149,7 +149,7 @@ export default {
     border-radius: 30px;
     padding: 50px;
     box-shadow: 0px 8px 25px 0px rgba($color: $main-color, $alpha: 0.5);
-    background-color: #c5d3ea;
+    background-color: lighten(#50aac8, 20);
     position: relative;
     z-index: 2;
 

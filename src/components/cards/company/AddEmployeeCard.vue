@@ -3,12 +3,17 @@
         <BaseCard class="add-employee-card__new-card">
             <template v-slot:body>
                 <div class="add-employee-card__new-card-title">Додати нового співробітника</div>
-                <SelectInput placeholder="Локація" :options="locations" v-model="newEmployee.location" />
-                <TextInput placeholder="ID користувача" type="text" v-model="newEmployee.userId" />
-                <TextInput placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
-                <TextInput placeholder="Посада" type="text" v-model="newEmployee.position" />
+                <SelectInput class="add-employee-card__input" placeholder="Локація" :options="locations"
+                    v-model="newEmployee.location" />
+                <TextInput class="add-employee-card__input" placeholder="ID користувача" type="text"
+                    v-model="newEmployee.userId" />
+                <TextInput class="add-employee-card__input" placeholder="Повідомлення" type="text"
+                    v-model="newEmployee.message" :textarea="true" />
+                <TextInput class="add-employee-card__input" placeholder="Посада" type="text"
+                    v-model="newEmployee.position" />
 
-                <DefaultButton label="Add employee" @action="addEmployee" :loading="loadingButton"
+                <DefaultButton class="add-employee-card__button" label="Add employee" @action="addEmployee"
+                    :loading="loadingButton"
                     :disabled="!newEmployee.location || !newEmployee.userId || !newEmployee.message || !newEmployee.position" />
             </template>
         </BaseCard>
@@ -135,11 +140,26 @@ export default {
 
 <style lang="scss" scoped>
 .add-employee-card {
+    width: 0px;
+    overflow: hidden;
+    transition: 0.25s ease-in-out all;
+
     &__new-card {
         height: fit-content !important;
         display: flex;
         flex-direction: column;
         gap: 15px;
+        box-shadow: none;
+        border-top-left-radius: 0;
+
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        &:hover {
+            box-shadow: none;
+        }
     }
 
     &__new-card-title {
@@ -147,6 +167,11 @@ export default {
         font-weight: 600;
         font-size: 23px;
         margin-bottom: 25px;
+        text-wrap: balance;
+    }
+
+    &__button {
+        white-space: nowrap;
     }
 }
 </style>

@@ -4,14 +4,16 @@
       <div class="requests__top">
         <div class="requests__receive">
           <div class="requests__receive-title">Отримані</div>
-          <LoaderComponent v-if="loading" />
-          <div v-else>
-            <div v-if="!isReceive" class="requests__receive-label">Немає отриманих запитів</div>
-            <div v-for="(rec, key) in receive" :key="key">
-              <ReceiveRequest :from="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
-                :editable="!rec.rejected && !rec.accepted" :message="rec.message"
-                @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
-                @delete-request="deleteReceiveRequest(rec._id)" />
+          <div class="requests__receive-content">
+            <LoaderComponent v-if="loading" />
+            <div v-else>
+              <div v-if="!isReceive" class="requests__receive-label">Немає отриманих запитів</div>
+              <div v-for="(rec, key) in receive" :key="key">
+                <ReceiveRequest :from="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
+                  :editable="!rec.rejected && !rec.accepted" :message="rec.message"
+                  @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
+                  @delete-request="deleteReceiveRequest(rec._id)" />
+              </div>
             </div>
           </div>
         </div>
@@ -29,7 +31,14 @@
           </div>
         </div>
       </div>
-
+      <div class="requests__bottom">
+        <button class="requests__add-button" @click="openAddNew">
+          <FontIcon v-if="opened" icon="disabled_by_default" font-size="34px" />
+          <FontIcon v-else icon="edit_square" font-size="34px" />
+        </button>
+        <AddEmployeeCard class="requests__bottom-add" :class="{ 'requests__bottom-add--active': opened }"
+          :locations="locations" />
+      </div>
     </div>
   </div>
 </template>
@@ -38,18 +47,22 @@
 import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
 import SentRequest from "@/components/cards/system/SentRequest.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue"
+import AddEmployeeCard from "@/components/cards/company/AddEmployeeCard.vue";
+import FontIcon from "@/components/other/FontIcon.vue";
 export default {
   name: "UserRequests",
   data() {
     return {
       sent: {},
+      locations: [],
       receive: {},
       loading: true,
       isSent: true,
-      isReceive: true
+      isReceive: true,
+      opened: false
     };
   },
-  components: { ReceiveRequest, SentRequest, LoaderComponent },
+  components: { ReceiveRequest, SentRequest, LoaderComponent, AddEmployeeCard, FontIcon },
   methods: {
     sentStatus(rejected, accepted) {
       if (accepted) return "Підтверджено";
@@ -103,9 +116,32 @@ export default {
           this.loading = false
         });
     },
+    getLocations() {
+      this.$store
+        .dispatch("getLocationsAction", {
+          id: this.$route.params.id,
+        })
+        .then((res) => {
+          if (res.success) {
+            for (const key in res.data) {
+              if (Object.hasOwnProperty.call(res.data, key)) {
+                this.locations.push({
+                  label: res.data[key].address,
+                  value: res.data[key]._id,
+                });
+              }
+            }
+          }
+        });
+    },
+
+    openAddNew() {
+      this.opened = !this.opened
+    }
   },
   mounted() {
     this.getAllRequest();
+    this.getLocations()
   },
 };
 </script>
@@ -116,7 +152,6 @@ export default {
 .requests {
   height: 100%;
   width: 100%;
-  padding: 15px;
 
   &__container {
     width: 100%;
@@ -198,26 +233,10 @@ export default {
     }
   }
 
-  &__bottom--active {
-    height: 100%;
-  }
-
-  &__bottom--active &__add-new {
-    width: 300px;
-  }
-
-  &__add-new {
-    width: 0px;
-    height: fit-content;
-    border-radius: 0 $border-radius $border-radius $border-radius;
-    background-color: $white;
-    transition: 0.25s ease-in-out all;
-
-
-  }
-
-  &__input {
-    margin-bottom: 20px;
+  &__bottom-add {
+    &--active {
+      width: 300px;
+    }
   }
 
   &__add-button {

@@ -2,12 +2,6 @@
   <div class="employees-list">
 
     <LoaderComponent v-if="loading" />
-
-    <div v-if="!loading" class="employees-list__switcher">
-      <button class="employees-list__switch employees-list__switch--active">Робітники</button>
-      <button class="employees-list__switch" @click="() => { this.$router.push({ name: 'company-search-user' }) }">Знайти
-        користувача</button>
-    </div>
     <div class="employees-list__container" v-if="!loading">
       <div class="employees-list__list">
         <EmployeeCard v-for="(emp, key) in employees" :key="key" :employeeId="emp.employeeId"
@@ -92,14 +86,13 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 15px;
 
   &__container {
     display: grid;
     grid-template-columns: 3fr 1fr;
     gap: 15px;
     flex: 1;
-    max-height: 91%;
+    max-height: 100%;
 
   }
 
@@ -115,55 +108,11 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    padding: 15px;
     overflow-x: hidden;
   }
 
   &__new {
     padding: 15px;
-  }
-
-  &__switcher {
-    background: $white;
-    width: calc(100% - 15px);
-    border-radius: 10px;
-    padding: 0 15px;
-    height: 55px;
-    @include main-shadow;
-  }
-
-  &__switch {
-    padding: 12px 15px;
-    font-size: 18px;
-    transition: 0.25s ease-in-out all;
-    background: transparent;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      height: 2px;
-      width: calc(100% - 30px);
-      border: 3px;
-      background: $main-color-hover;
-      bottom: 15px;
-      left: 15px;
-      transition: 0.25s ease-in-out all;
-      opacity: 0;
-    }
-
-    &:hover {
-      color: $main-color-hover;
-    }
-
-    &--active {
-      color: $main-color-hover;
-
-      &::after {
-        opacity: 1;
-      }
-
-    }
   }
 }
 </style>

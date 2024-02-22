@@ -155,7 +155,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 15px;
 
   &__form {
     display: flex;

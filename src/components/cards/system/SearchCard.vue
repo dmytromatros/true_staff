@@ -189,7 +189,7 @@ export default {
 .search-card {
   height: 100%;
   width: 100%;
-  padding: 15px;
+  padding-right: 0;
 
   &__content {
     display: flex;

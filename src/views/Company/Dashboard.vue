@@ -3,14 +3,6 @@
     <div class="company-dashboard__body">
       <Transition name="sidebar" appear>
         <div class="company-dashboard__sidebar">
-          <CompanyCard class="company-dashboard__sidebar-link" label="Профіль" link="company-settings"
-            :background_1="checkRoute('company-settings') ? '#00243f' : '#93dff5'"
-            :background_2="checkRoute('company-settings') ? '#00243f' : '#2aafd4'" :class="[
-              {
-                'company-dashboard__sidebar-link--active':
-                  checkRoute('company-settings'),
-              },
-            ]" />
 
           <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations">
             <template v-slot:image>
@@ -20,6 +12,12 @@
 
           <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard">
             <template v-slot:image>
+              <img src="/img/m-glass.avif" alt="Працівники" style="object-position: left" />
+            </template>
+          </MenuCard>
+
+          <MenuCard class="company-dashboard__sidebar-link" label="Знайти користувача" link="company-search-user">
+            <template v-slot:image>
               <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
             </template>
           </MenuCard>
@@ -27,6 +25,13 @@
           <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests">
             <template v-slot:image>
               <img src="/img/cooperation.avif" alt="Запити до співпраці" />
+            </template>
+          </MenuCard>
+
+          <MenuCard class="company-dashboard__sidebar-link  company-dashboard__sidebar-link--profile" label="Профіль"
+            link="company-settings">
+            <template v-slot:image>
+              <img :src="image || '/img/profile-img.webp'" alt="Профіль" />
             </template>
           </MenuCard>
         </div>
@@ -48,6 +53,11 @@ import CompanyCard from "@/components/cards/company/CompanyCard.vue";
 export default {
   name: "CompanyDashboard",
   components: { MenuCard, CompanyCard },
+  data() {
+    return {
+      image: null
+    }
+  },
   methods: {
     settingsFn() {
       this.$router.push({
@@ -63,6 +73,21 @@ export default {
       return this.$route.name == route;
     },
   },
+  mounted() {
+    this.$store
+      .dispatch("getCompanyAction", { id: this.$route.params.id })
+      .then((res) => {
+        if (res.success) {
+          this.name = `${res.data.name}`;
+          console.log(res);
+          this.$store
+            .dispatch("getImageAction", { id: this.$route.params.id })
+            .then((res) => {
+              this.image = res.data;
+            });
+        }
+      });
+  }
 };
 </script>
 
@@ -76,16 +101,21 @@ export default {
     height: 100%;
     gap: 20px;
     display: flex;
+    padding: 15px 0;
   }
 
   &__sidebar {
-    display: grid;
-    grid-template-rows: 2.5fr repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     gap: 15px;
     height: 100%;
     overflow: auto;
     padding: 15px;
     flex: 1;
+
+    background: white;
+    border-radius: 10px;
 
   }
 
@@ -95,6 +125,15 @@ export default {
 
   &__send-review {
     height: 100%;
+  }
+
+  &__sidebar-link {
+    height: fit-content;
+
+    &--profile {
+      flex: 1;
+      align-items: flex-end;
+    }
   }
 }
 

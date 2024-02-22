@@ -86,6 +86,13 @@ const routes = [{
             name: 'company-search-user',
             component: () =>
                 import('@/views/Company/SearchUser.vue'),
+        },
+
+        {
+            path: 'company-settings',
+            name: 'company-settings',
+            component: () =>
+                import('@/views/Company/Settings.vue'),
         }
 
         ]

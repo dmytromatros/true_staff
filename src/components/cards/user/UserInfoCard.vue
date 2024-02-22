@@ -4,7 +4,8 @@
     <div v-if="Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
-      <div class="user-info-card__user" :style="{ height: !isUser ? '93%' : '70%' }">
+      <div class="user-info-card__user"
+        :style="{ height: !isUser ? '100%' : info._id == $route.params.id ? '100%' : '70%' }">
         <BaseCard class="user-info-card__small">
           <template v-slot:body>
             <div class="user-info-card__flex">
@@ -217,9 +218,6 @@ export default {
     padding: 30px 20px;
   }
 
-  &__container {
-    min-height: 750px;
-  }
 
   &__container,
   &__text {
@@ -227,7 +225,6 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 15px;
   }
 
   &__text {

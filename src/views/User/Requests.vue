@@ -19,7 +19,7 @@
           <div class="requests__receive-title">Відправлені</div>
           <div class="requests__receive-content">
             <LoaderComponent v-if="loading" />
-            <div v-else v-for="(rec, key) in sent" :key="key">
+            <div v-else v-for="( rec, key ) in  sent " :key="key">
               <SentRequest :to="rec.companyName" :location="rec.locationAddress" :position="rec.position"
                 :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)" />
@@ -272,7 +272,6 @@ export default {
 .requests {
   height: 100%;
   width: 100%;
-  padding: 15px;
 
   &__container {
     width: 100%;

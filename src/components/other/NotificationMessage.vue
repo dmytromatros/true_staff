@@ -110,7 +110,7 @@ export default {
 .list-move,
 .list-enter-active,
 .list-leave-active {
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
 }
 
 .list-enter-from,

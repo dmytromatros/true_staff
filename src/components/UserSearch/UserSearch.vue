@@ -32,6 +32,7 @@ export default {
 <style lang="scss" scoped>
 .user-search {
     display: flex;
+    gap: 15px;
     height: 100%;
 
     &__card {

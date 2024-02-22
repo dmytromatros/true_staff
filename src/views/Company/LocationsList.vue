@@ -133,7 +133,6 @@ export default {
     display: grid;
     grid-template-columns: 2.5fr 1fr;
     gap: 15px;
-    // padding: 15px;
   }
 
   &__new-location-card {
@@ -149,12 +148,9 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    padding: 15px;
   }
 
-  &__new-location-wrapper {
-    padding: 15px;
-  }
+  &__new-location-wrapper {}
 
   &__new-location-text {
     font-size: 36px;

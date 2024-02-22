@@ -68,7 +68,7 @@ export default {
     gap: 15px;
     max-height: 120px;
     background: white;
-    outline: 1px solid transparent;
+    outline: 1px solid $main-color;
     overflow: hidden;
 
     &:hover {
@@ -80,6 +80,8 @@ export default {
     }
 
     &--active {
+      outline: 1px solid transparent;
+
       &:hover {
         outline-color: transparent;
       }

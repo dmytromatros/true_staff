@@ -88,7 +88,7 @@ export default {
   .header {
     margin-bottom: 0px;
     z-index: 3;
-    padding: 0 15px;
+    // padding: 0 15px;
   }
 
   .main-container {

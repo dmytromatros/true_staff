@@ -36,7 +36,7 @@ export default {
   padding: 15px 20px;
   background-color: $white;
   @include main-shadow;
-  border-radius: 0 0 25px 25px;
+  border-radius: 0 0 15px 15px;
   display: flex;
   width: 100%;
   justify-content: space-between;

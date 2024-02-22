@@ -125,24 +125,28 @@ export default {
     },
     closePopup() {
       this.changePassPopup = false;
+      this.getUserFn()
     },
+    getUserFn() {
+      this.$store
+        .dispatch("getUserAction", { id: this.$route.params.id })
+        .then((res) => {
+          if (res.success) {
+            this.user = { ...res.data };
+
+            if (this.user.isImage) {
+              this.getImageFn();
+            }
+            this.getWorkplacesFn();
+          }
+        }).finally(() => {
+          this.loading = false
+        });
+    }
   },
 
   mounted() {
-    this.$store
-      .dispatch("getUserAction", { id: this.$route.params.id })
-      .then((res) => {
-        if (res.success) {
-          this.user = { ...res.data };
-
-          if (this.user.isImage) {
-            this.getImageFn();
-          }
-          this.getWorkplacesFn();
-        }
-      }).finally(() => {
-        this.loading = false
-      });
+    this.getUserFn()
   },
 };
 </script>

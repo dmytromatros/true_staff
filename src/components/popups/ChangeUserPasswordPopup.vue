@@ -1,14 +1,10 @@
 <template>
-  <DefaultPopup
-    :isShown="isShown"
-    @close="close"
-    title="Змінити пароль"
-    @confirm="changePass"
-  >
+  <DefaultPopup :isShown="isShown" @close="close" title="Змінити пароль" @confirm="changePass">
     <template v-slot:body>
       <div class="change-password">
-        <TextInput label="Старий пароль" type="password" v-model="oldPass" />
-        <TextInput label="Новий пароль" type="password" v-model="newPass" />
+        <TextInput placeholder="Старий пароль" type="password" v-model="oldPass" />
+        <TextInput placeholder="Новий пароль" type="password" v-model="newPass" />
+        <TextInput placeholder="Повторіть новий пароль" type="password" v-model="newPassNew" />
       </div>
     </template>
   </DefaultPopup>
@@ -28,6 +24,7 @@ export default {
     return {
       newPass: "",
       oldPass: "",
+      newPassNew: "",
     };
   },
   methods: {
@@ -35,10 +32,26 @@ export default {
       this.$emit("close");
     },
     changePass() {
+
+      if (this.newPass !== this.newPassNew) {
+        this.$store.dispatch('showNotification', { message: 'Не правильно повторно ведений новий пароль', type: 'error' })
+        return
+      }
       this.$store.dispatch("editUserPasswordAction", {
         oldPass: this.oldPass,
         newPass: this.newPass,
         id: this.$route.params.id,
+      }).then((res) => {
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+          this.newPass = ''
+          this.oldPass = ''
+          this.newPassNew = ''
+          this.close();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+          this.$router.go(0)
+        }
       });
     },
   },

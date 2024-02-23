@@ -7,8 +7,8 @@ module.exports = async (req, res) => {
     let error = [];
 
     if (!req.body.id) error.push('Id is required');
-    if (!req.body.oldPass) error.push('Old password is required');
-    if (!req.body.newPass) error.push('New password is required');
+    if (!req.body.oldPass) error.push('Введіть старий пароль');
+    if (!req.body.newPass) error.push('Введіть новий пароль');
 
     let company;
 
@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
         });
 
         if (!check) {
-            error.push('Incorrect old password')
+            error.push('Не правильний старий пароль')
         }
     }
 
@@ -60,6 +60,7 @@ module.exports = async (req, res) => {
     if (error.length === 0) {
         res.status(200).json({
             data: { ...company },
+            message: 'Пароль замінено!',
             success: true
         });
     } else {

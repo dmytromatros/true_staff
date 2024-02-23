@@ -3,16 +3,6 @@
     <div class="user-dashboard__body">
       <Transition name="sidebar" appear>
         <div class="user-dashboard__sidebar">
-          <!-- <UserCard class="user-dashboard__sidebar-link" label="Профіль" link="user-settings"
-            :background_1="checkRoute('user-settings') ? '#00243f' : '#93dff5'"
-            :background_2="checkRoute('user-settings') ? '#00243f' : '#2aafd4'" :class="[
-              {
-                'user-dashboard__sidebar-link--active':
-                  checkRoute('user-settings'),
-              },
-            ]" /> -->
-
-
           <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard">
             <template v-slot:image>
               <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
@@ -26,9 +16,9 @@
           </MenuCard>
 
           <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль"
-            link="user-settings">
+            link="user-settings" :key="updateKey">
             <template v-slot:image>
-              <img :src="image || '/img/profile-img.webp'" alt="Профіль" style="object-position: left" />
+              <img :src="image || '/img/profile-img.webp'" alt="Профіль" />
             </template>
           </MenuCard>
 
@@ -37,7 +27,7 @@
       <div class="user-dashboard__content">
         <router-view v-slot="{ Component }">
           <Transition name="content" appear>
-            <component :is="Component" />
+            <component :is="Component" @user-edited="userEdited" />
           </Transition>
         </router-view>
       </div>
@@ -53,7 +43,9 @@ export default {
   components: { MenuCard, UserCard },
   data() {
     return {
-      image: null
+      image: null,
+      updateKey: Date.now()
+
     }
   },
   methods: {
@@ -70,20 +62,33 @@ export default {
     checkRoute(route) {
       return this.$route.name == route;
     },
+
+    userEdited() {
+      setTimeout(() => {
+        this.getImageFn()
+      }, 200);
+    },
+    getUserFn() {
+      this.$store
+        .dispatch("getUserAction", { id: this.$route.params.id })
+        .then((res) => {
+          if (res.success) {
+            this.name = `${res.data.name} ${res.data.surname}`;
+            if (res.data.isImage) this.getImageFn()
+          }
+        });
+    },
+    getImageFn() {
+      this.$store
+        .dispatch("getImageAction", { id: this.$route.params.id })
+        .then((res) => {
+          this.image = res.data;
+          this.updateKey = Date.now()
+        });
+    }
   },
   mounted() {
-    this.$store
-      .dispatch("getUserAction", { id: this.$route.params.id })
-      .then((res) => {
-        if (res.success) {
-          this.name = `${res.data.name} ${res.data.surname}`;
-          this.$store
-            .dispatch("getImageAction", { id: this.$route.params.id })
-            .then((res) => {
-              this.image = res.data;
-            });
-        }
-      });
+    this.getUserFn()
   },
 };
 </script>
@@ -117,7 +122,7 @@ export default {
   }
 
   &__content {
-    flex: 4;
+    flex: 4.5;
   }
 
   &__send-review {

@@ -29,7 +29,7 @@
           </MenuCard>
 
           <MenuCard class="company-dashboard__sidebar-link  company-dashboard__sidebar-link--profile" label="Профіль"
-            link="company-settings">
+            link="company-settings" :key="updateKey">
             <template v-slot:image>
               <img :src="image || '/img/profile-img.webp'" alt="Профіль" />
             </template>
@@ -38,8 +38,9 @@
       </Transition>
       <div class="company-dashboard__content">
         <router-view v-slot="{ Component }">
+          <LoaderComponent v-if="loading" />
           <Transition name="content" appear>
-            <component :is="Component" />
+            <component v-if="!loading" :is="Component" @user-edited="userEdited" />
           </Transition>
         </router-view>
       </div>
@@ -50,12 +51,15 @@
 <script>
 import MenuCard from "@/components/cards/system/MenuCard.vue";
 import CompanyCard from "@/components/cards/company/CompanyCard.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
 export default {
   name: "CompanyDashboard",
-  components: { MenuCard, CompanyCard },
+  components: { MenuCard, CompanyCard, LoaderComponent },
   data() {
     return {
-      image: null
+      image: null,
+      updateKey: Date.now(),
+      loading: false
     }
   },
   methods: {
@@ -69,24 +73,39 @@ export default {
         name: "company-requests",
       });
     },
+    userEdited() {
+      this.loading = true
+      setTimeout(() => {
+        this.getImageFn()
+        this.loading = false
+      }, 500);
+    },
     checkRoute(route) {
       return this.$route.name == route;
     },
+    getCompanyFn() {
+      this.$store
+        .dispatch("getCompanyAction", { id: this.$route.params.id })
+        .then((res) => {
+          if (res.success) {
+            this.name = `${res.data.name}`;
+            if (res.data.isImage) {
+              this.getImageFn()
+            }
+          }
+        });
+    },
+    getImageFn() {
+      this.$store
+        .dispatch("getImageAction", { id: this.$route.params.id })
+        .then((res) => {
+          this.image = res.data;
+          this.updateKey = Date.now()
+        });
+    }
   },
   mounted() {
-    this.$store
-      .dispatch("getCompanyAction", { id: this.$route.params.id })
-      .then((res) => {
-        if (res.success) {
-          this.name = `${res.data.name}`;
-          console.log(res);
-          this.$store
-            .dispatch("getImageAction", { id: this.$route.params.id })
-            .then((res) => {
-              this.image = res.data;
-            });
-        }
-      });
+    this.getCompanyFn()
   }
 };
 </script>
@@ -120,7 +139,7 @@ export default {
   }
 
   &__content {
-    flex: 4;
+    flex: 4.5;
   }
 
   &__send-review {

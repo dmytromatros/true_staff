@@ -71,8 +71,9 @@ export default {
         .then((res) => {
           if (res.success) {
             this.imageUrl = res.data;
-            this.loading = false
           }
+        }).finally(() => {
+          this.loading = false
         });
     },
   },

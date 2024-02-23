@@ -6,7 +6,7 @@
       <div class="employees-list__list">
         <EmployeeCard v-for="(emp, key) in employees" :key="key" :employeeId="emp.employeeId"
           :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
-          @deleted="getEmployees" />
+          @deleted="getEmployees" :unique-id="emp.uniqueId" />
       </div>
 
       <div class="employees-list__new">

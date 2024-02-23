@@ -20,14 +20,7 @@
                   <!-- Nikita Bibka -->
                 </div>
 
-                <div class="user-info-card__id" @click="copyId(info.uniqueId)">
-                  <span>{{ info.uniqueId }}</span>
-                </div>
-
-                <div class="user-info-card__employee">
-                  <span v-if="info.isEmployee">На даний момент працює</span>
-                  <span v-if="!info.isEmployee">На даний момент не працює.</span>
-                </div>
+                <IdComponent :id="info.uniqueId" />
               </div>
             </div>
           </template>
@@ -77,7 +70,7 @@ import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
-
+import IdComponent from "@/components/other/IdComponent.vue";
 import { checkRole } from "../../../../utils/permission";
 
 export default {
@@ -105,7 +98,8 @@ export default {
     TextInput,
     DefaultButton,
     CustomSwitch,
-    LoaderComponent
+    LoaderComponent,
+    IdComponent
   },
   computed: {
     isUser() {
@@ -297,14 +291,6 @@ export default {
     }
   }
 
-  &__id {
-    opacity: 0.7;
-    border: 1px solid $main-color;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 12px;
-  }
 
   &__name {
     font-size: 30px;

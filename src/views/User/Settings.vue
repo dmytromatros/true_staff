@@ -35,6 +35,9 @@
             </div>
           </template>
         </BaseCard>
+        <div class="user-settings__id">
+          <IdComponent :id="this.user.uniqueId" />
+        </div>
       </div>
     </div>
     <ChangeUserPasswordPopup :isShown="changePassPopup" @close="closePopup" />
@@ -49,6 +52,7 @@ import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue"
+import IdComponent from "@/components/other/IdComponent.vue";
 
 export default {
   name: "UserSettings",
@@ -59,7 +63,8 @@ export default {
     DefaultButton,
     BaseCard,
     ImageInput,
-    LoaderComponent
+    LoaderComponent,
+    IdComponent
   },
   data() {
     return {
@@ -94,6 +99,7 @@ export default {
           }
 
           this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+          this.$emit('user-edited')
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
@@ -116,7 +122,6 @@ export default {
         })
         .then((res) => {
           this.enteredCompanies = res.data;
-          console.log(this.enteredCompanies);
         });
     },
 
@@ -136,6 +141,8 @@ export default {
 
             if (this.user.isImage) {
               this.getImageFn();
+            } else {
+              this.imageLoading = false
             }
             this.getWorkplacesFn();
           }

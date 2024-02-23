@@ -5,7 +5,7 @@
                 <img v-if="employeeImage" :src="employeeImage" alt="">
                 <img v-else src="/img/profile-img.webp" alt="">
                 <span class="employee-card__name">{{ employeeName }}</span>
-                <span class="employee-card__id" @click="copyId(employeeId)" title="Скопіювати">{{ employeeId }}</span>
+                <IdComponent :id="uniqueId" />
             </div>
 
             <div class="employee-card__location">
@@ -29,11 +29,16 @@
 <script>
 import CircleButton from '@/components/buttons/CircleButton.vue'
 import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
+import IdComponent from '@/components/other/IdComponent.vue'
 export default {
     name: "EmployeeCard",
-    components: { CircleButton, ConfirmPopupVue },
+    components: { CircleButton, ConfirmPopupVue, IdComponent },
     props: {
         employeeId: {
+            type: String,
+            default: ""
+        },
+        uniqueId: {
             type: String,
             default: ""
         },
@@ -48,7 +53,7 @@ export default {
         position: {
             type: String,
             default: ""
-        }
+        },
     },
     data() {
         return {
@@ -74,7 +79,7 @@ export default {
             }
         },
         viewUser() {
-            this.$router.push({ name: 'company-search-user', query: { userId: this.employeeId } })
+            this.$router.push({ name: 'company-search-user', query: { userId: this.uniqueId } })
         },
 
         editUser() {
@@ -91,7 +96,7 @@ export default {
                     this.$emit('deleted')
                 }
             });
-        }
+        },
     },
     mounted() {
         this.getImage(this.employeeId)
@@ -171,25 +176,6 @@ export default {
         justify-content: flex-end;
         flex-wrap: wrap;
         padding: 10px 15px;
-    }
-
-    &__id {
-        opacity: 0.9;
-        border: 1px solid $white;
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 12px;
-        margin-top: 15px;
-        background: $white;
-        color: $main-color;
-        font-weight: 600;
-        letter-spacing: 1px;
-        transition: 0.25s ease-in-out all;
-
-        &:hover {
-            opacity: 1;
-        }
     }
 }
 

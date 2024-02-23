@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb'); // Import ObjectId from MongoDB library
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
     let error = [];
 
     if (!req.params.id) error.push('Id is required');
@@ -20,11 +20,24 @@ module.exports = async(req, res) => {
         }
     }
 
+    if (error.length === 0) {
+        for (const employee of employees) {
+            try {
+                const objectId = new ObjectId(employee.employeeId);
+                let user = await req.app.db.collection('users').findOne({
+                    _id: objectId
+                });
 
+                employee.uniqueId = user.uniqueId;
+            } catch (err) {
+                error.push(err);
+            }
+        }
+    }
 
     if (error.length === 0) {
         res.status(200).json({
-            data: {...employees },
+            data: { ...employees },
             success: true
         });
     } else {

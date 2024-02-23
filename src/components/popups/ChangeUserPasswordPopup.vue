@@ -50,7 +50,6 @@ export default {
           this.close();
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
-          this.$router.go(0)
         }
       });
     },

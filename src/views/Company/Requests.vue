@@ -6,8 +6,8 @@
           <div class="requests__receive-title">Отримані</div>
           <div class="requests__receive-content">
             <LoaderComponent v-if="loading" />
-            <div v-else>
-              <div v-if="!isReceive" class="requests__receive-label">Немає отриманих запитів</div>
+            <div v-else class="requests__receive-content-1">
+              <div v-if="!Object.keys(receive).length" class="requests__receive-label">Немає отриманих запитів</div>
               <div v-for="(rec, key) in receive" :key="key">
                 <ReceiveRequest :from="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
                   :editable="!rec.rejected && !rec.accepted" :message="rec.message"
@@ -21,8 +21,8 @@
           <div class="requests__receive-title">Відправлені</div>
           <div class="requests__receive-content">
             <LoaderComponent v-if="loading" />
-            <div v-else>
-              <div v-if="!isSent" class="requests__receive-label">Немає відправлених запитів</div>
+            <div v-else class="requests__receive-content-1">
+              <div v-if="!Object.keys(sent).length" class="requests__receive-label">Немає відправлених запитів</div>
               <div v-for="(rec, key) in sent" :key="key">
                 <SentRequest :to="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
                   @delete-request="deleteSentRequest(rec._id)" :status="sentStatus(rec.rejected, rec.accepted)" />
@@ -37,7 +37,7 @@
           <FontIcon v-else icon="edit_square" font-size="34px" />
         </button>
         <AddEmployeeCard class="requests__bottom-add" :class="{ 'requests__bottom-add--active': opened }"
-          :locations="locations" />
+          :locations="locations" @request-sent="getAllRequest" @open="opened = true" />
       </div>
     </div>
   </div>
@@ -57,8 +57,6 @@ export default {
       locations: [],
       receive: {},
       loading: true,
-      isSent: true,
-      isReceive: true,
       opened: false
     };
   },
@@ -98,17 +96,6 @@ export default {
         .dispatch("getCompanyRequestListAction", { id: this.$route.params.id })
         .then((res) => {
           if (res.success) {
-            if (res.data.sent.length) {
-              this.isSent = true
-            } else {
-              this.isSent = false
-            }
-
-            if (res.data.receive.length) {
-              this.isReceive = true
-            } else {
-              this.isReceive = false
-            }
             this.sent = { ...res.data.sent };
             this.receive = { ...res.data.receive };
           }
@@ -207,14 +194,16 @@ export default {
     overflow: auto;
     padding: 25px;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
 
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 0;
+
+    @include no-scroll;
+
+    &-1 {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
+
   }
 
   &__bottom {

@@ -14,11 +14,13 @@
           </svg>
         </div>
         <div class="default-popup__body">
-          <slot name="body"></slot>
+          <LoaderComponentVue v-if="loading" />
+          <slot name="body" v-else></slot>
         </div>
         <div class="default-popup__footer">
-          <DefaultButton label="Закрити" @action="closePopup" :danger="true" />
-          <DefaultButton :label="confirmLabel" @action="confirmFn" :success="true" />
+          <DefaultButton label="Закрити" @action="closePopup" :danger="true" :disabled="loadingButton" />
+          <DefaultButton :label="confirmLabel" @action="confirmFn" :success="true" :loading="loadingButton"
+            v-if="showConfirmButton" />
         </div>
       </div>
     </div>
@@ -27,14 +29,17 @@
 
 <script>
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
-
+import LoaderComponentVue from "@/components/other/LoaderComponent.vue";
 export default {
   name: "DefaultPopup",
-  components: { DefaultButton },
+  components: { DefaultButton, LoaderComponentVue },
   props: {
     isShown: Boolean,
     title: { type: String, default: "Title" },
     confirmLabel: { type: String, default: "Зберегти" },
+    loadingButton: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    showConfirmButton: { type: Boolean, default: true },
   },
   methods: {
     closePopup() {
@@ -91,6 +96,8 @@ export default {
 
   &__body {
     padding: 50px;
+    max-height: 50vh;
+    overflow: auto;
   }
 
   &__footer {

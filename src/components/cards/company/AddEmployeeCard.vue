@@ -72,8 +72,8 @@ export default {
                     this.$store.dispatch("addCompanyRequestAction", data).then(res => {
                         if (res.success) {
                             this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+                            this.$emit('request-sent')
                         } else {
-                            console.log(res)
                             this.$store.dispatch('showNotification', { message: res.response.data.message, type: 'error' })
                         }
                     });
@@ -124,6 +124,7 @@ export default {
             this.locations.forEach(loc => {
                 if (loc.value == this.queryLocationId) {
                     this.newEmployee.location = loc.value;
+                    this.$emit('open')
                 }
             })
         }
@@ -132,6 +133,7 @@ export default {
         this.locations.forEach(loc => {
             if (loc.value == this.queryLocationId) {
                 this.newEmployee.location = loc.value;
+                this.$emit('open')
             }
         })
     }
@@ -139,6 +141,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
+
 .add-employee-card {
     width: 0px;
     overflow: hidden;
@@ -152,10 +156,8 @@ export default {
         box-shadow: none;
         border-top-left-radius: 0;
 
-        &::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-        }
+        @include no-scroll;
+
 
         &:hover {
             box-shadow: none;

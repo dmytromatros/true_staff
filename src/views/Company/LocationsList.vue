@@ -29,6 +29,8 @@
         </BaseCard>
       </div>
     </div>
+    <div class="locations-list__label" v-if="!loading && !Object.keys(locations).length">У вас немає локацій.</div>
+
   </div>
 </template>
 
@@ -123,6 +125,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
+
 .locations-list {
   width: 100%;
   height: 100%;
@@ -142,6 +146,7 @@ export default {
   &__locations-card {
     overflow: auto;
     max-height: 100%;
+    @include no-scroll;
   }
 
   &__locations {
@@ -180,5 +185,14 @@ export default {
     }
   }
 
+  &__label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
+  }
 }
 </style>

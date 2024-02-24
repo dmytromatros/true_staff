@@ -126,7 +126,6 @@ export default {
     },
     getImageFn(id) {
       this.$store.dispatch("getImageAction", { id: id }).then((res) => {
-        console.log(id, res.data);
         this.imageUrl = res.data;
       });
     },
@@ -184,9 +183,8 @@ export default {
 .user-info-card {
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  @include no-scroll;
+
 
   &__text {
     img {

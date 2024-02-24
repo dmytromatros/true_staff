@@ -143,7 +143,6 @@ export default createStore({
         },
 
         checkUserAction: async (context, data) => {
-            console.log(data)
             return new Promise(done => {
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/check-user/${data.id}`)
                     .then(res => {
@@ -177,6 +176,16 @@ export default createStore({
         editUserAction: async (context, data) => {
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-user`, data)
+                    .then(res => {
+                        done(res.data)
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
+        editEmployeeAction: async (context, data) => {
+            return new Promise(done => {
+                axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-employee`, data)
                     .then(res => {
                         done(res.data)
                     })

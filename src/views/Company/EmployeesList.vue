@@ -2,11 +2,12 @@
   <div class="employees-list">
 
     <LoaderComponent v-if="loading" />
+    <div class="employees-list__label" v-if="!loading && !Object.keys(employees).length">У вас немає працівників.</div>
     <div class="employees-list__container" v-if="!loading">
       <div class="employees-list__list">
-        <EmployeeCard v-for="(emp, key) in employees" :key="key" :employeeId="emp.employeeId"
+        <EmployeeCard v-for="(emp, key) in employees" :key="key + reloadData" :employeeId="emp.employeeId"
           :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
-          @deleted="getEmployees" :unique-id="emp.uniqueId" />
+          @deleted="getEmployees" :unique-id="emp.uniqueId" :locationId="emp.locationId" />
       </div>
 
       <div class="employees-list__new">
@@ -28,6 +29,7 @@ export default {
       employees: [],
       locations: [],
       loading: true,
+      reloadData: Date.now(),
     };
   },
   methods: {
@@ -49,6 +51,7 @@ export default {
           if (res.success) {
             this.employees = res.data;
             this.loading = false;
+            this.reloadData = Date.now()
           }
         });
     },
@@ -113,6 +116,16 @@ export default {
 
   &__new {
     padding: 15px;
+  }
+
+  &__label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
   }
 }
 </style>

@@ -66,7 +66,7 @@ export default {
     userEdited() {
       setTimeout(() => {
         this.getImageFn()
-      }, 200);
+      }, 500);
     },
     getUserFn() {
       this.$store

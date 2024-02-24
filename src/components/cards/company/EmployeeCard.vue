@@ -16,25 +16,32 @@
             </div>
 
             <div class="employee-card__buttons">
-                <CircleButton class="employee-card__button" icon="visibility" @click="viewUser" />
-                <CircleButton class="employee-card__button" icon="edit" @click="editUser" />
-                <CircleButton class="employee-card__button" :danger="true" icon="delete" @click="deleteUserConfirm" />
+                <CircleButton class="employee-card__button" icon="visibility" @action="viewUser" />
+                <CircleButton class="employee-card__button" icon="edit" @action="editUser" />
+                <CircleButton class="employee-card__button" :danger="true" icon="delete" @action="deleteUserConfirm" />
             </div>
         </div>
         <ConfirmPopupVue :is-shown="isConfirming" :text="`Ви дійсно хочете видали ${employeeName} із списку працівників?`"
             @close="isConfirming = false" @confirm="deleteUser" />
+        <EditUserPopupVue :is-shown="editUserPopup" :current-position="position" :current-location="locationId"
+            :current-employee="employeeId" @close="editUserPopup = false" @employee-edited="employeeEdited" />
     </div>
 </template>
 
 <script>
 import CircleButton from '@/components/buttons/CircleButton.vue'
 import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
+import EditUserPopupVue from '@/components/popups/EditUserPopup.vue'
 import IdComponent from '@/components/other/IdComponent.vue'
 export default {
     name: "EmployeeCard",
-    components: { CircleButton, ConfirmPopupVue, IdComponent },
+    components: { CircleButton, ConfirmPopupVue, IdComponent, EditUserPopupVue },
     props: {
         employeeId: {
+            type: String,
+            default: ""
+        },
+        locationId: {
             type: String,
             default: ""
         },
@@ -59,6 +66,7 @@ export default {
         return {
             employeeImage: '',
             isConfirming: false,
+            editUserPopup: false
         }
     },
     computed: {},
@@ -83,11 +91,15 @@ export default {
         },
 
         editUser() {
-            this.$store.dispatch('showNotification', { message: 'lalala', type: 'success' })
+            this.editUserPopup = true
         },
 
         deleteUserConfirm() {
             this.isConfirming = true;
+        },
+
+        employeeEdited() {
+            this.$emit('deleted')
         },
 
         deleteUser() {

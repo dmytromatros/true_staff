@@ -1,5 +1,6 @@
 <template>
-  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання локації" @confirm="editLocation">
+  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання локації" @confirm="editLocation"
+    :loadingButton="loadingButton" :loading="loading">
     <template v-slot:body>
       <div class="edit-location__container">
         <ImageInput class="edit-location__image" :imageLink="imageUrl" @changed="handleImage" :id="id" />
@@ -25,6 +26,8 @@ export default {
       image: '',
       address: "",
       imageUrl: null,
+      loadingButton: false,
+      loading: true
     };
   },
   props: {
@@ -39,6 +42,7 @@ export default {
       this.image = data
     },
     editLocation() {
+      this.loadingButton = true
       this.$store
         .dispatch("editLocationAction", {
           image: this.image ? true : false,
@@ -50,10 +54,12 @@ export default {
           if (this.image)
             this.$store.dispatch("uploadImageAction", this.image).then((res) => {
               if (res.success) {
-                this.$emit("edited");
                 this.close();
+                this.$emit("edited");
               }
             });
+        }).finally(() => {
+          this.loadingButton = false
         });
     },
     getImageFn(id) {
@@ -64,7 +70,7 @@ export default {
       });
     },
     addEmployee() {
-      this.$router.push({ name: 'company-dashboard', query: { locationId: this.id } })
+      this.$router.push({ name: 'company-requests', query: { locationId: this.id } })
     }
   },
   mounted() {
@@ -77,6 +83,8 @@ export default {
         if (res.data.image) {
           this.getImageFn(this.id)
         }
+      }).finally(() => {
+        this.loading = false
       });
   },
 };

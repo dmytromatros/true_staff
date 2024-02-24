@@ -51,7 +51,6 @@ export default {
       .then((res) => {
         if (res.success) {
           this.name = `${res.data.name}`;
-          console.log(res);
           this.$store
             .dispatch("getImageAction", { id: this.$route.params.id })
             .then((res) => {

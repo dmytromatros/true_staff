@@ -1,6 +1,7 @@
 <template>
     <div class="circle-button">
-        <button @click.stop="action" class="circle-button__button" :class="{ danger, success, warning, disabled }">
+        <button @click.stop="action" class="circle-button__button" :class="{ danger, success, warning, disabled }"
+            :title="title">
             <FontIcon :icon="icon" :font-size="fontSize || '20'" />
         </button>
     </div>
@@ -34,11 +35,14 @@ export default {
         },
         fontSize: {
             type: String,
-        }
+        },
+        title: {
+            type: String,
+        },
     },
     methods: {
         action() {
-            this.$emit("click");
+            this.$emit("action");
         },
     },
 };

@@ -81,13 +81,12 @@ export default {
                 isEmployee: this.user.isEmployee,
             };
 
-            this.$store.dispatch("editUserAction", data).then((res) => {
+            this.$store.dispatch("editCompanyAction", data).then((res) => {
                 if (res.success) {
                     if (this.user.image) {
                         this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
                             if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                         });
-
                     }
 
                     this.$store.dispatch('showNotification', { message: res.message, type: 'success' })

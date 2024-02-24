@@ -42,7 +42,6 @@ export default {
   components: { LoaderComponent },
   methods: {
     action() {
-      console.log(this.disabled)
       if (!this.disabled)
         this.$emit("action");
     },

@@ -1,7 +1,7 @@
 'use strict';
 
 const { ObjectId } = require('mongodb');
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -31,12 +31,12 @@ module.exports = async(req, res) => {
         }
 
     } else {
-        error.push('There are users');
+        error.push('Є працівники на локації, спочатку видаліть працівників з локації');
     }
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Location is deleted',
+            message: 'Локація видалена',
             success: true
         });
     } else {

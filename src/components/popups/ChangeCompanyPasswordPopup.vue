@@ -1,5 +1,6 @@
 <template>
-  <DefaultPopup :isShown="isShown" @close="close" title="Change password" @confirm="changePass">
+  <DefaultPopup :isShown="isShown" @close="close" title="Change password" @confirm="changePass"
+    :loadingButton="loadingButton" :loading="loading">
     <template v-slot:body>
       <div class="change-password">
         <TextInput placeholder="Старий пароль" type="password" v-model="oldPass" />
@@ -25,6 +26,8 @@ export default {
       newPass: "",
       oldPass: "",
       newPassNew: '',
+      loadingButton: false,
+      loading: false
     };
   },
   methods: {
@@ -32,6 +35,7 @@ export default {
       this.$emit("close");
     },
     changePass() {
+      this.loadingButton = true
       if (this.newPass !== this.newPassNew) {
         this.$store.dispatch('showNotification', { message: 'Не правильно повторно ведений новий пароль', type: 'error' })
         return
@@ -50,6 +54,8 @@ export default {
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
+      }).finally(() => {
+        this.loadingButton = false
       });
     },
   },

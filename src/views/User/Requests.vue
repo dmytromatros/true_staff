@@ -12,7 +12,7 @@
                 @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
                 @delete-request="deleteReceiveRequest(rec._id)" />
             </div>
-            <div v-if="!isReceive" class="requests__receive-label">Немає отриманих запитів</div>
+            <div v-if="!Object.keys(receive).length" class="requests__receive-label">Немає отриманих запитів</div>
           </div>
         </div>
         <div class="requests__receive">
@@ -24,7 +24,7 @@
                 :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)" />
             </div>
-            <div v-if="!isSent" class="requests__receive-label">Немає відправлених запитів</div>
+            <div v-if="!Object.keys(sent).length" class="requests__receive-label">Немає відправлених запитів</div>
           </div>
         </div>
       </div>
@@ -90,8 +90,6 @@ export default {
       loading: true,
       loadingButton: false,
       opened: false,
-      isSent: true,
-      isReceive: true
     };
   },
   components: {
@@ -140,18 +138,6 @@ export default {
           if (res.success) {
             this.sent = { ...res.data.sent };
             this.receive = { ...res.data.receive };
-
-            if (res.data.sent.length) {
-              this.isSent = true
-            } else {
-              this.isSent = false
-            }
-
-            if (res.data.receive.length) {
-              this.isReceive = true
-            } else {
-              this.isReceive = false
-            }
           }
         }).finally(() => {
           this.loading = false;
@@ -234,6 +220,7 @@ export default {
       this.$store.dispatch("addUserRequestAction", data).then((res) => {
         if (res.success) {
           this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+          this.getAllRequest()
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
@@ -331,10 +318,8 @@ export default {
     flex-direction: column;
     gap: 15px;
 
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-    }
+    @include no-scroll;
+
   }
 
   &__bottom {

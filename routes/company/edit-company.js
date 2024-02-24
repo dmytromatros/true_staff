@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
                 { $set: updateData }
             );
         } catch (err) {
-            error.push(err);
+            error.push('Помилка збереження інформації!');
         }
     }
 
@@ -48,6 +48,7 @@ module.exports = async (req, res) => {
     if (error.length === 0) {
         res.status(200).json({
             data: { ...company },
+            message: 'Інформація про компанію змінена!',
             success: true
         });
     } else {

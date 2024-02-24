@@ -10,13 +10,18 @@
           </div>
           <div class="location-card__info">
             <div class="location-card__name">{{ location.address }}</div>
-            <div class="location-card__amount">Кількість працівників: 0</div>
+            <div class="location-card__amount">Кількість працівників: {{ location.employeesCount }}</div>
           </div>
         </div>
         <div v-if="!loading" class="location-card__buttons">
-          <DefaultButton class="location-card__button" label="Видалити" :danger="true"
-            @action="deleteLocationFn(location._id)" />
-          <DefaultButton class="location-card__button" label="Редагувати" @action="openEditPopupFN()" />
+          <div class="location-card__buttons-left">
+            <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees"
+              title="Працівники" />
+          </div>
+          <div class="location-card__buttons-right">
+            <CircleButtonVue class="location-card__button" icon="edit" @action="openEditPopupFN" />
+            <CircleButtonVue class="location-card__button" icon="delete" :danger="true" @action="openConfirmPopup" />
+          </div>
         </div>
       </template>
     </BaseCard>
@@ -24,17 +29,25 @@
     <EditLocationPopup :isShown="editPopupOpen" @edited="getLocations" :id="location._id"
       @close="() => { this.editPopupOpen = false }" />
 
+    <ConfirmPopupVue :is-shown="isConfirming"
+      :text="`Ви дійсно хочете видали \'${location.address}\' із списку працівників?`" @close="isConfirming = false"
+      @confirm="deleteLocationFn(location._id)" />
+
+    <LocationEmployees :id="location._id" :is-shown="showLocationEmployees" @close="showLocationEmployees = false" />
+
   </div>
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/system/BaseCard.vue";
 import EditLocationPopup from "@/components/popups/EditLocationPopup.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
+import CircleButtonVue from "@/components/buttons/CircleButton.vue";
+import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
+import LocationEmployees from "@/components/popups/LocationEmployees.vue";
 export default {
   name: "LocationCard",
-  components: { DefaultButton, BaseCard, EditLocationPopup, LoaderComponent },
+  components: { BaseCard, EditLocationPopup, LoaderComponent, CircleButtonVue, LocationEmployees, ConfirmPopupVue },
   props: {
     location: {
       type: Object,
@@ -45,16 +58,22 @@ export default {
     return {
       imageUrl: "",
       editPopupOpen: false,
-      loading: true
+      loading: true,
+      showLocationEmployees: false,
+      isConfirming: false
     };
   },
   methods: {
     getLocations() {
       this.$emit("edited");
       this.getImage();
+      this.editPopupOpen = false
     },
     openEditPopupFN() {
       this.editPopupOpen = true
+    },
+    openConfirmPopup() {
+      this.isConfirming = true;
     },
     deleteLocationFn(id) {
       this.$store
@@ -62,7 +81,12 @@ export default {
           id,
         })
         .then((res) => {
-          if (res.success) this.$emit("edited");
+          if (res.success) {
+            this.$emit("edited")
+            this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+          } else {
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+          }
         });
     },
     getImage() {
@@ -76,8 +100,14 @@ export default {
           this.loading = false
         });
     },
+    viewLocationEmployees() {
+      this.showLocationEmployees = true
+    }
   },
   mounted() {
+    setTimeout(() => {
+      this.loading = false
+    }, 2000);
     if (this.location.isImage) {
       this.getImage();
     } else {
@@ -118,12 +148,17 @@ export default {
 
   &__buttons {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
     margin: 10px;
-  }
+    gap: 15px;
+    border-top: 1px solid $light-grey;
 
-  &__button {
-    flex: 1;
+    padding-top: 10px;
+
+    &-right {
+      gap: 10px;
+      display: flex;
+    }
   }
 }
 </style>

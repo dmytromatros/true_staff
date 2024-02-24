@@ -44,56 +44,41 @@ const routes = [{
     children: [{
         path: ':id',
         redirect: { name: 'company-dashboard' },
-        children: [{
-            path: 'dashboard',
-            name: 'company-dashboard',
-            component: () =>
-                import('@/views/Company/EmployeesList.vue'),
-            children: [{
-                path: 'add',
-                name: 'add_employee',
-                components: {
-                    add_employee: () =>
-                        import('@/components/popups/AddEmployeePopup.vue'),
-                }
-            },]
-        },
-        {
-            path: 'locations',
-            name: 'company-locations',
-            component: () =>
-                import('@/views/Company/LocationsList.vue'),
-            children: [
-                {
-                    path: 'add',
-                    name: 'add_location',
-                    components: {
-                        add_location: () =>
-                            import('@/components/popups/AddLocationPopup.vue'),
-                    }
-                },
-            ]
-        },
+        children: [
+            {
+                path: 'dashboard',
+                name: 'company-dashboard',
+                component: () =>
+                    import('@/views/Company/EmployeesList.vue'),
+                children: []
+            },
+            {
+                path: 'locations',
+                name: 'company-locations',
+                component: () =>
+                    import('@/views/Company/LocationsList.vue'),
+                children: []
+            },
 
-        {
-            path: 'requests',
-            name: 'company-requests',
-            component: () =>
-                import('@/views/Company/Requests.vue'),
-        },
-        {
-            path: 'search-user',
-            name: 'company-search-user',
-            component: () =>
-                import('@/views/Company/SearchUser.vue'),
-        },
+            {
+                path: 'requests',
+                name: 'company-requests',
+                component: () =>
+                    import('@/views/Company/Requests.vue'),
+            },
+            {
+                path: 'search-user',
+                name: 'company-search-user',
+                component: () =>
+                    import('@/views/Company/SearchUser.vue'),
+            },
 
-        {
-            path: 'company-settings',
-            name: 'company-settings',
-            component: () =>
-                import('@/views/Company/Settings.vue'),
-        }
+            {
+                path: 'company-settings',
+                name: 'company-settings',
+                component: () =>
+                    import('@/views/Company/Settings.vue'),
+            }
 
         ]
     }

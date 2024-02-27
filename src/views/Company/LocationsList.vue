@@ -4,7 +4,8 @@
     <div v-else class="locations-list__container">
       <div class="locations-list__locations-card">
         <div class="locations-list__locations">
-          <div class="locations-list__location" v-for="(location, key) in $store.state.locations" :key="key + reloadData">
+          <div class="locations-list__location" v-for="(location, key) in $store.state.locations"
+            :key="key + location._id">
             <LocationCard :location="location" />
           </div>
         </div>
@@ -77,26 +78,29 @@ export default {
         .dispatch("addLocationAction", {
           isImage: !!this.newLocation.image,
           address: this.newLocation.address,
-          company: this.$route.params.id,
+          company: this.$store.state.id,
           employees: 0,
         })
-        .then((res) => {
-          if (res.success) {
+        .then((resLocations) => {
+          if (resLocations.success) {
             if (this.newLocation.image) {
-              this.newLocation.image.set("userId", res.data.new._id);
+              this.newLocation.image.set("userId", resLocations.data.new._id);
               this.$store.dispatch("uploadImageAction", this.newLocation.image).then(res => {
                 if (res.success) {
-                  this.$store.dispatch('getLocationsAction', { id: this.$route.params.id }).then(() => {
-                    this.clearData()
-                    this.loadingButton = false
-                  })
+                  this.$store.commit('addLocation', resLocations.data.new)
+                  this.loadingButton = false
+                  this.clearData()
+                  this.$store.dispatch('showNotification', { message: resLocations.message, type: 'success' })
                 }
               })
             } else {
+              this.$store.commit('addLocation', resLocations.data.new)
               this.loadingButton = false
+              this.clearData()
+              this.$store.dispatch('showNotification', { message: resLocations.message, type: 'success' })
             }
           } else {
-            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+            this.$store.dispatch('showNotification', { message: resLocations.response.data.message[0], type: 'error' })
             this.loadingButton = false
           }
         })

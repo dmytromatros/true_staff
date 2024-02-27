@@ -123,7 +123,7 @@ export default {
         });
     },
     sendReview() {
-      this.searchInfo.from = this.$route.params.id;
+      this.searchInfo.from = this.$store.state.user._id;
       this.searchInfo.date = Date.now();
       this.$store.dispatch("sendReviewAction", this.searchInfo);
     },

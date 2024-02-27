@@ -5,7 +5,7 @@
       <!-- <div class="user-info-card__container"> -->
 
       <div class="user-info-card__user"
-        :style="{ height: !isUser ? '100%' : info._id == $route.params.id ? '100%' : '70%' }">
+        :style="{ height: !isUser ? '100%' : info._id == $store.state.id ? '100%' : '70%' }">
         <BaseCard>
           <template v-slot:body>
             <div class="user-info-card__info">
@@ -112,7 +112,7 @@ export default {
       return checkRole() === 'user'
     },
     canSendReview() {
-      return this.$route.params.id === this.info._id
+      return this.$store.state.id === this.info._id
     }
   },
   methods: {
@@ -153,7 +153,7 @@ export default {
     sendReview() {
       this.loadingReview = true
       let data = {
-        from: this.$route.params.id,
+        from: this.$store.state.id,
         to: this.info._id,
         review: this.review
       };

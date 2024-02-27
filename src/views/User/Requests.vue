@@ -135,7 +135,7 @@ export default {
     },
     getAllRequest() {
       this.$store
-        .dispatch("getUserRequestListAction", { id: this.$route.params.id })
+        .dispatch("getUserRequestListAction", { id: this.$store.state.id })
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };

@@ -28,12 +28,6 @@ import BaseCard from "@/components/cards/system/BaseCard.vue";
 export default {
     name: "AddEmployeeCard",
     components: { DefaultButton, TextInput, SelectInput, BaseCard },
-    props: {
-        locations: {
-            type: Array,
-            default: () => { }
-        }
-    },
     data() {
         return {
             newEmployee: {
@@ -42,7 +36,8 @@ export default {
                 message: '',
                 userId: '',
             },
-            loadingButton: false
+            loadingButton: false,
+            locations: []
         }
     },
     computed: {
@@ -58,7 +53,7 @@ export default {
                     const employeeName = await this.getUserName(res.data._id);
                     const companyName = this.$store.state.company.name;
                     let data = {
-                        companyId: this.$route.params.id,
+                        companyId: this.$store.state.id,
                         companyName: companyName,
                         locationId: this.newEmployee.location,
                         locationAddress: this.getLocationAddress(this.newEmployee.location),
@@ -99,30 +94,42 @@ export default {
 
         getLocationAddress(id) {
             let address = "";
-            this.locations.forEach((loc) => {
-                if (loc.value == id) {
-                    address = loc.label;
+            this.$store.state.locations.forEach((loc) => {
+                if (loc._id == id) {
+                    address = loc.address;
                 }
             });
             return address;
         },
     },
     watch: {
-        'locations.length'() {
-            this.locations.forEach(loc => {
-                if (loc.value == this.queryLocationId) {
-                    this.newEmployee.location = loc.value;
+        '$store.state.locations.length'() {
+            this.locations = []
+            this.$store.state.locations.forEach(loc => {
+                if (loc._id == this.queryLocationId) {
+                    this.newEmployee.location = loc._id;
                     this.$emit('open')
                 }
+                this.locations.push({
+                    value: loc._id,
+                    label: loc.address
+                })
+
             })
         }
     },
     mounted() {
-        this.locations.forEach(loc => {
-            if (loc.value == this.queryLocationId) {
-                this.newEmployee.location = loc.value;
+        this.locations = []
+        this.$store.state.locations.forEach(loc => {
+            if (loc._id == this.queryLocationId) {
+                this.newEmployee.location = loc._id;
                 this.$emit('open')
             }
+
+            this.locations.push({
+                value: loc._id,
+                label: loc.address
+            })
         })
     }
 }

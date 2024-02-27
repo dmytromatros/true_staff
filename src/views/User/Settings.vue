@@ -29,7 +29,7 @@
         <BaseCard>
           <template v-slot:body>
             <div class="user-settings__image">
-              <ImageInput :imageLink="$store.state.profileImage" @changed="handleImage" :id="$route.params.id" />
+              <ImageInput :imageLink="$store.state.profileImage" @changed="handleImage" :id="$store.state.id" />
             </div>
           </template>
         </BaseCard>
@@ -79,7 +79,7 @@ export default {
     editUser() {
       this.loading = true
       const data = {
-        id: this.$route.params.id,
+        id: this.$store.state.id,
         name: this.$store.state.user.name,
         surname: this.$store.state.user.surname,
         isEmployee: this.$store.state.user.isEmployee,
@@ -89,7 +89,7 @@ export default {
         if (res.success) {
           if (this.user.image) {
             this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
-              if (res.success) this.$store.dispatch('getImageAction', { id: this.$route.params.id, profile: true })
+              if (res.success) this.$store.dispatch('getImageAction', { id: this.$store.state.id, profile: true })
               if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
             });
 
@@ -107,7 +107,7 @@ export default {
     getWorkplacesFn() {
       this.$store
         .dispatch("getWorkplacesAction", {
-          employeeId: this.$route.params.id,
+          employeeId: this.$store.state.id,
         })
         .then((res) => {
           this.enteredCompanies = res.data;

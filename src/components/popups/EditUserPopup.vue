@@ -1,5 +1,5 @@
 <template>
-    <DefaultPopup :isShown="isShown" @close="close" title="Редагуання ghfwsdybrf" @confirm="editEmployee"
+    <DefaultPopup :isShown="isShown" @close="close" title="Редагуання працівника" @confirm="editEmployee"
         :loadingButton="loadingButton" :loading="loading">
         <template v-slot:body>
             <div class="edit-employee__container">
@@ -40,7 +40,7 @@ export default {
         editEmployee() {
             this.loadingButton = true
             let data = {
-                companyId: this.$route.params.id,
+                companyId: this.$store.state.id,
                 employeeId: this.currentEmployee,
                 locationId: this.location,
                 locationAddress: this.getLocationAddress(this.location),
@@ -69,21 +69,28 @@ export default {
         }
 
     },
+    watch: {
+        '$store.state.locations.length'() {
+            this.locations = []
+            this.$store.state.locations.forEach(loc => {
+                this.locations.push({
+                    value: loc._id,
+                    label: loc.address
+                })
+
+            })
+        }
+    },
     mounted() {
-        this.$store.dispatch('getLocationsAction', { id: this.$route.params.id }).then(res => {
-            if (res.success) {
-                for (const key in res.data) {
-                    if (Object.hasOwnProperty.call(res.data, key)) {
-                        this.locations.push({
-                            label: res.data[key].address,
-                            value: res.data[key]._id,
-                        });
-                    }
-                }
-            }
-        }).finally(() => {
-            this.loading = false
+        this.$store.state.locations.forEach(loc => {
+            this.locations.push({
+                value: loc._id,
+                label: loc.address
+            })
         })
+        setTimeout(() => {
+            this.loading = false
+        }, 1000);
     },
 };
 </script>

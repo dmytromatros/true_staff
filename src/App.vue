@@ -32,12 +32,13 @@ export default {
       return isAuth()
     },
     id() {
-      return this.$route.params.id
+      return this.$store.state.id || localStorage.getItem('token');
     }
   },
   mounted() {
     this.role = checkRole();
     isAuth();
+    this.setInfo()
   },
 
 
@@ -54,18 +55,8 @@ export default {
     NotificationMessage
   },
 
-  watch: {
-    "$route.name"() {
-      if (this.$route.name === 'login') {
-        this.role = ''
-      } else {
-        this.role = checkRole();
-      }
-      isAuth();
-      checkRoutePermission();
-    },
-
-    id() {
+  methods: {
+    setInfo() {
       if (checkRole() === 'user' && this.id) {
         this.$store.dispatch('getCurrentUserAction', { id: this.id }).then(res => {
           if (res.success) {
@@ -86,6 +77,24 @@ export default {
       }
     }
   },
+
+  watch: {
+    "$route.name"() {
+      if (this.$route.name === 'login') {
+        this.role = ''
+        this.$store.commit('clearData')
+      } else {
+        this.role = checkRole();
+        this.setInfo()
+      }
+      isAuth();
+      checkRoutePermission();
+    },
+
+    id() {
+      this.setInfo()
+    }
+  }
 };
 </script>
 

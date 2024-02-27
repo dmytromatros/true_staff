@@ -9,10 +9,6 @@
           :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
           @deleted="getEmployees" :unique-id="emp.uniqueId" :locationId="emp.locationId" />
       </div>
-
-      <div class="employees-list__new">
-        <AddEmployeeCard :locations="locations" />
-      </div>
     </div>
   </div>
 </template>
@@ -20,14 +16,12 @@
 <script>
 import EmployeeCard from "@/components/cards/company/EmployeeCard.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
-import AddEmployeeCard from "@/components/cards/company/AddEmployeeCard.vue";
 export default {
   name: "EmployeesList",
-  components: { EmployeeCard, LoaderComponent, AddEmployeeCard },
+  components: { EmployeeCard, LoaderComponent },
   data() {
     return {
       employees: [],
-      locations: [],
       loading: true,
       reloadData: Date.now(),
     };
@@ -35,7 +29,7 @@ export default {
   methods: {
     async deleteEmployee(id) {
       let data = {
-        id: this.$route.params.id,
+        id: this.$store.state.id,
         employeeId: id,
       };
       await this.$store.dispatch("deleteEmployeeAction", data).then((res) => {
@@ -45,7 +39,7 @@ export default {
     getEmployees() {
       this.$store
         .dispatch("getCompanyEmployeesAction", {
-          id: this.$route.params.id,
+          id: this.$store.state.id,
         })
         .then((res) => {
           if (res.success) {
@@ -55,29 +49,10 @@ export default {
           }
         });
     },
-    getLocations() {
-      this.$store
-        .dispatch("getLocationsAction", {
-          id: this.$route.params.id,
-        })
-        .then((res) => {
-          if (res.success) {
-            for (const key in res.data) {
-              if (Object.hasOwnProperty.call(res.data, key)) {
-                this.locations.push({
-                  label: res.data[key].address,
-                  value: res.data[key]._id,
-                });
-              }
-            }
-          }
-        });
-    },
 
   },
   mounted() {
     this.getEmployees();
-    this.getLocations()
   },
 };
 </script>

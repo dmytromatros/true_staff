@@ -37,7 +37,7 @@
           <FontIcon v-else icon="edit_square" font-size="34px" />
         </button>
         <AddEmployeeCard class="requests__bottom-add" :class="{ 'requests__bottom-add--active': opened }"
-          :locations="locations" @request-sent="getAllRequest" @open="opened = true" />
+          @request-sent="getAllRequest" @open="opened = true" />
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ export default {
     },
     getAllRequest() {
       this.$store
-        .dispatch("getCompanyRequestListAction", { id: this.$route.params.id })
+        .dispatch("getCompanyRequestListAction", { id: this.$store.state.id })
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };
@@ -103,24 +103,6 @@ export default {
           this.loading = false
         });
     },
-    getLocations() {
-      this.$store
-        .dispatch("getLocationsAction", {
-          id: this.$route.params.id,
-        })
-        .then((res) => {
-          if (res.success) {
-            for (const key in res.data) {
-              if (Object.hasOwnProperty.call(res.data, key)) {
-                this.locations.push({
-                  label: res.data[key].address,
-                  value: res.data[key]._id,
-                });
-              }
-            }
-          }
-        });
-    },
 
     openAddNew() {
       this.opened = !this.opened
@@ -128,7 +110,6 @@ export default {
   },
   mounted() {
     this.getAllRequest();
-    this.getLocations()
   },
 };
 </script>

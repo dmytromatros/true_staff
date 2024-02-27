@@ -47,7 +47,7 @@ export default {
         .dispatch("editLocationAction", {
           image: this.image ? true : false,
           address: this.address,
-          companyId: this.$route.params.id,
+          companyId: this.$store.state.id,
           id: this.id,
         })
         .then(() => {

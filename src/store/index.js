@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import axios from "axios";
+// import router from '@/router';
 
 const { isAuth } = require("../../utils/permission");
 
@@ -13,7 +14,7 @@ const hashCode = (s) => {
 
 export default createStore({
     state: {
-        users: [],
+        id: '',
         user: {},
         company: {},
         role: '',
@@ -23,19 +24,42 @@ export default createStore({
     },
     getters: {},
     mutations: {
+        clearData: (state) => {
+            state.id = '';
+            state.role = '';
+            state.user = {};
+            state.company = '';
+            state.locations = [];
+            state.notifications = [];
+            state.profileImage = null;
+        },
         setUser: (state, data) => {
             state.user = data.data;
             state.role = 'user';
+            if (data.data)
+                state.id = data.data._id
+            else state.id = ''
         },
         setUserList: (state, data) => {
             state.users = data.data;
         },
         setCompany(state, data) {
             state.company = data.data;
-            state.role = 'cpomany';
+            state.role = 'company';
+            if (data.data)
+                state.id = data.data._id
+            else state.id = ''
         },
         setLocations: (state, data) => {
             state.locations = data.data;
+        },
+
+        addLocation: (state, data) => {
+            state.locations.push(data);
+        },
+
+        deleteLocation: (state, id) => {
+            state.locations = state.locations.filter(location => location._id !== id);
         },
         addNotification: (state, data) => {
             const index = state.notifications.findIndex((item) => item.id === data.id);
@@ -88,10 +112,9 @@ export default createStore({
         },
 
 
-        logOutAction: ({ commit }) => {
-            localStorage.setItem('token', '');
+        logOutAction: () => {
             localStorage.setItem('role', '');
-            commit('setUser', {})
+            localStorage.setItem('token', '');
             isAuth()
         },
 

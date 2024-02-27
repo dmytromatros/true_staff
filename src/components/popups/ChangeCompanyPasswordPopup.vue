@@ -43,7 +43,7 @@ export default {
       this.$store.dispatch("editCompanyPasswordAction", {
         oldPass: this.oldPass,
         newPass: this.newPass,
-        id: this.$route.params.id,
+        id: this.$store.state.id,
       }).then((res) => {
         if (res.success) {
           this.$store.dispatch('showNotification', { message: res.message, type: 'success' })

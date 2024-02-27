@@ -40,7 +40,7 @@
         <router-view v-slot="{ Component }">
           <LoaderComponent v-if="loading" />
           <Transition name="content" appear>
-            <component v-if="!loading" :is="Component" @user-edited="userEdited" />
+            <component v-if="!loading" :is="Component" />
           </Transition>
         </router-view>
       </div>

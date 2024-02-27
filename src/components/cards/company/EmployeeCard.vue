@@ -103,7 +103,7 @@ export default {
         },
 
         deleteUser() {
-            this.$store.dispatch('deleteEmployeeAction', { id: this.$route.params.id, employeeId: this.employeeId }).then(res => {
+            this.$store.dispatch('deleteEmployeeAction', { id: this.$store.state.id, employeeId: this.employeeId }).then(res => {
                 if (res.success) {
                     this.$emit('deleted')
                 }

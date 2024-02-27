@@ -82,7 +82,7 @@ export default {
         })
         .then((res) => {
           if (res.success) {
-            this.$emit("edited")
+            this.$store.commit('deleteLocation', id)
             this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
           } else {
             this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })

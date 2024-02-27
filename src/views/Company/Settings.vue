@@ -29,7 +29,7 @@
                     <template v-slot:body>
                         <div class="company-settings__image">
                             <ImageInput :imageLink="$store.state.profileImage" @changed="handleImage"
-                                :id="$route.params.id" />
+                                :id="$store.state.id" />
                         </div>
                     </template>
                 </BaseCard>
@@ -72,7 +72,7 @@ export default {
         editUser() {
             this.loading = true
             const data = {
-                id: this.$route.params.id,
+                id: this.$store.state.id,
                 name: this.$store.state.company.name,
             };
 
@@ -80,7 +80,7 @@ export default {
                 if (res.success) {
                     if (this.user.image) {
                         this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
-                            if (res.success) this.$store.dispatch('getImageAction', { id: this.$route.params.id, profile: true })
+                            if (res.success) this.$store.dispatch('getImageAction', { id: this.$store.state.id, profile: true })
                             if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                         });
                     }

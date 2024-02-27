@@ -18,7 +18,7 @@
           <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль"
             link="user-settings" :key="updateKey">
             <template v-slot:image>
-              <img :src="image || '/img/profile-img.webp'" alt="Профіль" />
+              <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="Профіль" />
             </template>
           </MenuCard>
 
@@ -27,7 +27,7 @@
       <div class="user-dashboard__content">
         <router-view v-slot="{ Component }">
           <Transition name="content" appear>
-            <component :is="Component" @user-edited="userEdited" />
+            <component :is="Component" />
           </Transition>
         </router-view>
       </div>
@@ -37,10 +37,9 @@
 
 <script>
 import MenuCard from "@/components/cards/system/MenuCard.vue";
-import UserCard from "@/components/cards/user/UserCard.vue";
 export default {
   name: "UserDashboard",
-  components: { MenuCard, UserCard },
+  components: { MenuCard },
   data() {
     return {
       image: null,
@@ -63,33 +62,8 @@ export default {
       return this.$route.name == route;
     },
 
-    userEdited() {
-      setTimeout(() => {
-        this.getImageFn()
-      }, 500);
-    },
-    getUserFn() {
-      this.$store
-        .dispatch("getUserAction", { id: this.$route.params.id })
-        .then((res) => {
-          if (res.success) {
-            this.name = `${res.data.name} ${res.data.surname}`;
-            if (res.data.isImage) this.getImageFn()
-          }
-        });
-    },
-    getImageFn() {
-      this.$store
-        .dispatch("getImageAction", { id: this.$route.params.id })
-        .then((res) => {
-          this.image = res.data;
-          this.updateKey = Date.now()
-        });
-    }
-  },
-  mounted() {
-    this.getUserFn()
-  },
+
+  }
 };
 </script>
 

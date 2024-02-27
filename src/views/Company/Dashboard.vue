@@ -31,7 +31,7 @@
           <MenuCard class="company-dashboard__sidebar-link  company-dashboard__sidebar-link--profile" label="Профіль"
             link="company-settings" :key="updateKey">
             <template v-slot:image>
-              <img :src="image || '/img/profile-img.webp'" alt="Профіль" />
+              <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="Профіль" />
             </template>
           </MenuCard>
         </div>
@@ -50,11 +50,10 @@
 
 <script>
 import MenuCard from "@/components/cards/system/MenuCard.vue";
-import CompanyCard from "@/components/cards/company/CompanyCard.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
 export default {
   name: "CompanyDashboard",
-  components: { MenuCard, CompanyCard, LoaderComponent },
+  components: { MenuCard, LoaderComponent },
   data() {
     return {
       image: null,
@@ -73,40 +72,10 @@ export default {
         name: "company-requests",
       });
     },
-    userEdited() {
-      this.loading = true
-      setTimeout(() => {
-        this.getImageFn()
-        this.loading = false
-      }, 500);
-    },
     checkRoute(route) {
       return this.$route.name == route;
-    },
-    getCompanyFn() {
-      this.$store
-        .dispatch("getCompanyAction", { id: this.$route.params.id })
-        .then((res) => {
-          if (res.success) {
-            this.name = `${res.data.name}`;
-            if (res.data.isImage) {
-              this.getImageFn()
-            }
-          }
-        });
-    },
-    getImageFn() {
-      this.$store
-        .dispatch("getImageAction", { id: this.$route.params.id })
-        .then((res) => {
-          this.image = res.data;
-          this.updateKey = Date.now()
-        });
     }
   },
-  mounted() {
-    this.getCompanyFn()
-  }
 };
 </script>
 

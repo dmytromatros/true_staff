@@ -1,6 +1,6 @@
 <template>
   <MainBackground v-if="!isAuthorized" />
-  <div class="header">
+  <div class="header" v-else>
     <Transition name="header" appear>
       <UserHeader v-if="role == 'user'" />
     </Transition>
@@ -30,12 +30,16 @@ export default {
   computed: {
     isAuthorized() {
       return isAuth()
+    },
+    id() {
+      return this.$route.params.id
     }
   },
   mounted() {
     this.role = checkRole();
     isAuth();
   },
+
 
   data() {
     return {
@@ -52,10 +56,35 @@ export default {
 
   watch: {
     "$route.name"() {
-      this.role = checkRole();
+      if (this.$route.name === 'login') {
+        this.role = ''
+      } else {
+        this.role = checkRole();
+      }
       isAuth();
       checkRoutePermission();
     },
+
+    id() {
+      if (checkRole() === 'user' && this.id) {
+        this.$store.dispatch('getCurrentUserAction', { id: this.id }).then(res => {
+          if (res.success) {
+            if (res.data.isImage) {
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true })
+            }
+          }
+        })
+      } else if (checkRole() === 'company' && this.id) {
+        this.$store.dispatch('getCurrentCompanyAction', { id: this.id }).then(res => {
+          if (res.success) {
+            this.$store.dispatch('getLocationsAction', { id: this.id })
+            if (res.data.isImage) {
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true })
+            }
+          }
+        })
+      }
+    }
   },
 };
 </script>

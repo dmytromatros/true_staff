@@ -57,8 +57,8 @@ export default {
     width: 100%;
     text-align: center;
     width: 100%;
-    padding: 10px 15px;
-    border-radius: 10px;
+    padding: 5px 15px;
+    border-radius: 5px;
     @include main-shadow;
     color: $dark_text;
     font-size: 16px;

@@ -1,7 +1,7 @@
 <template>
   <Transition name="slide-fade">
     <div v-if="isShown" class="default-popup">
-      <div class="default-popup__back"></div>
+      <div class="default-popup__back" @click="closePopup"></div>
       <div class="default-popup__window">
         <div class="default-popup__header">
           <span>{{ title }}</span>
@@ -114,11 +114,11 @@ export default {
 }
 
 .slide-fade-enter-active {
-  transition: all 0.5s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,

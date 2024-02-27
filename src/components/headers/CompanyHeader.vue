@@ -5,8 +5,10 @@
     </div>
     <div class="user-header__right">
       <div class="user-header__info">
-        <div class="user-header__image">img</div>
-        <div class="user-header__name">Company name</div>
+        <div class="user-header__image">
+          <FontIcon icon="person" />
+        </div>
+        <div class="user-header__name">{{ $store.state.company.name }}</div>
       </div>
       <DefaultButton class="user-header-button" @action="logoutFn" label="Вийти" />
     </div>
@@ -15,11 +17,13 @@
 
 <script>
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import FontIcon from "@/components/other/FontIcon.vue";
 
 export default {
   name: "userHeader",
   components: {
     DefaultButton,
+    FontIcon
   },
   methods: {
     async logoutFn() {

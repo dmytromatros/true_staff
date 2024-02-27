@@ -1,6 +1,6 @@
 <template>
   <div class="menu-card">
-    <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active">
+    <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active" :title="label">
       <slot name="image"> </slot>
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
@@ -71,7 +71,8 @@ export default {
     outline: 1px solid $main-color;
     overflow: hidden;
 
-    &:hover {
+
+    ma &:hover {
       outline-color: $second-color;
     }
 
@@ -99,6 +100,10 @@ export default {
     transition: 0.25s ease-in-out all;
     position: relative;
     z-index: 1;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

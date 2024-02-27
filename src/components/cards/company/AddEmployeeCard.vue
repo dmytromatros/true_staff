@@ -56,7 +56,7 @@ export default {
             this.$store.dispatch("checkUserAction", { id: this.newEmployee.userId || 'test' }).then(async res => {
                 if (res.success) {
                     const employeeName = await this.getUserName(res.data._id);
-                    const companyName = await this.getCompanyName(this.$route.params.id);
+                    const companyName = this.$store.state.company.name;
                     let data = {
                         companyId: this.$route.params.id,
                         companyName: companyName,
@@ -90,18 +90,6 @@ export default {
                 const res = await this.$store.dispatch("getUserAction", { id });
                 if (res.success) {
                     return `${res.data.name} ${res.data.surname}`;
-                }
-            } catch (error) {
-                console.error(error);
-                return "";
-            }
-        },
-
-        async getCompanyName(id) {
-            try {
-                const res = await this.$store.dispatch("getCompanyAction", { id });
-                if (res.success) {
-                    return `${res.data.name}`;
                 }
             } catch (error) {
                 console.error(error);

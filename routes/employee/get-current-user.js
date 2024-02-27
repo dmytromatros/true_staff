@@ -17,12 +17,7 @@ module.exports = async (req, res) => {
         try {
             user = await req.app.db.collection('users').findOne({
                 _id: objectId
-            }, {
-                projection: {
-                    password: 0,
-                    email: 0,
-                }
-            });
+            },);
         } catch (err) {
             error.push(err);
         }

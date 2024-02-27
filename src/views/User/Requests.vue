@@ -12,7 +12,8 @@
                 @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
                 @delete-request="deleteReceiveRequest(rec._id)" />
             </div>
-            <div v-if="!Object.keys(receive).length" class="requests__receive-label">Немає отриманих запитів</div>
+            <div v-if="!Object.keys(receive).length && !loading" class="requests__receive-label">Немає отриманих запитів
+            </div>
           </div>
         </div>
         <div class="requests__receive">
@@ -24,7 +25,8 @@
                 :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)" />
             </div>
-            <div v-if="!Object.keys(sent).length" class="requests__receive-label">Немає відправлених запитів</div>
+            <div v-if="!Object.keys(sent).length && !loading" class="requests__receive-label">Немає відправлених запитів
+            </div>
           </div>
         </div>
       </div>
@@ -76,8 +78,8 @@ export default {
       sent: {},
       receive: {},
       page: 1,
-      user: {},
-      isEmployee: false,
+      user: this.$store.state.user,
+      isEmployee: this.$store.state.user.isEmployee,
       // Request data
       company: "",
       location: "",
@@ -174,36 +176,14 @@ export default {
         }
       });
     },
-    async getCompanyName(id) {
-      try {
-        const res = await this.$store.dispatch("getCompanyAction", { id });
-        if (res.success) {
-          return res.data.name;
-        }
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed, e.g., return a default value or throw an error
-        return "";
-      }
-    },
-    async getLocationAddress(id) {
-      try {
-        const res = await this.$store.dispatch("getLocationAction", {
-          locationId: id,
-        });
-        if (res.success) {
-          return res.data.address;
-        }
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed, e.g., return a default value or throw an error
-        return "";
-      }
+    getLocationAddress(id) {
+      const location = this.$store.state.locations.find(loc => loc._id === id);
+      return location ? location.address : null;
     },
     async sendRequest() {
       this.loadingButton = true
-      const companyName = await this.getCompanyName(this.company);
-      const locationAddress = await this.getLocationAddress(this.location);
+      const companyName = this.$store.state.company.name;
+      const locationAddress = this.getLocationAddress(this.location);
 
       const data = {
         companyId: this.company,
@@ -236,14 +216,6 @@ export default {
   mounted() {
     this.getAllRequest();
     this.getCompanyList();
-    this.$store
-      .dispatch("getUserAction", { id: this.$route.params.id })
-      .then((res) => {
-        if (res.success) {
-          this.isEmployee = res.data.isEmployee;
-          this.user = { ...res.data };
-        }
-      });
   },
   watch: {
     company() {

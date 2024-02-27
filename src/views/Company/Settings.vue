@@ -1,7 +1,6 @@
 <template>
     <section class="company-settings">
-        <LoaderComponent v-if="loading" />
-        <div v-else class="company-settings__form">
+        <div class="company-settings__form">
 
             <div class="company-settings__content">
                 <BaseCard style="padding: 0">
@@ -9,16 +8,16 @@
                         <div class="company-settings__data">
                             <div class="company-settings__data-title">Загальна інформація</div>
                             <div class="company-settings__data-content">
-                                <TextInput label="Назва" v-model="user.name" />
-                                <TextInput label="Логін" v-model="user.login" :disabled="true" />
+                                <TextInput label="Назва" v-model="$store.state.company.name" />
+                                <TextInput label="Логін" v-model="$store.state.company.login" :disabled="true" />
                                 <div class="company-settings__data-pass">
                                     <TextInput class="company-settings__data-pass-input" label="Пароль" type="password"
-                                        v-model="user.password" :disabled="true" />
+                                        v-model="$store.state.company.password" :disabled="true" />
                                     <DefaultButton label="Змінити пароль" @action="openPopup" />
                                 </div>
 
                                 <div class="company-settings__buttons">
-                                    <DefaultButton label="Зберегти зміни" @action="editUser" />
+                                    <DefaultButton label="Зберегти зміни" @action="editUser" :loading="loading" />
                                 </div>
                             </div>
                         </div>
@@ -29,8 +28,8 @@
                 <BaseCard>
                     <template v-slot:body>
                         <div class="company-settings__image">
-                            <LoaderComponent v-if="imageLoading" />
-                            <ImageInput v-else :imageLink="imageUrl" @changed="handleImage" :id="$route.params.id" />
+                            <ImageInput :imageLink="$store.state.profileImage" @changed="handleImage"
+                                :id="$route.params.id" />
                         </div>
                     </template>
                 </BaseCard>
@@ -45,7 +44,6 @@ import TextInput from "@/components/inputs/TextInput.vue";
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue"
 import ChangeCompanyPasswordPopup from "@/components/popups/ChangeCompanyPasswordPopup.vue";
 
 export default {
@@ -55,7 +53,6 @@ export default {
         DefaultButton,
         BaseCard,
         ImageInput,
-        LoaderComponent,
         ChangeCompanyPasswordPopup
     },
     data() {
@@ -65,7 +62,6 @@ export default {
             imageUrl: null,
             changePassPopup: false,
             loading: true,
-            imageLoading: true
         };
     },
     methods: {
@@ -74,17 +70,17 @@ export default {
         },
 
         editUser() {
+            this.loading = true
             const data = {
                 id: this.$route.params.id,
-                name: this.user.name,
-                surname: this.user.surname,
-                isEmployee: this.user.isEmployee,
+                name: this.$store.state.company.name,
             };
 
             this.$store.dispatch("editCompanyAction", data).then((res) => {
                 if (res.success) {
                     if (this.user.image) {
                         this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
+                            if (res.success) this.$store.dispatch('getImageAction', { id: this.$route.params.id, profile: true })
                             if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                         });
                     }
@@ -94,47 +90,24 @@ export default {
                 } else {
                     this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
                 }
+            }).finally(() => {
+                this.loading = false
             });
         },
 
-        getImageFn() {
-            this.$store
-                .dispatch("getImageAction", { id: this.$route.params.id })
-                .then((res) => {
-                    this.imageUrl = res.data;
-                }).finally(() => {
-                    this.imageLoading = false
-                });
-        },
+
 
         openPopup() {
             this.changePassPopup = true;
         },
         closePopup() {
             this.changePassPopup = false;
-            this.getUserFn()
         },
-        getUserFn() {
-            this.$store
-                .dispatch("getCompanyAction", { id: this.$route.params.id })
-                .then((res) => {
-                    if (res.success) {
-                        this.user = { ...res.data };
 
-                        if (this.user.isImage) {
-                            this.getImageFn();
-                        } else {
-                            this.imageLoading = false
-                        }
-                    }
-                }).finally(() => {
-                    this.loading = false
-                });
-        }
     },
 
     mounted() {
-        this.getUserFn()
+        this.loading = false
     },
 };
 </script>

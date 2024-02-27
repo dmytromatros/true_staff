@@ -15,10 +15,11 @@ export default createStore({
     state: {
         users: [],
         user: {},
-        copmany: {},
+        company: {},
         role: '',
         locations: [],
-        notifications: []
+        notifications: [],
+        profileImage: null
     },
     getters: {},
     mutations: {
@@ -30,7 +31,7 @@ export default createStore({
             state.users = data.data;
         },
         setCompany(state, data) {
-            state.copmany = data.data;
+            state.company = data.data;
             state.role = 'cpomany';
         },
         setLocations: (state, data) => {
@@ -142,6 +143,17 @@ export default createStore({
             })
         },
 
+        getCurrentUserAction: async (context, data) => {
+            return new Promise(done => {
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-current-user/${data.id}`)
+                    .then(res => {
+                        done(res.data)
+                        context.commit('setUser', res.data);
+                    })
+                    .catch(err => done(err));
+            })
+        },
+
         checkUserAction: async (context, data) => {
             return new Promise(done => {
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/check-user/${data.id}`)
@@ -229,10 +241,9 @@ export default createStore({
             })
         },
 
-
-        getCompanyAction: async ({ commit }, data) => {
+        getCurrentCompanyAction: async ({ commit }, data) => {
             return new Promise(done => {
-                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`,)
+                axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-current-company/${data.id}`,)
                     .then(res => {
                         commit('setCompany', res.data);
                         done(res.data)
@@ -240,6 +251,7 @@ export default createStore({
                     .catch(err => done(err));
             })
         },
+
 
 
         editCompanyAction: async ({ commit }, data) => {
@@ -340,11 +352,10 @@ export default createStore({
 
 
 
-        addLocationAction: async ({ commit }, data) => {
+        addLocationAction: async (context, data) => {
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-location`, data)
                     .then(res => {
-                        commit('setLocations', res.data);
                         done(res.data)
                     })
                     .catch(err => done(err));
@@ -483,6 +494,9 @@ export default createStore({
                 axios.get(`${process.env.VUE_APP_BACKEND_URL}/api/get-image/${data.id}`,)
                     .then(res => {
                         done(res.data)
+                        if (data.profile) {
+                            context.state.profileImage = res.data.data
+                        }
                     })
                     .catch(err => done(err));
             })

@@ -4,8 +4,8 @@
     <div v-else class="locations-list__container">
       <div class="locations-list__locations-card">
         <div class="locations-list__locations">
-          <div class="locations-list__location" v-for="(location, key) in locations" :key="key + reloadData">
-            <LocationCard :location="location" @edited="getLocations" />
+          <div class="locations-list__location" v-for="(location, key) in $store.state.locations" :key="key + reloadData">
+            <LocationCard :location="location" />
           </div>
         </div>
       </div>
@@ -29,7 +29,8 @@
         </BaseCard>
       </div>
     </div>
-    <div class="locations-list__label" v-if="!loading && !Object.keys(locations).length">У вас немає локацій.</div>
+    <div class="locations-list__label" v-if="!loading && !Object.keys($store.state.locations).length">У вас немає локацій.
+    </div>
 
   </div>
 </template>
@@ -46,12 +47,11 @@ export default {
   components: { TextInput, DefaultButton, LocationCard, BaseCard, ImageInput, LoaderComponent },
   data() {
     return {
-      locations: {},
       newLocation: {
         image: "",
         address: "",
       },
-      loading: true,
+      loading: false,
       loadingButton: false,
       reloadData: Date.now()
     };
@@ -61,17 +61,6 @@ export default {
       this.$router.push({
         name: "add_location",
       });
-    },
-    getLocations() {
-      this.$store
-        .dispatch("getLocationsAction", {
-          id: this.$route.params.id,
-        })
-        .then((res) => {
-          this.locations = res.data;
-          this.loading = false
-          this.clearData()
-        });
     },
     clearData() {
       this.newLocation.address = '';
@@ -86,28 +75,31 @@ export default {
       this.loadingButton = true
       this.$store
         .dispatch("addLocationAction", {
-          image: this.newLocation.image,
+          isImage: !!this.newLocation.image,
           address: this.newLocation.address,
           company: this.$route.params.id,
           employees: 0,
         })
         .then((res) => {
-          this.loadingButton = false
           if (res.success) {
             if (this.newLocation.image) {
               this.newLocation.image.set("userId", res.data.new._id);
-              this.$store.dispatch("uploadImageAction", this.newLocation.image).then((res) => {
+              this.$store.dispatch("uploadImageAction", this.newLocation.image).then(res => {
                 if (res.success) {
-                  this.getLocations();
+                  this.$store.dispatch('getLocationsAction', { id: this.$route.params.id }).then(() => {
+                    this.clearData()
+                    this.loadingButton = false
+                  })
                 }
-              });
+              })
             } else {
-              this.getLocations();
+              this.loadingButton = false
             }
           } else {
             this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+            this.loadingButton = false
           }
-        });
+        })
     },
     openEditPopupFN(id) {
       this.$router.push({
@@ -117,9 +109,6 @@ export default {
         },
       });
     },
-  },
-  mounted() {
-    this.getLocations();
   },
 };
 </script>
@@ -152,7 +141,7 @@ export default {
   &__locations {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 5px;
   }
 
   &__new-location-wrapper {}

@@ -1,31 +1,11 @@
 <template>
-  <LoaderComponent v-if="loading" />
-  <div v-else class="user-info-card">
-    <div v-if="Object.keys(info).length" class="user-info-card__container">
+  <div class="user-info-card">
+    <LoaderComponent v-if="loading" />
+    <div v-else-if="!loading && Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
       <div class="user-info-card__user"
         :style="{ height: !isUser ? '100%' : info._id == $route.params.id ? '100%' : '70%' }">
-        <BaseCard class="user-info-card__small">
-          <template v-slot:body>
-            <div class="user-info-card__flex">
-              <div class="user-info-card__img">
-                <img v-if="imageUrl" :src="imageUrl" alt="" />
-                <img v-else src="/img/profile-img.webp" alt="" />
-              </div>
-
-              <div class="user-info-card__flex-inner">
-                <div class="user-info-card__name">
-                  {{ info.name }} {{ info.surname }}
-                  <!-- Nikita Bibka -->
-                </div>
-
-                <IdComponent :id="info.uniqueId" />
-              </div>
-            </div>
-          </template>
-        </BaseCard>
-
         <BaseCard>
           <template v-slot:body>
             <div class="user-info-card__info">
@@ -53,12 +33,39 @@
             <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review"
               :loading="loadingReview" />
           </div>
-        </template></BaseCard>
+        </template>
+      </BaseCard>
     </div>
 
     <div v-else class="user-info-card__text">
-      <img src="/img/search-image.jpg" alt="" />
+      <img src="/img/search-img-1.png" class="user-info-card__image" alt="" />
+      <!-- <FontIcon class="user-info-card__search-icon" icon="search" font-size="2500%" /> -->
+      <div class="user-info-card__text-text">Почніть пошук ...</div>
     </div>
+
+    <div class="user-info-card__search">
+      <SearchCard class="user-info-card__search-card" @selected="showUserInfo" />
+      <BaseCard class="user-info-card__small" v-if="Object.keys(info).length">
+        <template v-slot:body>
+          <LoaderComponent v-if="loading" />
+          <div v-else class="user-info-card__flex">
+            <div class="user-info-card__img">
+              <img v-if="imageUrl" :src="imageUrl" alt="" />
+              <img v-else src="/img/profile-img.webp" alt="" />
+            </div>
+
+            <div class="user-info-card__flex-inner">
+              <div class="user-info-card__name" :title="`${info.name} ${info.surname}`">
+                {{ info.name }} {{ info.surname }}
+              </div>
+
+              <IdComponent :id="info.uniqueId" />
+            </div>
+          </div>
+        </template>
+      </BaseCard>
+    </div>
+
   </div>
 </template>
 
@@ -72,16 +79,13 @@ import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
 import IdComponent from "@/components/other/IdComponent.vue";
 import { checkRole } from "../../../../utils/permission";
-
+import SearchCard from '@/components/cards/system/SearchCard.vue';
+// import FontIcon from "@/components/other/FontIcon.vue";
 export default {
   name: "UserInfoCard",
-  props: {
-    user: {
-      type: String,
-    },
-  },
   data() {
     return {
+      user: null,
       info: {},
       imageUrl: "",
       selected: 1,
@@ -99,7 +103,9 @@ export default {
     DefaultButton,
     CustomSwitch,
     LoaderComponent,
-    IdComponent
+    IdComponent,
+    SearchCard,
+    // FontIcon
   },
   computed: {
     isUser() {
@@ -163,6 +169,19 @@ export default {
         }
       });
     },
+    showUserInfo(info) {
+      this.user = info.user;
+
+      if (this.user) {
+
+        const currentUrl = window.location.href;
+
+        const newUrl = currentUrl.split('?')[0];
+
+        history.pushState(null, null, newUrl);
+      }
+
+    },
   },
   watch: {
     user() {
@@ -182,13 +201,21 @@ export default {
 
 .user-info-card {
   overflow: auto;
-
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 15px;
   @include no-scroll;
 
 
   &__text {
     img {
       width: 100%;
+    }
+
+    &-text {
+      font-size: 200%;
+      font-weight: 700;
+      color: $main-color;
     }
   }
 
@@ -198,18 +225,21 @@ export default {
     height: 100%;
   }
 
-  &__user {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 20px;
-    height: 70%;
-  }
-
   &__small {
     height: fit-content;
     padding: 30px 20px;
+    background: $main-gradient;
   }
 
+  &__search-icon {
+    width: fit-content;
+    color: $main-color;
+  }
+
+  &__text {
+    justify-content: center;
+    align-items: center;
+  }
 
   &__container,
   &__text {
@@ -219,15 +249,36 @@ export default {
     flex-direction: column;
   }
 
+  &__search {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      @include main-shadow;
+    }
+  }
+
+  &__search-card {
+    height: fit-content;
+  }
+
   &__text {
     justify-content: center;
     height: 100%;
+    gap: 15px;
 
     img {
-      width: 100%;
+      width: 70%;
       height: 70%;
       object-fit: contain;
       object-position: center;
+      filter: drop-shadow(0px 0px 5px rgba($color: $main-color, $alpha: 0.2));
     }
   }
 
@@ -256,18 +307,9 @@ export default {
   }
 
   &__container {
-    // flex-direction: column;
-    // justify-content: flex-start;
     gap: 20px;
-
-    img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-      @include main-shadow;
-    }
+    max-height: 100%;
+    overflow: hidden;
   }
 
   &__flex {
@@ -282,9 +324,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
       height: 100%;
-      // justify-content: center;
       width: fit-content;
     }
   }
@@ -295,6 +335,11 @@ export default {
     font-weight: 600;
     text-align: center;
     line-height: 40px;
+    color: $white;
+    width: 100%;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__select {

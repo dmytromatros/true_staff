@@ -1,7 +1,6 @@
 <template>
   <section class="user-settings">
-    <LoaderComponent v-if="loading" />
-    <div v-else class="user-settings__form">
+    <div class="user-settings__form">
 
       <div class="user-settings__content">
         <BaseCard style="padding: 0">
@@ -9,17 +8,17 @@
             <div class="user-settings__data">
               <div class="user-settings__data-title">Загальна інформація</div>
               <div class="user-settings__data-content">
-                <TextInput label="Ім'я" v-model="user.name" />
-                <TextInput label="Прізвище" v-model="user.surname" />
+                <TextInput label="Ім'я" v-model="$store.state.user.name" />
+                <TextInput label="Прізвище" v-model="$store.state.user.surname" />
                 <div class="user-settings__data-pass">
-                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="user.password"
-                    :disabled="true" />
+                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password"
+                    v-model="$store.state.user.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
-                <CheckboxInput label="Is an employee" v-model="user.isEmployee" />
+                <CheckboxInput label="Is an employee" v-model="$store.state.user.isEmployee" />
 
                 <div class="user-settings__buttons">
-                  <DefaultButton label="Зберегти зміни" @action="editUser" />
+                  <DefaultButton label="Зберегти зміни" @action="editUser" :loading="loading" />
                 </div>
               </div>
             </div>
@@ -30,13 +29,12 @@
         <BaseCard>
           <template v-slot:body>
             <div class="user-settings__image">
-              <LoaderComponent v-if="imageLoading" />
-              <ImageInput v-else :imageLink="imageUrl" @changed="handleImage" :id="$route.params.id" />
+              <ImageInput :imageLink="$store.state.profileImage" @changed="handleImage" :id="$route.params.id" />
             </div>
           </template>
         </BaseCard>
         <div class="user-settings__id">
-          <IdComponent :id="this.user.uniqueId" />
+          <IdComponent :id="$store.state.user.uniqueId" />
         </div>
       </div>
     </div>
@@ -51,7 +49,6 @@ import ChangeUserPasswordPopup from "@/components/popups/ChangeUserPasswordPopup
 import DefaultButton from "@/components/buttons/DefaultButton.vue";
 import BaseCard from "@/components/cards/system/BaseCard.vue";
 import ImageInput from "@/components/inputs/ImageInput.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue"
 import IdComponent from "@/components/other/IdComponent.vue";
 
 export default {
@@ -63,7 +60,6 @@ export default {
     DefaultButton,
     BaseCard,
     ImageInput,
-    LoaderComponent,
     IdComponent
   },
   data() {
@@ -73,7 +69,6 @@ export default {
       imageUrl: null,
       changePassPopup: false,
       loading: true,
-      imageLoading: true
     };
   },
   methods: {
@@ -82,17 +77,19 @@ export default {
     },
 
     editUser() {
+      this.loading = true
       const data = {
         id: this.$route.params.id,
-        name: this.user.name,
-        surname: this.user.surname,
-        isEmployee: this.user.isEmployee,
+        name: this.$store.state.user.name,
+        surname: this.$store.state.user.surname,
+        isEmployee: this.$store.state.user.isEmployee,
       };
 
       this.$store.dispatch("editUserAction", data).then((res) => {
         if (res.success) {
           if (this.user.image) {
             this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
+              if (res.success) this.$store.dispatch('getImageAction', { id: this.$route.params.id, profile: true })
               if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
             });
 
@@ -103,17 +100,9 @@ export default {
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
-      });
-    },
-
-    getImageFn() {
-      this.$store
-        .dispatch("getImageAction", { id: this.$route.params.id })
-        .then((res) => {
-          this.imageUrl = res.data;
-        }).finally(() => {
-          this.imageLoading = false
-        });
+      }).finally(() => (
+        this.loading = false
+      ));
     },
     getWorkplacesFn() {
       this.$store
@@ -130,30 +119,11 @@ export default {
     },
     closePopup() {
       this.changePassPopup = false;
-      this.getUserFn()
     },
-    getUserFn() {
-      this.$store
-        .dispatch("getUserAction", { id: this.$route.params.id })
-        .then((res) => {
-          if (res.success) {
-            this.user = { ...res.data };
-
-            if (this.user.isImage) {
-              this.getImageFn();
-            } else {
-              this.imageLoading = false
-            }
-            this.getWorkplacesFn();
-          }
-        }).finally(() => {
-          this.loading = false
-        });
-    }
   },
 
   mounted() {
-    this.getUserFn()
+    this.loading = false;
   },
 };
 </script>

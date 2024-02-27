@@ -84,6 +84,7 @@ export default {
 .review-card {
   background-color: $white;
   @include main-shadow;
+  border: 1px solid $main-color;
   padding: 15px;
   border-radius: $border-radius;
   overflow: auto;

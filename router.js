@@ -12,6 +12,7 @@ exports = module.exports = (app) => {
     app.get('/api/get-user-list', require('./routes/employee/get-employees'))
     app.post('/api/add-user', require('./routes/employee/add-user'))
     app.get('/api/get-user/:id', require('./routes/employee/get-user'))
+    app.get('/api/get-current-user/:id', require('./routes/employee/get-current-user'))
     app.post('/api/find-by-name', require('./routes/employee/find-by-name'))
     app.get('/api/check-user/:id', require('./routes/employee/check-user'))
     app.get('/api/get-user-info/:id', require('./routes/employee/get-user-info'))
@@ -23,7 +24,7 @@ exports = module.exports = (app) => {
     // Company
 
     app.post('/api/add-company', require('./routes/company/add-company'))
-    app.get('/api/get-company/:id', require('./routes/company/get-company'))
+    app.get('/api/get-current-company/:id', require('./routes/company/get-current-company'))
     app.post('/api/edit-company', require('./routes/company/edit-company'))
     app.post('/api/edit-company-password', require('./routes/company/edit-password'))
     app.post('/api/send-company-request', require('./routes/company/send-request'))

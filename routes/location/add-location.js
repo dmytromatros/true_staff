@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
     if (error.length === 0) {
         res.status(200).json({
             message: 'Локація додана!',
-            data: { ...locations, new: { ...currentLocation } },
+            data: { data: { ...locations }, new: { ...currentLocation } },
             success: true
         });
     } else {

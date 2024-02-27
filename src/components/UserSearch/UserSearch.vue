@@ -1,16 +1,14 @@
 <template>
     <div class="user-search">
         <UserInfoCard class="user-search__card user-search__card-user-info" :user="userId" />
-        <SearchCard class="user-search__search" @selected="showUserInfo" />
     </div>
 </template>
 
 <script>
 import UserInfoCard from '@/components/cards/user/UserInfoCard.vue';
-import SearchCard from '@/components/cards/system/SearchCard.vue';
 export default {
     name: "UserSearch",
-    components: { UserInfoCard, SearchCard },
+    components: { UserInfoCard },
     props: {},
     data() {
         return {

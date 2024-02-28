@@ -9,7 +9,8 @@
     </Transition>
 
   </div>
-  <div class="main-container">
+  <LoaderComponent v-if="loading" />
+  <div class="main-container" v-else>
     <router-view class="main-router-view" />
   </div>
   <NotificationMessage />
@@ -18,8 +19,9 @@
 <script>
 import UserHeader from "@/components/headers/UserHeader.vue";
 import CompanyHeader from "@/components/headers/CompanyHeader.vue";
-import MainBackground from "./views/System/MainBackground.vue";
-import NotificationMessage from "./components/other/NotificationMessage.vue";
+import MainBackground from "@/views/System/MainBackground.vue";
+import NotificationMessage from "@/components/other/NotificationMessage.vue";
+import LoaderComponent from "@/components/other/LoaderComponent.vue";
 const {
   isAuth,
   checkRoutePermission,
@@ -45,6 +47,7 @@ export default {
   data() {
     return {
       role: "",
+      loading: true,
     };
   },
 
@@ -52,7 +55,8 @@ export default {
     UserHeader,
     CompanyHeader,
     MainBackground,
-    NotificationMessage
+    NotificationMessage,
+    LoaderComponent
   },
 
   methods: {
@@ -61,7 +65,11 @@ export default {
         this.$store.dispatch('getCurrentUserAction', { id: this.id }).then(res => {
           if (res.success) {
             if (res.data.isImage) {
-              this.$store.dispatch('getImageAction', { id: this.id, profile: true })
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then(res1 => {
+                if (res1.success) this.loading = false;
+              })
+            } else {
+              this.loading = false;
             }
           }
         })
@@ -70,7 +78,11 @@ export default {
           if (res.success) {
             this.$store.dispatch('getLocationsAction', { id: this.id })
             if (res.data.isImage) {
-              this.$store.dispatch('getImageAction', { id: this.id, profile: true })
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then(res1 => {
+                if (res1.success) this.loading = false;
+              })
+            } else {
+              this.loading = false;
             }
           }
         })
@@ -83,6 +95,7 @@ export default {
       if (this.$route.name === 'login') {
         this.role = ''
         this.$store.commit('clearData')
+        this.loading = false
       } else {
         this.role = checkRole();
         this.setInfo()

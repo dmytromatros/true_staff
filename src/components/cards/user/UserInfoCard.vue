@@ -171,14 +171,10 @@ export default {
     },
     showUserInfo(info) {
       this.user = info.user;
-
       if (this.user) {
-
         const currentUrl = window.location.href;
-
         const newUrl = currentUrl.split('?')[0];
-
-        history.pushState(null, null, newUrl);
+        history.replaceState(history.state, null, newUrl);
       }
 
     },

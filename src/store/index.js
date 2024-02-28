@@ -149,6 +149,7 @@ export default createStore({
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-user`, data)
                     .then(res => {
+                        context.dispatch("logInUserAction", res.data.data)
                         done(res.data)
                     })
                     .catch(err => done(err));
@@ -258,6 +259,7 @@ export default createStore({
             return new Promise(done => {
                 axios.post(`${process.env.VUE_APP_BACKEND_URL}/api/add-company`, data)
                     .then(res => {
+                        context.dispatch("logInCompanyAction", res.data.data)
                         done(res.data)
                     })
                     .catch(err => done(err));

@@ -30,9 +30,25 @@ module.exports = async (req, res) => {
 
     newCompany.isImage = false
 
+    let newCompanyId;
+
+
     if (error.length === 0) {
         try {
-            await req.app.db.collection('companies').insertOne(newCompany);
+            const result = await req.app.db.collection('companies').insertOne(newCompany);
+            newCompanyId = result.insertedId
+        } catch (err) {
+            error.push(err);
+        }
+    }
+
+    let currentCompany;
+
+    if (error.length === 0) {
+        try {
+            currentCompany = await req.app.db.collection('companies').findOne({
+                _id: newCompanyId
+            },);
         } catch (err) {
             error.push(err);
         }
@@ -42,6 +58,7 @@ module.exports = async (req, res) => {
     if (error.length === 0) {
         res.status(200).json({
             message: 'Ви успішно зареєструвались!',
+            data: currentCompany,
             success: true
         });
     } else {

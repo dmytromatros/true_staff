@@ -14,7 +14,7 @@
               }">Реєстрація</span>
             </div>
             <LogInFormVue class="log-in-page__form" v-if="action == 'login'" />
-            <RegistrationFormVue class="log-in-page__form" v-if="action == 'registration'" @registered="registered" />
+            <RegistrationFormVue class="log-in-page__form" v-if="action == 'registration'" />
           </div>
         </div>
       </div>
@@ -37,9 +37,6 @@ export default {
   methods: {
     select(action) {
       this.action = action;
-    },
-    registered() {
-      this.action = "login";
     },
   },
 };

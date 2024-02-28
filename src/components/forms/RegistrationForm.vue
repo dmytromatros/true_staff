@@ -115,7 +115,7 @@ export default {
       this.$store.dispatch("addUserAction", this.userInfo).then((res) => {
         this.loading = false;
         if (res.success) {
-          this.$emit("registered");
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }
@@ -129,7 +129,7 @@ export default {
       this.$store.dispatch("addCompanyAction", this.companyInfo).then((res) => {
         this.loading = false;
         if (res.success) {
-          this.$emit("registered");
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
         } else {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
         }

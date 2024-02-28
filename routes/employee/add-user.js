@@ -36,18 +36,33 @@ module.exports = async (req, res) => {
 
     newUser.uniqueId = generateUniqueId(`${name} ${surname}`)
 
+    let newUserId;
+
     if (error.length === 0) {
         try {
-            await req.app.db.collection('users').insertOne(newUser);
+            const result = await req.app.db.collection('users').insertOne(newUser);
+            newUserId = result.insertedId
         } catch (error) {
             error.push(error);
         }
     }
 
+    let currentUser;
+
+    if (error.length === 0) {
+        try {
+            currentUser = await req.app.db.collection('users').findOne({
+                _id: newUserId
+            },);
+        } catch (err) {
+            error.push(err);
+        }
+    }
 
     if (error.length === 0) {
         res.status(200).json({
             message: 'Ви успішно зареєстувались!',
+            data: currentUser,
             success: true
         });
     } else {

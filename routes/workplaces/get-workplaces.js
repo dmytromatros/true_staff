@@ -1,7 +1,7 @@
 'use strict';
 
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -21,9 +21,11 @@ module.exports = async(req, res) => {
     }
 
 
+
+
     if (error.length === 0) {
         res.status(200).json({
-            data: {...workplaces },
+            data: { ...workplaces },
             success: true
         });
     } else {

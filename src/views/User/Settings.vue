@@ -104,15 +104,15 @@ export default {
         this.loading = false
       ));
     },
-    getWorkplacesFn() {
-      this.$store
-        .dispatch("getWorkplacesAction", {
-          employeeId: this.$store.state.id,
-        })
-        .then((res) => {
-          this.enteredCompanies = res.data;
-        });
-    },
+    // getWorkplacesFn() {
+    //   this.$store
+    //     .dispatch("getWorkplacesAction", {
+    //       employeeId: this.$store.state.id,
+    //     })
+    //     .then((res) => {
+    //       this.enteredCompanies = res.data;
+    //     });
+    // },
 
     openPopup() {
       this.changePassPopup = true;

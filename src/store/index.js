@@ -30,7 +30,6 @@ export default createStore({
             state.user = {};
             state.company = '';
             state.locations = [];
-            state.notifications = [];
             state.profileImage = null;
         },
         setUser: (state, data) => {

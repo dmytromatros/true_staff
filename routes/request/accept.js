@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 
-module.exports = async(req, res) => {
+module.exports = async (req, res) => {
 
     let error = [];
 
@@ -49,11 +49,8 @@ module.exports = async(req, res) => {
         try {
             await req.app.db.collection('workplaces').insertOne({
                 companyId: currentRequest.companyId,
-                companyName: currentRequest.companyName,
                 locationId: currentRequest.locationId,
-                locationAddress: currentRequest.locationAddress,
                 employeeId: currentRequest.employeeId,
-                employeeName: currentRequest.employeeName,
                 position: currentRequest.position,
                 deleted: false
             });

@@ -1,6 +1,6 @@
 <template>
     <div class="id-component" @click="copyId(id)" title="Скопіювати">
-        # {{ id }}
+        <span style="user-select: none;"># </span>{{ id }}
     </div>
 </template>
 

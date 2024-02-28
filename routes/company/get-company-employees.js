@@ -28,7 +28,14 @@ module.exports = async (req, res) => {
                     _id: objectId
                 });
 
+                const locationObject = await req.app.db.collection('locations').findOne({
+                    _id: new ObjectId(employee.locationId)
+                });
+
                 employee.uniqueId = user.uniqueId;
+                employee.employeeName = `${user.name} ${user.surname}`;
+                employee.locationAddress = locationObject.address;
+
             } catch (err) {
                 error.push(err);
             }

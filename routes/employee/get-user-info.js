@@ -37,6 +37,21 @@ module.exports = async (req, res) => {
     }
 
     if (errors.length === 0) {
+        for (const job of user.jobs) {
+            try {
+                const companyId = new ObjectId(job.companyId);
+                let company = await req.app.db.collection('companies').findOne({
+                    _id: companyId
+                });
+                job.companyName = company.name;
+
+            } catch (err) {
+                errors.push(err);
+            }
+        }
+    }
+
+    if (errors.length === 0) {
         res.status(200).json({
             data: user,
             success: true

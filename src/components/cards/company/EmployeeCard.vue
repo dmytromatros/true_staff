@@ -2,11 +2,19 @@
     <div class="employee-card">
         <div class="employee-card__container">
             <div class="employee-card__employee">
-                <img v-if="employeeImage" :src="employeeImage" alt="">
-                <img v-else src="/img/profile-img.webp" alt="">
-                <span class="employee-card__name">{{ employeeName }}</span>
-                <IdComponent :id="uniqueId" />
+                <div class="employee-card__img">
+                    <img v-if="employeeImage" :src="employeeImage" alt="">
+                    <img v-else src="/img/profile-img.webp" alt="">
+                </div>
+                <div class="employee-card__info">
+                    <span class="employee-card__name">{{ employeeName }}</span>
+                    <IdComponent :id="uniqueId" />
+                </div>
+
+
             </div>
+
+
 
             <div class="employee-card__location">
                 Локація: <span class="employee-card__bold">{{ location }}</span>
@@ -21,8 +29,9 @@
                 <CircleButton class="employee-card__button" :danger="true" icon="delete" @action="deleteUserConfirm" />
             </div>
         </div>
-        <ConfirmPopupVue :is-shown="isConfirming" :text="`Ви дійсно хочете видали ${employeeName} із списку працівників?`"
-            @close="isConfirming = false" @confirm="deleteUser" />
+        <ConfirmPopupVue :is-shown="isConfirming"
+            :text="`Ви дійсно хочете видали ${employeeName} із списку працівників?`" @close="isConfirming = false"
+            @confirm="deleteUser" />
         <EditUserPopupVue :is-shown="editUserPopup" :current-position="position" :current-location="locationId"
             :current-employee="employeeId" @close="editUserPopup = false" @employee-edited="employeeEdited" />
     </div>
@@ -134,7 +143,8 @@ export default {
 
     &__employee {
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
+        gap: 16px;
         width: 100%;
         align-items: center;
         margin-bottom: 25px;
@@ -144,11 +154,10 @@ export default {
         background: $main-gradient;
 
         img {
-            width: 100px;
-            height: 100px;
+            width: 75px;
+            height: 75px;
             object-fit: cover;
             object-position: center;
-            margin-bottom: 15px;
             border-radius: 50%;
             @include main-shadow;
 
@@ -159,21 +168,33 @@ export default {
         font-weight: 600;
         font-size: 20px;
         white-space: nowrap;
+        display: block;
         max-width: 215px;
         text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     &__location {
         margin-bottom: 15px;
         font-size: 18px;
-        text-align: center;
+        // text-align: center;
         padding: 0 25px;
+        white-space: nowrap;
+        display: block;
+        max-width: 215px;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     &__position {
-        margin-bottom: 40px;
-        text-align: center;
+        margin-bottom: 15px;
+        // text-align: center;
         padding: 0 25px;
+        white-space: nowrap;
+        display: block;
+        max-width: 215px;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     &__bold {

@@ -197,6 +197,10 @@ export default {
     gap: 20px;
   }
 
+  &__container {
+    height: 100%;
+  }
+
   &__button {
     margin-top: 20px;
   }

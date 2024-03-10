@@ -24,13 +24,14 @@
               <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації"
                 v-model="newLocation.address" />
 
-              <DefaultButton label="Add location" @action="addLocation" :loading="loadingButton" />
+              <DefaultButton label="Додати локацію" @action="addLocation" :loading="loadingButton" />
             </div>
           </template>
         </BaseCard>
       </div>
     </div>
-    <div class="locations-list__label" v-if="!loading && !Object.keys($store.state.locations).length">У вас немає локацій.
+    <div class="locations-list__label" v-if="!loading && !Object.keys($store.state.locations).length">У вас немає
+      локацій.
     </div>
 
   </div>
@@ -128,7 +129,7 @@ export default {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 2.5fr 1fr;
+    grid-template-columns: 3fr 1fr;
     gap: 15px;
   }
 
@@ -144,16 +145,16 @@ export default {
 
   &__locations {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
   }
 
   &__new-location-wrapper {}
 
   &__new-location-text {
-    font-size: 36px;
+    font-size: 26px;
     display: block;
-    margin: 25px 0 25px 7px;
+    margin: 25px 0 15px 7px;
     font-weight: 600;
   }
 
@@ -163,16 +164,16 @@ export default {
 
   &__new-location {
     :deep(.image-input__image) {
-      width: 250px;
-      height: 250px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
     }
 
     :deep(.image-input__wrapper) {
-      width: 250px;
-      height: 250px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       margin: auto;
     }

@@ -63,6 +63,7 @@ export default {
         });
     },
     getImageFn(id) {
+      console.log("lll")
       this.$store.dispatch('getImageAction', { id: id }).then(res => {
         if (res.success) {
           this.imageUrl = res.data
@@ -71,22 +72,31 @@ export default {
     },
     addEmployee() {
       this.$router.push({ name: 'company-requests', query: { locationId: this.id } })
+    },
+    getFn() {
+      this.$store
+        .dispatch("getLocationAction", {
+          locationId: this.id,
+        })
+        .then((res) => {
+          this.address = res.data.address;
+          if (res.data.image) {
+            this.getImageFn(this.id)
+          }
+        }).finally(() => {
+          this.loading = false
+        });
     }
   },
   mounted() {
-    this.$store
-      .dispatch("getLocationAction", {
-        locationId: this.id,
-      })
-      .then((res) => {
-        this.address = res.data.address;
-        if (res.data.image) {
-          this.getImageFn(this.id)
-        }
-      }).finally(() => {
-        this.loading = false
-      });
+    this.getFn();
   },
+  watch: {
+    isShown() {
+      if (this.isShown === true)
+        this.getFn();
+    }
+  }
 };
 </script>
 

@@ -15,7 +15,7 @@
                     v-model="$store.state.user.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
-                <CheckboxInput label="Is an employee" v-model="$store.state.user.isEmployee" />
+                <CheckboxInput label="Is an employee" v-model="$store.state.user.isEmployee" :disabled="isWorking" />
 
                 <div class="user-settings__buttons">
                   <DefaultButton label="Зберегти зміни" @action="editUser" :loading="loading" />
@@ -69,6 +69,7 @@ export default {
       imageUrl: null,
       changePassPopup: false,
       loading: true,
+      isWorking: false
     };
   },
   methods: {
@@ -104,15 +105,26 @@ export default {
         this.loading = false
       ));
     },
-    // getWorkplacesFn() {
-    //   this.$store
-    //     .dispatch("getWorkplacesAction", {
-    //       employeeId: this.$store.state.id,
-    //     })
-    //     .then((res) => {
-    //       this.enteredCompanies = res.data;
-    //     });
-    // },
+
+    getWorkplacesFn() {
+      this.$store
+        .dispatch("getWorkplacesAction", {
+          employeeId: this.$store.state.id,
+        })
+        .then((res) => {
+          if (Object.keys(res.data).length > 0) {
+            for (const key in res.data) {
+              if (Object.hasOwnProperty.call(res.data, key)) {
+                const element = res.data[key];
+                if (element.deleted === false) {
+                  this.isWorking = true;
+                  return;
+                }
+              }
+            }
+          }
+        });
+    },
 
     openPopup() {
       this.changePassPopup = true;
@@ -124,6 +136,7 @@ export default {
 
   mounted() {
     this.loading = false;
+    this.getWorkplacesFn();
   },
 };
 </script>

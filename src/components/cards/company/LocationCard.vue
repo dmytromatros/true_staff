@@ -1,30 +1,28 @@
 <template>
   <div class="location-card">
-    <BaseCard>
-      <template v-slot:body>
-        <LoaderComponent v-if="loading" />
-        <div v-if="!loading" class="location-card__container">
-          <div class="location-card__img">
-            <img v-if="imageUrl" :src="imageUrl" alt="" />
-            <img v-else src="/img/profile-img.webp" alt="" />
-          </div>
-          <div class="location-card__info">
-            <div class="location-card__name">{{ location.address }}</div>
-            <div class="location-card__amount">Кількість працівників: {{ location.employeesCount }}</div>
-          </div>
+    <div class="base-card">
+      <LoaderComponent v-if="loading" />
+      <div v-if="!loading" class="location-card__container">
+        <div class="location-card__img">
+          <img v-if="imageUrl" :src="imageUrl" alt="" />
+          <img v-else src="/img/profile-img.webp" alt="" />
         </div>
-        <div v-if="!loading" class="location-card__buttons">
-          <div class="location-card__buttons-left">
-            <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees"
-              title="Працівники" />
-          </div>
-          <div class="location-card__buttons-right">
-            <CircleButtonVue class="location-card__button" icon="edit" @action="openEditPopupFN" />
-            <CircleButtonVue class="location-card__button" icon="delete" :danger="true" @action="openConfirmPopup" />
-          </div>
+        <div class="location-card__info">
+          <div class="location-card__name">{{ location.address }}</div>
+          <div class="location-card__amount">Кількість працівників: {{ location.employeesCount }}</div>
         </div>
-      </template>
-    </BaseCard>
+      </div>
+      <div v-if="!loading" class="location-card__buttons">
+        <div class="location-card__buttons-left">
+          <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees"
+            title="Працівники" />
+        </div>
+        <div class="location-card__buttons-right">
+          <CircleButtonVue class="location-card__button" icon="edit" @action="openEditPopupFN" />
+          <CircleButtonVue class="location-card__button" icon="delete" :danger="true" @action="openConfirmPopup" />
+        </div>
+      </div>
+    </div>
 
     <EditLocationPopup :isShown="editPopupOpen" @edited="getLocations" :id="location._id"
       @close="() => { this.editPopupOpen = false }" />
@@ -39,7 +37,7 @@
 </template>
 
 <script>
-import BaseCard from "@/components/cards/system/BaseCard.vue";
+// import BaseCard from "@/components/cards/system/BaseCard.vue";
 import EditLocationPopup from "@/components/popups/EditLocationPopup.vue";
 import LoaderComponent from "@/components/other/LoaderComponent.vue";
 import CircleButtonVue from "@/components/buttons/CircleButton.vue";
@@ -47,7 +45,7 @@ import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
 import LocationEmployees from "@/components/popups/LocationEmployees.vue";
 export default {
   name: "LocationCard",
-  components: { BaseCard, EditLocationPopup, LoaderComponent, CircleButtonVue, LocationEmployees, ConfirmPopupVue },
+  components: { EditLocationPopup, LoaderComponent, CircleButtonVue, LocationEmployees, ConfirmPopupVue },
   props: {
     location: {
       type: Object,
@@ -128,32 +126,47 @@ export default {
     display: flex;
     gap: 15px;
     align-items: center;
+    background: $main-gradient;
+    padding: 15px;
+  }
+
+  .base-card {
+    border-radius: 8px;
+    background: $white;
+    overflow: hidden;
   }
 
   &__img {
     img {
-      width: 100px;
-      height: 100px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
     }
   }
 
+  &__amount {
+    color: $white;
+  }
+
   &__name {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
+    white-space: nowrap;
+    display: block;
+    max-width: 215px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: $white;
   }
 
   &__buttons {
     display: flex;
     justify-content: space-between;
-    margin: 10px;
     gap: 15px;
-    border-top: 1px solid $light-grey;
-
-    padding-top: 10px;
+    padding: 15px;
 
     &-right {
       gap: 10px;
@@ -162,6 +175,3 @@ export default {
   }
 }
 </style>
-
-
-

@@ -8,6 +8,7 @@
         <EmployeeCard v-for="(emp, key) in employees" :key="key + reloadData" :employeeId="emp.employeeId"
           :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
           @deleted="getEmployees" :unique-id="emp.uniqueId" :locationId="emp.locationId" />
+
       </div>
     </div>
   </div>
@@ -66,8 +67,6 @@ export default {
   flex-direction: column;
 
   &__container {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
     gap: 15px;
     flex: 1;
     max-height: 100%;
@@ -84,8 +83,8 @@ export default {
     height: 100%;
     overflow: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
     overflow-x: hidden;
   }
 

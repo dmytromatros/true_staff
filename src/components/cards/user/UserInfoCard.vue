@@ -30,8 +30,8 @@
       <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"><template v-slot:body>
           <div class="user-info-card__send-review">
             <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" />
-            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review"
-              :loading="loadingReview" />
+            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview"
+              :disabled="!review" :loading="loadingReview" />
           </div>
         </template>
       </BaseCard>
@@ -249,6 +249,8 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 100%;
+    overflow: auto;
 
     img {
       width: 100px;
@@ -262,6 +264,7 @@ export default {
 
   &__search-card {
     height: fit-content;
+    max-height: 100%;
   }
 
   &__text {

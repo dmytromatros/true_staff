@@ -1,7 +1,7 @@
 <template>
     <div class="search-by-id">
         <TextInput placeholder="Введіть ID користувача" v-model="id" />
-        <DefaultButton label="Шукати" @action="$emit('find', id)" :loading="loading" :disabled="!Boolean(id.length)" />
+        <DefaultButton label="Шукати" @action="find(id)" :loading="loading" :disabled="!Boolean(id.length)" />
     </div>
 </template>
 
@@ -21,7 +21,10 @@ export default {
     },
     computed: {},
     methods: {
-
+        find(id) {
+            this.$emit('find', id)
+            this.id = ''
+        }
     }
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
-  <div class="checkbox-input">
+  <div class="checkbox-input" :class="{ disabled }">
     <input class="checkbox-input__input" type="checkbox" :id="id" v-model="internalValue" />
     <label class="checkbox-input__text" v-if="label" :for="id">{{
-      label
-    }}</label>
+    label
+  }}</label>
     <label class="checkbox-input__label" :for="id" :class="{ 'checkbox-input__label--active': internalValue }">
     </label>
   </div>
@@ -20,6 +20,10 @@ export default {
     label: {
       type: String,
       default: "checkbox",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     modelValue: Boolean,
   },
@@ -87,6 +91,11 @@ export default {
   &__text {
     cursor: pointer;
     margin-left: 10px;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 </style>

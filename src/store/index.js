@@ -50,7 +50,14 @@ export default createStore({
             else state.id = ''
         },
         setLocations: (state, data) => {
-            state.locations = data.data;
+            if (Array.isArray(data.data))
+                state.locations = data.data;
+            else {
+                state.locations = []
+                Object.keys(data.data).forEach(key => {
+                    state.locations.push(data.data[key])
+                })
+            }
         },
 
         addLocation: (state, data) => {

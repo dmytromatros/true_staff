@@ -68,12 +68,12 @@ export default {
     gap: 15px;
     max-height: 120px;
     background: white;
-    outline: 1px solid $main-color;
+    border: 1px solid $main-color;
     overflow: hidden;
 
 
-    ma &:hover {
-      outline-color: $second-color;
+    &:hover {
+      border-color: $second-color;
     }
 
     &--active .menu-card__back {
@@ -81,10 +81,10 @@ export default {
     }
 
     &--active {
-      outline: 1px solid transparent;
+      border: 1px solid transparent;
 
       &:hover {
-        outline-color: transparent;
+        border-color: transparent;
       }
     }
 

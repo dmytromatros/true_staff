@@ -4,12 +4,12 @@
       <img src="/img/logo_small_with_text.svg" alt="">
     </div>
     <div class="user-header__right">
-      <div class="user-header__info">
+      <router-link :to="{ name: 'company-settings' }" class="user-header__info">
         <div class="user-header__image">
           <FontIcon icon="person" />
         </div>
         <div class="user-header__name">{{ $store.state.company.name }}</div>
-      </div>
+      </router-link>
       <DefaultButton class="user-header-button" @action="logoutFn" label="Вийти" />
     </div>
   </div>
@@ -65,6 +65,20 @@ export default {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    color: $black;
+    transition: 0.25s ease-in-out all;
+
+    &:hover {
+      color: $main-color-hover;
+    }
+  }
+
+  &__name {
+    display: block;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__right {

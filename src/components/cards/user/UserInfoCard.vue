@@ -11,14 +11,16 @@
               <CustomSwitch :options="{ Відгуки: 1, Робота: 2 }" v-model="selected" />
 
               <div v-if="selected == 1" class="user-info-card__reviews">
-                <div class="user-info-card__card-container">
+                <div v-if="Object.keys(reviews).length" class="user-info-card__card-container">
                   <ReviewCard v-for="(card, key) in reviews" :key="key" :review="card" />
                 </div>
+                <div v-else class="user-info-card__label">Ой-ой-ой... Немає відгуків... Залиш свій &#128513;</div>
               </div>
               <div v-if="selected == 2" class="user-info-card__jobs">
-                <div class="user-info-card__card-container">
+                <div v-if="info.jobs?.length" class="user-info-card__card-container">
                   <UserJobCard v-for="(card, key) in info.jobs" :key="key" :job="card" />
                 </div>
+                <div v-else class="user-info-card__label">У-у-упс... Немає записів...</div>
               </div>
             </div>
           </template>
@@ -28,7 +30,7 @@
       <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"
         ><template v-slot:body>
           <div class="user-info-card__send-review">
-            <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" />
+            <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" placeholder="Скажи все що думаєш!" />
             <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review" :loading="loadingReview" />
           </div>
         </template>
@@ -112,6 +114,7 @@ export default {
   },
   methods: {
     getUserFn(user) {
+      this.reviews = {};
       this.$store.dispatch('getUserInfoAction', { id: user }).then((res) => {
         if (res.success) {
           this.info = res.data;
@@ -205,6 +208,16 @@ export default {
       font-weight: 700;
       color: $main-color;
     }
+  }
+
+  &__label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: $placeholder-color;
   }
 
   &__info {

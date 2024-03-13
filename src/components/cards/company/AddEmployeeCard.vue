@@ -83,6 +83,13 @@ export default {
         });
     },
 
+    clearData() {
+      this.newEmployee.location = '';
+      this.newEmployee.position = '';
+      this.newEmployee.message = '';
+      this.newEmployee.userId = '';
+    },
+
     async getUserName(id) {
       try {
         const res = await this.$store.dispatch('getUserAction', { id });

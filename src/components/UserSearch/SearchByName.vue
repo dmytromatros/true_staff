@@ -20,19 +20,6 @@
           <template v-slot:body>
             <div class="search-by-name__found">
               <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
-              <FoundUser v-for="user in foundUsers" :key="user.name + user.surname" :user="user" @find="findUser" />
             </div>
           </template>
         </DefaultPopup>

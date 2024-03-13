@@ -218,11 +218,19 @@ export default {
         })
         .finally(() => {
           this.loadingButton = false;
+          this.clearData();
         });
     },
 
     openAddNew() {
       this.opened = !this.opened;
+    },
+
+    clearData() {
+      this.company = '';
+      this.location = '';
+      this.position = '';
+      this.message = '';
     },
   },
   mounted() {

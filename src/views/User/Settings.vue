@@ -1,7 +1,6 @@
 <template>
   <section class="user-settings">
     <div class="user-settings__form">
-
       <div class="user-settings__content">
         <BaseCard style="padding: 0">
           <template v-slot:body>
@@ -11,8 +10,7 @@
                 <TextInput label="Ім'я" v-model="$store.state.user.name" />
                 <TextInput label="Прізвище" v-model="$store.state.user.surname" />
                 <div class="user-settings__data-pass">
-                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password"
-                    v-model="$store.state.user.password" :disabled="true" />
+                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="$store.state.user.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
                 <CheckboxInput label="Is an employee" v-model="$store.state.user.isEmployee" :disabled="isWorking" />
@@ -43,16 +41,16 @@
 </template>
 
 <script>
-import TextInput from "@/components/inputs/TextInput.vue";
-import CheckboxInput from "@/components/inputs/CheckboxInput.vue";
-import ChangeUserPasswordPopup from "@/components/popups/ChangeUserPasswordPopup.vue";
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import BaseCard from "@/components/cards/system/BaseCard.vue";
-import ImageInput from "@/components/inputs/ImageInput.vue";
-import IdComponent from "@/components/other/IdComponent.vue";
+import TextInput from '@/components/inputs/TextInput.vue';
+import CheckboxInput from '@/components/inputs/CheckboxInput.vue';
+import ChangeUserPasswordPopup from '@/components/popups/ChangeUserPasswordPopup.vue';
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
+import BaseCard from '@/components/cards/system/BaseCard.vue';
+import ImageInput from '@/components/inputs/ImageInput.vue';
+import IdComponent from '@/components/other/IdComponent.vue';
 
 export default {
-  name: "UserSettings",
+  name: 'UserSettings',
   components: {
     TextInput,
     CheckboxInput,
@@ -60,7 +58,7 @@ export default {
     DefaultButton,
     BaseCard,
     ImageInput,
-    IdComponent
+    IdComponent,
   },
   data() {
     return {
@@ -69,7 +67,7 @@ export default {
       imageUrl: null,
       changePassPopup: false,
       loading: true,
-      isWorking: false
+      isWorking: false,
     };
   },
   methods: {
@@ -78,7 +76,7 @@ export default {
     },
 
     editUser() {
-      this.loading = true
+      this.loading = true;
       const data = {
         id: this.$store.state.id,
         name: this.$store.state.user.name,
@@ -86,29 +84,29 @@ export default {
         isEmployee: this.$store.state.user.isEmployee,
       };
 
-      this.$store.dispatch("editUserAction", data).then((res) => {
-        if (res.success) {
-          if (this.user.image) {
-            this.$store.dispatch("uploadImageAction", this.user.image).then((res) => {
-              if (res.success) this.$store.dispatch('getImageAction', { id: this.$store.state.id, profile: true })
-              if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
-            });
+      this.$store
+        .dispatch('editUserAction', data)
+        .then((res) => {
+          if (res.success) {
+            if (this.user.image) {
+              this.$store.dispatch('uploadImageAction', this.user.image).then((res) => {
+                if (res.success) this.$store.dispatch('getImageAction', { id: this.$store.state.id, profile: true });
+                if (!res.success) this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+              });
+            }
 
+            this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+            this.$emit('user-edited');
+          } else {
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
           }
-
-          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
-          this.$emit('user-edited')
-        } else {
-          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
-        }
-      }).finally(() => (
-        this.loading = false
-      ));
+        })
+        .finally(() => (this.loading = false));
     },
 
     getWorkplacesFn() {
       this.$store
-        .dispatch("getWorkplacesAction", {
+        .dispatch('getWorkplacesAction', {
           employeeId: this.$store.state.id,
         })
         .then((res) => {
@@ -142,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .user-settings {
   display: flex;

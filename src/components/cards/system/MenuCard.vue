@@ -5,21 +5,20 @@
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
     </router-link>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: "MenuCard",
+  name: 'MenuCard',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     link: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   methods: {
@@ -33,7 +32,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .menu-card {
   width: 100%;
@@ -70,7 +69,6 @@ export default {
     background: white;
     border: 1px solid $main-color;
     overflow: hidden;
-
 
     &:hover {
       border-color: $second-color;

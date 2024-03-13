@@ -19,7 +19,7 @@
 <script></script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .main-background {
   width: 100%;

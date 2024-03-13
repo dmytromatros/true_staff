@@ -1,36 +1,36 @@
 <template>
-    <span class="material-symbols-outlined" :style="`font-size: ${fontSize || 24}px`">
-        {{ icon }}
-    </span>
+  <span class="material-symbols-outlined" :style="`font-size: ${fontSize || 24}px`">
+    {{ icon }}
+  </span>
 </template>
 
 <script>
 export default {
-    name: "FontIcon",
-    components: {},
-    props: {
-        icon: {
-            type: String
-        },
-        fontSize: {
-            type: String
-        }
+  name: 'FontIcon',
+  components: {},
+  props: {
+    icon: {
+      type: String,
     },
-    data() {
-        return {}
+    fontSize: {
+      type: String,
     },
-    computed: {},
-    methods: {}
-}
+  },
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 $material-symbols-font-path: '~material-symbols/';
 @import 'material-symbols';
 
 .material-symbols-outlined {
-    user-select: none;
-    font-size: v-bind(fontSize);
+  user-select: none;
+  font-size: v-bind(fontSize);
 }
 </style>

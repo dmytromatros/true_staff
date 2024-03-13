@@ -10,11 +10,11 @@
 <script>
 import LoaderComponent from '../other/LoaderComponent.vue';
 export default {
-  name: "DefaultButton",
+  name: 'DefaultButton',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     danger: {
       type: Boolean,
@@ -42,15 +42,14 @@ export default {
   components: { LoaderComponent },
   methods: {
     action() {
-      if (!this.disabled)
-        this.$emit("action");
+      if (!this.disabled) this.$emit('action');
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .default-button {
   &__button {

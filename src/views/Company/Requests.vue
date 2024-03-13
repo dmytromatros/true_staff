@@ -9,10 +9,16 @@
             <div v-else class="requests__receive-content-1">
               <div v-if="!Object.keys(receive).length" class="requests__receive-label">Немає отриманих запитів</div>
               <div v-for="(rec, key) in receive" :key="key">
-                <ReceiveRequest :from="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
-                  :editable="!rec.rejected && !rec.accepted" :message="rec.message"
-                  @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
-                  @delete-request="deleteReceiveRequest(rec._id)" />
+                <ReceiveRequest
+                  :from="rec.employeeName"
+                  :location="rec.locationAddress"
+                  :position="rec.position"
+                  :editable="!rec.rejected && !rec.accepted"
+                  :message="rec.message"
+                  @accept-request="acceptReceiveRequest(rec._id)"
+                  @reject-request="rejectReceiveRequest(rec._id)"
+                  @delete-request="deleteReceiveRequest(rec._id)"
+                />
               </div>
             </div>
           </div>
@@ -24,8 +30,13 @@
             <div v-else class="requests__receive-content-1">
               <div v-if="!Object.keys(sent).length" class="requests__receive-label">Немає відправлених запитів</div>
               <div v-for="(rec, key) in sent" :key="key">
-                <SentRequest :to="rec.employeeName" :location="rec.locationAddress" :position="rec.position"
-                  @delete-request="deleteSentRequest(rec._id)" :status="sentStatus(rec.rejected, rec.accepted)" />
+                <SentRequest
+                  :to="rec.employeeName"
+                  :location="rec.locationAddress"
+                  :position="rec.position"
+                  @delete-request="deleteSentRequest(rec._id)"
+                  :status="sentStatus(rec.rejected, rec.accepted)"
+                />
               </div>
             </div>
           </div>
@@ -36,77 +47,73 @@
           <FontIcon v-if="opened" icon="disabled_by_default" font-size="34px" />
           <FontIcon v-else icon="edit_square" font-size="34px" />
         </button>
-        <AddEmployeeCard class="requests__bottom-add" :class="{ 'requests__bottom-add--active': opened }"
-          @request-sent="getAllRequest" @open="opened = true" />
+        <AddEmployeeCard class="requests__bottom-add" :class="{ 'requests__bottom-add--active': opened }" @request-sent="getAllRequest" @open="opened = true" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
-import SentRequest from "@/components/cards/system/SentRequest.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue"
-import AddEmployeeCard from "@/components/cards/company/AddEmployeeCard.vue";
-import FontIcon from "@/components/other/FontIcon.vue";
+import ReceiveRequest from '@/components/cards/system/ReceiveRequest.vue';
+import SentRequest from '@/components/cards/system/SentRequest.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
+import AddEmployeeCard from '@/components/cards/company/AddEmployeeCard.vue';
+import FontIcon from '@/components/other/FontIcon.vue';
 export default {
-  name: "UserRequests",
+  name: 'UserRequests',
   data() {
     return {
       sent: {},
       locations: [],
       receive: {},
       loading: true,
-      opened: false
+      opened: false,
     };
   },
   components: { ReceiveRequest, SentRequest, LoaderComponent, AddEmployeeCard, FontIcon },
   methods: {
     sentStatus(rejected, accepted) {
-      if (accepted) return "Підтверджено";
-      else if (rejected) return "Відхилено";
-      else return "Очікується на відповідь";
+      if (accepted) return 'Підтверджено';
+      else if (rejected) return 'Відхилено';
+      else return 'Очікується на відповідь';
     },
     acceptReceiveRequest(id) {
-      this.$store
-        .dispatch("acceptRequestAction", { id: id, type: 1 })
-        .then((res) => {
-          if (res.success) this.getAllRequest();
-        });
+      this.$store.dispatch('acceptRequestAction', { id: id, type: 1 }).then((res) => {
+        if (res.success) this.getAllRequest();
+      });
     },
     rejectReceiveRequest(id) {
-      this.$store
-        .dispatch("rejectRequestAction", { id: id, type: 1 })
-        .then((res) => {
-          if (res.success) this.getAllRequest();
-        });
+      this.$store.dispatch('rejectRequestAction', { id: id, type: 1 }).then((res) => {
+        if (res.success) this.getAllRequest();
+      });
     },
     deleteReceiveRequest(id) {
-      this.$store.dispatch("companyDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch('companyDeleteRequestAction', { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     deleteSentRequest(id) {
-      this.$store.dispatch("companyDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch('companyDeleteRequestAction', { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     getAllRequest() {
       this.$store
-        .dispatch("getCompanyRequestListAction", { id: this.$store.state.id })
+        .dispatch('getCompanyRequestListAction', { id: this.$store.state.id })
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };
             this.receive = { ...res.data.receive };
           }
-        }).finally(() => {
-          this.loading = false
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
     openAddNew() {
-      this.opened = !this.opened
-    }
+      this.opened = !this.opened;
+    },
   },
   mounted() {
     this.getAllRequest();
@@ -115,7 +122,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .requests {
   height: 100%;
@@ -176,7 +183,6 @@ export default {
     padding: 25px;
     flex: 1;
 
-
     @include no-scroll;
 
     &-1 {
@@ -184,7 +190,6 @@ export default {
       flex-direction: column;
       gap: 15px;
     }
-
   }
 
   &__bottom {
@@ -193,12 +198,11 @@ export default {
     display: flex;
     height: 100%;
 
-
     @media (max-height: 714px) {
       height: 100%;
     }
 
-    &>* {
+    & > * {
       white-space: nowrap;
     }
   }
@@ -225,4 +229,3 @@ export default {
   }
 }
 </style>
-

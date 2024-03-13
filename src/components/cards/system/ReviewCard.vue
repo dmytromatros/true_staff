@@ -22,11 +22,11 @@
 
 <script>
 export default {
-  name: "ReviewCard",
+  name: 'ReviewCard',
   props: {
     review: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
   },
   data() {
@@ -36,14 +36,14 @@ export default {
   },
   methods: {
     getSenderFn(id) {
-      this.$store.dispatch("getUserInfoAction", { id: id }).then((res) => {
+      this.$store.dispatch('getUserInfoAction', { id: id }).then((res) => {
         if (res.success) {
           this.sender.name = `${res.data.name} ${res.data.surname}`;
         }
       });
     },
     getSenderImageFn(id) {
-      this.$store.dispatch("getImageAction", { id: id }).then((res) => {
+      this.$store.dispatch('getImageAction', { id: id }).then((res) => {
         if (res.success) {
           this.sender.image = res.data;
         }
@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .review-card {
   background-color: $white;

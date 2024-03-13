@@ -4,13 +4,11 @@
     <div v-else-if="!loading && Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
-      <div class="user-info-card__user"
-        :style="{ height: !isUser ? '100%' : info._id == $store.state.id ? '100%' : '70%' }">
+      <div class="user-info-card__user" :style="{ height: !isUser ? '100%' : info._id == $store.state.id ? '100%' : '70%' }">
         <BaseCard>
           <template v-slot:body>
             <div class="user-info-card__info">
-              <CustomSwitch :options="{ 'Відгуки': 1, 'Робота': 2 }" v-model="selected" />
-
+              <CustomSwitch :options="{ Відгуки: 1, Робота: 2 }" v-model="selected" />
 
               <div v-if="selected == 1" class="user-info-card__reviews">
                 <div class="user-info-card__card-container">
@@ -27,11 +25,11 @@
         </BaseCard>
       </div>
 
-      <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"><template v-slot:body>
+      <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"
+        ><template v-slot:body>
           <div class="user-info-card__send-review">
             <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" />
-            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview"
-              :disabled="!review" :loading="loadingReview" />
+            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review" :loading="loadingReview" />
           </div>
         </template>
       </BaseCard>
@@ -55,9 +53,7 @@
             </div>
 
             <div class="user-info-card__flex-inner">
-              <div class="user-info-card__name" :title="`${info.name} ${info.surname}`">
-                {{ info.name }} {{ info.surname }}
-              </div>
+              <div class="user-info-card__name" :title="`${info.name} ${info.surname}`">{{ info.name }} {{ info.surname }}</div>
 
               <IdComponent :id="info.uniqueId" />
             </div>
@@ -65,34 +61,33 @@
         </template>
       </BaseCard>
     </div>
-
   </div>
 </template>
 
 <script>
-import BaseCard from "@/components/cards/system/BaseCard.vue";
-import UserJobCard from "@/components/cards/user/UserJobCard.vue";
-import ReviewCard from "@/components/cards/system/ReviewCard.vue";
-import TextInput from "@/components/inputs/TextInput.vue";
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue";
-import IdComponent from "@/components/other/IdComponent.vue";
-import { checkRole } from "../../../../utils/permission";
+import BaseCard from '@/components/cards/system/BaseCard.vue';
+import UserJobCard from '@/components/cards/user/UserJobCard.vue';
+import ReviewCard from '@/components/cards/system/ReviewCard.vue';
+import TextInput from '@/components/inputs/TextInput.vue';
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
+import CustomSwitch from '@/components/inputs/CustomSwitch.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
+import IdComponent from '@/components/other/IdComponent.vue';
+import { checkRole } from '../../../../utils/permission';
 import SearchCard from '@/components/cards/system/SearchCard.vue';
 // import FontIcon from "@/components/other/FontIcon.vue";
 export default {
-  name: "UserInfoCard",
+  name: 'UserInfoCard',
   data() {
     return {
       user: null,
       info: {},
-      imageUrl: "",
+      imageUrl: '',
       selected: 1,
       reviews: {},
-      review: "",
+      review: '',
       loading: true,
-      loadingReview: false
+      loadingReview: false,
     };
   },
   components: {
@@ -109,34 +104,34 @@ export default {
   },
   computed: {
     isUser() {
-      return checkRole() === 'user'
+      return checkRole() === 'user';
     },
     canSendReview() {
-      return this.$store.state.id === this.info._id
-    }
+      return this.$store.state.id === this.info._id;
+    },
   },
   methods: {
     getUserFn(user) {
-      this.$store.dispatch("getUserInfoAction", { id: user }).then((res) => {
+      this.$store.dispatch('getUserInfoAction', { id: user }).then((res) => {
         if (res.success) {
           this.info = res.data;
           this.getReviewsListFn(this.info._id);
           if (this.info.isImage) {
             this.getImageFn(this.info._id);
           } else {
-            this.imageUrl = "";
+            this.imageUrl = '';
           }
-          this.loading = false
+          this.loading = false;
         }
       });
     },
     getImageFn(id) {
-      this.$store.dispatch("getImageAction", { id: id }).then((res) => {
+      this.$store.dispatch('getImageAction', { id: id }).then((res) => {
         this.imageUrl = res.data;
       });
     },
     getReviewsListFn(id) {
-      this.$store.dispatch("getReviewsListAction", { id: id }).then((res) => {
+      this.$store.dispatch('getReviewsListAction', { id: id }).then((res) => {
         if (res.success) {
           this.reviews = res.data;
         }
@@ -145,27 +140,27 @@ export default {
     async copyId(id) {
       try {
         await navigator.clipboard.writeText(id);
-        alert("Copied");
+        alert('Copied');
       } catch ($e) {
-        alert("Cannot copy");
+        alert('Cannot copy');
       }
     },
     sendReview() {
-      this.loadingReview = true
+      this.loadingReview = true;
       let data = {
         from: this.$store.state.id,
         to: this.info._id,
-        review: this.review
+        review: this.review,
       };
       data.date = Date.now();
-      this.$store.dispatch("sendReviewAction", data).then(res => {
+      this.$store.dispatch('sendReviewAction', data).then((res) => {
         this.loadingReview = false;
         this.review = '';
         if (!res.success) {
-          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
         } else {
           this.getReviewsListFn(this.info._id);
-          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
         }
       });
     },
@@ -176,24 +171,22 @@ export default {
         const newUrl = currentUrl.split('?')[0];
         history.replaceState(history.state, null, newUrl);
       }
-
     },
   },
   watch: {
     user() {
-      this.loading = true
+      this.loading = true;
       this.getUserFn(this.user);
     },
   },
   mounted() {
-    if (!this.user)
-      this.loading = false
-  }
+    if (!this.user) this.loading = false;
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .user-info-card {
   overflow: auto;
@@ -201,7 +194,6 @@ export default {
   grid-template-columns: 2.5fr 1fr;
   gap: 15px;
   @include no-scroll;
-
 
   &__text {
     img {
@@ -327,7 +319,6 @@ export default {
       width: fit-content;
     }
   }
-
 
   &__name {
     font-size: 30px;

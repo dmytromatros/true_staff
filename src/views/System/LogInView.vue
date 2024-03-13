@@ -4,14 +4,21 @@
       <div class="log-in-page__container" :style="`max-width: ${action == 'login' ? '600px' : '750px'}`">
         <div class="log-in-page__left">
           <div class="log-in-page__left-container">
-            <div class="log-in-page__select" :class="{
-              'log-in-page__select--registration': action == 'registration',
-            }">
-              <span class="log-in-page__selector" @click="select('login')"
-                :class="{ 'log-in-page__selector--active': action == 'login' }">Увійти</span>
-              <span class="log-in-page__selector" @click="select('registration')" :class="{
-                'log-in-page__selector--active': action == 'registration',
-              }">Реєстрація</span>
+            <div
+              class="log-in-page__select"
+              :class="{
+                'log-in-page__select--registration': action == 'registration',
+              }"
+            >
+              <span class="log-in-page__selector" @click="select('login')" :class="{ 'log-in-page__selector--active': action == 'login' }">Увійти</span>
+              <span
+                class="log-in-page__selector"
+                @click="select('registration')"
+                :class="{
+                  'log-in-page__selector--active': action == 'registration',
+                }"
+                >Реєстрація</span
+              >
             </div>
             <LogInFormVue class="log-in-page__form" v-if="action == 'login'" />
             <RegistrationFormVue class="log-in-page__form" v-if="action == 'registration'" />
@@ -23,15 +30,15 @@
 </template>
 
 <script>
-import LogInFormVue from "@/components/forms/LogInForm.vue";
-import RegistrationFormVue from "@/components/forms/RegistrationForm.vue";
+import LogInFormVue from '@/components/forms/LogInForm.vue';
+import RegistrationFormVue from '@/components/forms/RegistrationForm.vue';
 
 export default {
-  name: "LogIn",
+  name: 'LogIn',
   components: { LogInFormVue, RegistrationFormVue },
   data() {
     return {
-      action: "login",
+      action: 'login',
     };
   },
   methods: {
@@ -43,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .log-in-page {
   display: flex;
@@ -111,7 +118,7 @@ export default {
     // box-shadow: 0px -8px 25px 0px rgba($color: #8593d3, $alpha: 0.7) inset;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       width: 50%;
       height: 100%;
@@ -132,9 +139,7 @@ export default {
 }
 
 .appear-enter-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .appear-enter-from {

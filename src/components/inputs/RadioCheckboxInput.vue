@@ -1,18 +1,7 @@
 <template>
   <div class="radio-checkbox-input">
-    <div
-      v-for="(radio, key) in items"
-      :key="key"
-      class="radio-checkbox-input__item"
-    >
-      <input
-        class="radio-checkbox-input__input"
-        type="radio"
-        :id="name + key"
-        :value="radio.value"
-        :name="name"
-        v-model="internalValue"
-      />
+    <div v-for="(radio, key) in items" :key="key" class="radio-checkbox-input__item">
+      <input class="radio-checkbox-input__input" type="radio" :id="name + key" :value="radio.value" :name="name" v-model="internalValue" />
       <label class="radio-checkbox-input__label" :for="name + key">
         <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -20,16 +9,14 @@
           />
         </svg>
       </label>
-      <label class="radio-checkbox-input__text" :for="name + key">{{
-        radio.label
-      }}</label>
+      <label class="radio-checkbox-input__text" :for="name + key">{{ radio.label }}</label>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "CheckboxInput",
+  name: 'CheckboxInput',
   props: {
     items: {
       type: Array,
@@ -40,7 +27,7 @@ export default {
     },
     modelValue: Boolean,
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       internalValue: this.modelValue,
@@ -48,7 +35,7 @@ export default {
   },
   watch: {
     internalValue(newValue) {
-      this.$emit("update:modelValue", newValue);
+      this.$emit('update:modelValue', newValue);
     },
     modelValue(newValue) {
       this.internalValue = newValue;
@@ -58,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 .radio-checkbox-input {
   display: flex;
   flex-direction: column;

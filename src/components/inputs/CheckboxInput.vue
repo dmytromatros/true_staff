@@ -1,25 +1,22 @@
 <template>
   <div class="checkbox-input" :class="{ disabled }">
     <input class="checkbox-input__input" type="checkbox" :id="id" v-model="internalValue" />
-    <label class="checkbox-input__text" v-if="label" :for="id">{{
-    label
-  }}</label>
-    <label class="checkbox-input__label" :for="id" :class="{ 'checkbox-input__label--active': internalValue }">
-    </label>
+    <label class="checkbox-input__text" v-if="label" :for="id">{{ label }}</label>
+    <label class="checkbox-input__label" :for="id" :class="{ 'checkbox-input__label--active': internalValue }"> </label>
   </div>
 </template>
 
 <script>
 export default {
-  name: "CheckboxInput",
+  name: 'CheckboxInput',
   props: {
     id: {
       type: String,
-      default: "checkbox",
+      default: 'checkbox',
     },
     label: {
       type: String,
-      default: "checkbox",
+      default: 'checkbox',
     },
     disabled: {
       type: Boolean,
@@ -27,7 +24,7 @@ export default {
     },
     modelValue: Boolean,
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       internalValue: this.modelValue,
@@ -35,7 +32,7 @@ export default {
   },
   watch: {
     internalValue(newValue) {
-      this.$emit("update:modelValue", newValue);
+      this.$emit('update:modelValue', newValue);
     },
     modelValue(newValue) {
       this.internalValue = newValue;
@@ -45,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .checkbox-input {
   display: flex;
@@ -69,7 +66,7 @@ export default {
     cursor: pointer;
 
     &::before {
-      content: "";
+      content: '';
       width: 19px;
       height: 19px;
       position: absolute;

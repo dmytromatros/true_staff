@@ -6,12 +6,12 @@
 
 <script>
 export default {
-  name: "BaseCard",
+  name: 'BaseCard',
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 .base-card {
   width: 100%;
   height: 100%;

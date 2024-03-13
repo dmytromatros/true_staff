@@ -1,23 +1,23 @@
-@import "@/styles/null.scss";
-@import "@/styles/variables.scss";
-@import "@/styles/fonts.scss";
-@import "@/styles/mixins.scss";
+@import '@/styles/null.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/fonts.scss';
+@import '@/styles/mixins.scss';
 
 * {
-    font-family: $font_family;
+  font-family: $font_family;
 }
 
 div {
-    &::-webkit-scrollbar {
-        width: 3px;
-        height: 3px;
-    }
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
 
-    &::-webkit-scrollbar-track {
-        background: $white;
-    }
+  &::-webkit-scrollbar-track {
+    background: $white;
+  }
 
-    &::-webkit-scrollbar-thumb {
-        background: $main-color;
-    }
+  &::-webkit-scrollbar-thumb {
+    background: $main-color;
+  }
 }

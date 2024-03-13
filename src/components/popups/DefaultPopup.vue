@@ -5,12 +5,9 @@
       <div class="default-popup__window">
         <div class="default-popup__header">
           <span>{{ title }}</span>
-          <svg class="default-popup__close" @click="closePopup" width="29" height="29" viewBox="0 0 29 29" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.4749 6.72803L7.15283 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M7.15283 6.72803L22.4749 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
+          <svg class="default-popup__close" @click="closePopup" width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.4749 6.72803L7.15283 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M7.15283 6.72803L22.4749 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <div class="default-popup__body">
@@ -19,8 +16,7 @@
         </div>
         <div class="default-popup__footer">
           <DefaultButton label="Закрити" @action="closePopup" :danger="true" :disabled="loadingButton" />
-          <DefaultButton :label="confirmLabel" @action="confirmFn" :success="true" :loading="loadingButton"
-            v-if="showConfirmButton" />
+          <DefaultButton :label="confirmLabel" @action="confirmFn" :success="true" :loading="loadingButton" v-if="showConfirmButton" />
         </div>
       </div>
     </div>
@@ -28,25 +24,25 @@
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import LoaderComponentVue from "@/components/other/LoaderComponent.vue";
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
+import LoaderComponentVue from '@/components/other/LoaderComponent.vue';
 export default {
-  name: "DefaultPopup",
+  name: 'DefaultPopup',
   components: { DefaultButton, LoaderComponentVue },
   props: {
     isShown: Boolean,
-    title: { type: String, default: "Title" },
-    confirmLabel: { type: String, default: "Зберегти" },
+    title: { type: String, default: 'Title' },
+    confirmLabel: { type: String, default: 'Зберегти' },
     loadingButton: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
     showConfirmButton: { type: Boolean, default: true },
   },
   methods: {
     closePopup() {
-      this.$emit("close");
+      this.$emit('close');
     },
     confirmFn() {
-      this.$emit("confirm");
+      this.$emit('confirm');
     },
   },
 };

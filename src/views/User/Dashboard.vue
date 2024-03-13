@@ -15,13 +15,11 @@
             </template>
           </MenuCard>
 
-          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль"
-            link="user-settings" :key="updateKey">
+          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль" link="user-settings" :key="updateKey">
             <template v-slot:image>
               <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="Профіль" />
             </template>
           </MenuCard>
-
         </div>
       </Transition>
       <div class="user-dashboard__content">
@@ -36,39 +34,36 @@
 </template>
 
 <script>
-import MenuCard from "@/components/cards/system/MenuCard.vue";
+import MenuCard from '@/components/cards/system/MenuCard.vue';
 export default {
-  name: "UserDashboard",
+  name: 'UserDashboard',
   components: { MenuCard },
   data() {
     return {
       image: null,
-      updateKey: Date.now()
-
-    }
+      updateKey: Date.now(),
+    };
   },
   methods: {
     settingsFn() {
       this.$router.push({
-        name: "user-settings",
+        name: 'user-settings',
       });
     },
     requestsFn() {
       this.$router.push({
-        name: "user-requests",
+        name: 'user-requests',
       });
     },
     checkRoute(route) {
       return this.$route.name == route;
     },
-
-
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .user-dashboard {
   height: 100%;
@@ -92,7 +87,6 @@ export default {
 
     background: white;
     border-radius: 10px;
-
   }
 
   &__content {
@@ -111,14 +105,11 @@ export default {
       align-items: flex-end;
     }
   }
-
 }
 
 .sidebar-enter-active,
 .content-enter-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .sidebar-enter-from {

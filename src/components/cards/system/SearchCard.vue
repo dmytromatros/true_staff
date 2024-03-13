@@ -2,20 +2,22 @@
   <div class="search-card">
     <LoaderComponent v-if="loading" />
     <div v-else class="search-card__container">
-      <CustomSwitch :options="{ 'Компанія': 1, 'ID': 2, 'ім\'я': 3 }" v-model="page" />
+      <CustomSwitch :options="{ Компанія: 1, ID: 2, 'ім\'я': 3 }" v-model="page" />
       <div class="search-card__company" v-if="page === 1">
         <BaseCard>
           <template v-slot:body>
             <div class="search-card__content">
-              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company"
-                :options="companyList" />
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company" :options="companyList" />
 
-              <SelectInput class="requests__input" placeholder="Локація"
-                :disabled="!searchInfo.company || !locationList.length" v-model="searchInfo.location"
-                :options="locationList" />
+              <SelectInput
+                class="requests__input"
+                placeholder="Локація"
+                :disabled="!searchInfo.company || !locationList.length"
+                v-model="searchInfo.location"
+                :options="locationList"
+              />
 
-              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length"
-                v-model="searchInfo.user" :options="users" />
+              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user" :options="users" />
             </div>
           </template>
         </BaseCard>
@@ -32,53 +34,52 @@
         <SearchByName @find="findUserByName" />
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import BaseCard from "@/components/cards/system/BaseCard.vue";
-import SelectInput from "@/components/inputs/SelectInput.vue";
-import SearchById from "@/components/UserSearch/SearchById.vue";
-import SearchByName from "@/components/UserSearch/SearchByName.vue";
-import CustomSwitch from "@/components/inputs/CustomSwitch.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue";
+import BaseCard from '@/components/cards/system/BaseCard.vue';
+import SelectInput from '@/components/inputs/SelectInput.vue';
+import SearchById from '@/components/UserSearch/SearchById.vue';
+import SearchByName from '@/components/UserSearch/SearchByName.vue';
+import CustomSwitch from '@/components/inputs/CustomSwitch.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
 export default {
-  name: "SearchCard",
+  name: 'SearchCard',
   components: {
     BaseCard,
     SelectInput,
     SearchById,
     SearchByName,
     CustomSwitch,
-    LoaderComponent
+    LoaderComponent,
   },
   data() {
     return {
       searchInfo: {
-        company: "",
-        location: "",
-        user: "",
-        review: "",
+        company: '',
+        location: '',
+        user: '',
+        review: '',
       },
       companyList: [],
       locationList: [],
       users: [],
       page: 1,
       loading: true,
-      buttonLoading: false
+      buttonLoading: false,
     };
   },
   computed: {
     queryUserId() {
-      return this.$route.query.userId
-    }
+      return this.$route.query.userId;
+    },
   },
   methods: {
     getCompanyList() {
-      this.$store.dispatch("getCompanyListAction").then((res) => {
+      this.$store.dispatch('getCompanyListAction').then((res) => {
         if (res.success) {
-          this.loading = false
+          this.loading = false;
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
               this.companyList.push({
@@ -91,7 +92,7 @@ export default {
       });
     },
     getLocationList(id) {
-      this.$store.dispatch("getLocationsAction", { id }).then((res) => {
+      this.$store.dispatch('getLocationsAction', { id }).then((res) => {
         if (res.success) {
           this.locationList = [];
           for (const key in res.data) {
@@ -106,85 +107,82 @@ export default {
       });
     },
     getUserList(location) {
-      this.$store
-        .dispatch("getLocationEmployeesAction", { id: location })
-        .then((res) => {
-          if (res.success) {
-            this.users = [];
-            for (const key in res.data) {
-              if (Object.hasOwnProperty.call(res.data, key)) {
-                this.users.push({
-                  label: `${res.data[key].name} ${res.data[key].surname}`,
-                  value: res.data[key]._id,
-                });
-              }
+      this.$store.dispatch('getLocationEmployeesAction', { id: location }).then((res) => {
+        if (res.success) {
+          this.users = [];
+          for (const key in res.data) {
+            if (Object.hasOwnProperty.call(res.data, key)) {
+              this.users.push({
+                label: `${res.data[key].name} ${res.data[key].surname}`,
+                value: res.data[key]._id,
+              });
             }
           }
-        });
+        }
+      });
     },
     sendReview() {
       this.searchInfo.from = this.$store.state.user._id;
       this.searchInfo.date = Date.now();
-      this.$store.dispatch("sendReviewAction", this.searchInfo);
+      this.$store.dispatch('sendReviewAction', this.searchInfo);
     },
     switchPage(page) {
       this.page = page;
       if (page == 1) {
-        this.getCompanyList()
+        this.getCompanyList();
       }
-      this.clearSearch()
+      this.clearSearch();
     },
     clearSearch() {
       this.searchInfo = {
-        company: "",
-        location: "",
-        user: "",
-        review: "",
+        company: '',
+        location: '',
+        user: '',
+        review: '',
       };
       this.companyList = [];
       this.locationList = [];
       this.users = [];
     },
     findById(id) {
-      this.buttonLoading = true
-      this.$store.dispatch('checkUserAction', { id: id || 'test' }).then(res => {
-        this.buttonLoading = false
+      this.buttonLoading = true;
+      this.$store.dispatch('checkUserAction', { id: id || 'test' }).then((res) => {
+        this.buttonLoading = false;
         if (res.success) {
-          this.loading = false
-          this.$emit("selected", { user: res.data._id });
+          this.loading = false;
+          this.$emit('selected', { user: res.data._id });
         } else {
-          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
         }
-      })
+      });
     },
     findUserByName(id) {
-      this.$emit("selected", { user: id });
-
-    }
+      this.$emit('selected', { user: id });
+    },
   },
   watch: {
-    "searchInfo.company"() {
+    'searchInfo.company'() {
       this.getLocationList(this.searchInfo.company);
     },
-    "searchInfo.location"() {
+    'searchInfo.location'() {
       this.getUserList(this.searchInfo.location);
     },
-    "searchInfo.user"() {
-      this.$emit("selected", this.searchInfo);
+    'searchInfo.user'() {
+      this.$emit('selected', this.searchInfo);
     },
   },
   mounted() {
     this.getCompanyList();
     if (this.queryUserId) {
-      this.loading = true
-      this.findById(this.queryUserId)
+      this.loading = true;
+      this.findById(this.queryUserId);
     }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .search-card {
   height: 100%;

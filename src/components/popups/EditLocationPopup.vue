@@ -1,6 +1,5 @@
 <template>
-  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання локації" @confirm="editLocation"
-    :loadingButton="loadingButton" :loading="loading">
+  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання локації" @confirm="editLocation" :loadingButton="loadingButton" :loading="loading">
     <template v-slot:body>
       <div class="edit-location__container">
         <ImageInput class="edit-location__image" :imageLink="imageUrl" @changed="handleImage" :id="id" />
@@ -15,36 +14,36 @@
 </template>
 
 <script>
-import TextInput from "@/components/inputs/TextInput.vue";
-import DefaultPopup from "@/components/popups/DefaultPopup.vue";
-import ImageInput from "@/components/inputs/ImageInput.vue";
+import TextInput from '@/components/inputs/TextInput.vue';
+import DefaultPopup from '@/components/popups/DefaultPopup.vue';
+import ImageInput from '@/components/inputs/ImageInput.vue';
 export default {
-  name: "EditLocationPopup",
+  name: 'EditLocationPopup',
   components: { TextInput, DefaultPopup, ImageInput },
   data() {
     return {
       image: '',
-      address: "",
+      address: '',
       imageUrl: null,
       loadingButton: false,
-      loading: true
+      loading: true,
     };
   },
   props: {
-    id: { type: String, default: "" },
-    isShown: { type: Boolean, default: false }
+    id: { type: String, default: '' },
+    isShown: { type: Boolean, default: false },
   },
   methods: {
     close() {
       this.$emit('close');
     },
     handleImage(data) {
-      this.image = data
+      this.image = data;
     },
     editLocation() {
-      this.loadingButton = true
+      this.loadingButton = true;
       this.$store
-        .dispatch("editLocationAction", {
+        .dispatch('editLocationAction', {
           image: this.image ? true : false,
           address: this.address,
           companyId: this.$store.state.id,
@@ -52,56 +51,57 @@ export default {
         })
         .then(() => {
           if (this.image)
-            this.$store.dispatch("uploadImageAction", this.image).then((res) => {
+            this.$store.dispatch('uploadImageAction', this.image).then((res) => {
               if (res.success) {
                 this.close();
-                this.$emit("edited");
+                this.$emit('edited');
               }
             });
-        }).finally(() => {
-          this.loadingButton = false
+        })
+        .finally(() => {
+          this.loadingButton = false;
         });
     },
     getImageFn(id) {
-      console.log("lll")
-      this.$store.dispatch('getImageAction', { id: id }).then(res => {
+      console.log('lll');
+      this.$store.dispatch('getImageAction', { id: id }).then((res) => {
         if (res.success) {
-          this.imageUrl = res.data
+          this.imageUrl = res.data;
         }
       });
     },
     addEmployee() {
-      this.$router.push({ name: 'company-requests', query: { locationId: this.id } })
+      this.$router.push({ name: 'company-requests', query: { locationId: this.id } });
     },
     getFn() {
       this.$store
-        .dispatch("getLocationAction", {
+        .dispatch('getLocationAction', {
           locationId: this.id,
         })
         .then((res) => {
           this.address = res.data.address;
           if (res.data.image) {
-            this.getImageFn(this.id)
+            this.getImageFn(this.id);
           }
-        }).finally(() => {
-          this.loading = false
+        })
+        .finally(() => {
+          this.loading = false;
         });
-    }
+    },
   },
   mounted() {
     this.getFn();
   },
   watch: {
     isShown() {
-      if (this.isShown === true)
-        this.getFn();
-    }
-  }
+      if (this.isShown === true) this.getFn();
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .edit-location {
   &__image {
@@ -143,7 +143,5 @@ export default {
       }
     }
   }
-
-
 }
 </style>

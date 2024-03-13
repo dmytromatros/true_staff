@@ -1,6 +1,5 @@
 <template>
-  <DefaultPopup :isShown="isShown" @close="close" title="Change password" @confirm="changePass"
-    :loadingButton="loadingButton" :loading="loading">
+  <DefaultPopup :isShown="isShown" @close="close" title="Change password" @confirm="changePass" :loadingButton="loadingButton" :loading="loading">
     <template v-slot:body>
       <div class="change-password">
         <TextInput placeholder="Старий пароль" type="password" v-model="oldPass" />
@@ -12,51 +11,54 @@
 </template>
 
 <script>
-import TextInput from "@/components/inputs/TextInput.vue";
-import DefaultPopup from "@/components/popups/DefaultPopup.vue";
+import TextInput from '@/components/inputs/TextInput.vue';
+import DefaultPopup from '@/components/popups/DefaultPopup.vue';
 
 export default {
-  name: "ChangePasswordPopup",
+  name: 'ChangePasswordPopup',
   components: { TextInput, DefaultPopup },
   props: {
     isShown: Boolean,
   },
   data() {
     return {
-      newPass: "",
-      oldPass: "",
+      newPass: '',
+      oldPass: '',
       newPassNew: '',
       loadingButton: false,
-      loading: false
+      loading: false,
     };
   },
   methods: {
     close() {
-      this.$emit("close");
+      this.$emit('close');
     },
     changePass() {
-      this.loadingButton = true
+      this.loadingButton = true;
       if (this.newPass !== this.newPassNew) {
-        this.$store.dispatch('showNotification', { message: 'Не правильно повторно ведений новий пароль', type: 'error' })
-        return
+        this.$store.dispatch('showNotification', { message: 'Не правильно повторно ведений новий пароль', type: 'error' });
+        return;
       }
-      this.$store.dispatch("editCompanyPasswordAction", {
-        oldPass: this.oldPass,
-        newPass: this.newPass,
-        id: this.$store.state.id,
-      }).then((res) => {
-        if (res.success) {
-          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
-          this.newPass = ''
-          this.oldPass = ''
-          this.newPassNew = ''
-          this.close();
-        } else {
-          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
-        }
-      }).finally(() => {
-        this.loadingButton = false
-      });
+      this.$store
+        .dispatch('editCompanyPasswordAction', {
+          oldPass: this.oldPass,
+          newPass: this.newPass,
+          id: this.$store.state.id,
+        })
+        .then((res) => {
+          if (res.success) {
+            this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+            this.newPass = '';
+            this.oldPass = '';
+            this.newPassNew = '';
+            this.close();
+          } else {
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+          }
+        })
+        .finally(() => {
+          this.loadingButton = false;
+        });
     },
   },
 };

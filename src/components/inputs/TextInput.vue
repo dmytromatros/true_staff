@@ -1,29 +1,37 @@
 <template>
   <div class="text-input">
     <span v-if="label" class="text-input__label" :class="{ 'text-input__input--disabled': disabled }">{{ label }}</span>
-    <input v-if="!textarea" class="text-input__input" :class="{ 'text-input__input--disabled': disabled }" :type="type"
-      @input="changed" :placeholder="placeholder" v-model="internalValue" autocomplete="off" list="autocompleteOff"
-      :name="type" />
-    <textarea v-else v-model="internalValue" :placeholder="placeholder"
-      :class="{ 'text-input__input--disabled': disabled }"></textarea>
+    <input
+      v-if="!textarea"
+      class="text-input__input"
+      :class="{ 'text-input__input--disabled': disabled }"
+      :type="type"
+      @input="changed"
+      :placeholder="placeholder"
+      v-model="internalValue"
+      autocomplete="off"
+      list="autocompleteOff"
+      :name="type"
+    />
+    <textarea v-else v-model="internalValue" :placeholder="placeholder" :class="{ 'text-input__input--disabled': disabled }"></textarea>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TextInput",
+  name: 'TextInput',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     type: {
       type: String,
-      default: "text",
+      default: 'text',
     },
     placeholder: {
       type: String,
-      default: "",
+      default: '',
     },
     disabled: {
       type: Boolean,
@@ -35,7 +43,7 @@ export default {
       default: false,
     },
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       internalValue: this.modelValue,
@@ -43,7 +51,7 @@ export default {
   },
   watch: {
     internalValue(newValue) {
-      this.$emit("update:modelValue", newValue);
+      this.$emit('update:modelValue', newValue);
     },
     modelValue(newValue) {
       this.internalValue = newValue;
@@ -53,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .text-input {
   display: flex;

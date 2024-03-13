@@ -3,7 +3,6 @@
     <div class="company-dashboard__body">
       <Transition name="sidebar" appear>
         <div class="company-dashboard__sidebar">
-
           <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations">
             <template v-slot:image>
               <img src="/img/reviews-img.avif" alt="Налаштування профілю" />
@@ -28,8 +27,7 @@
             </template>
           </MenuCard>
 
-          <MenuCard class="company-dashboard__sidebar-link  company-dashboard__sidebar-link--profile" label="Профіль"
-            link="company-settings" :key="updateKey">
+          <MenuCard class="company-dashboard__sidebar-link company-dashboard__sidebar-link--profile" label="Профіль" link="company-settings" :key="updateKey">
             <template v-slot:image>
               <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="Профіль" />
             </template>
@@ -49,38 +47,38 @@
 </template>
 
 <script>
-import MenuCard from "@/components/cards/system/MenuCard.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue";
+import MenuCard from '@/components/cards/system/MenuCard.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
 export default {
-  name: "CompanyDashboard",
+  name: 'CompanyDashboard',
   components: { MenuCard, LoaderComponent },
   data() {
     return {
       image: null,
       updateKey: Date.now(),
-      loading: false
-    }
+      loading: false,
+    };
   },
   methods: {
     settingsFn() {
       this.$router.push({
-        name: "company-settings",
+        name: 'company-settings',
       });
     },
     requestsFn() {
       this.$router.push({
-        name: "company-requests",
+        name: 'company-requests',
       });
     },
     checkRoute(route) {
       return this.$route.name == route;
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .company-dashboard {
   height: 100%;
@@ -104,7 +102,6 @@ export default {
 
     background: white;
     border-radius: 10px;
-
   }
 
   &__content {
@@ -127,9 +124,7 @@ export default {
 
 .sidebar-enter-active,
 .content-enter-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .sidebar-enter-from {

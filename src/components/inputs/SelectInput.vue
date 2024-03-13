@@ -11,17 +11,16 @@
 </template>
 
 <script>
-
 export default {
-  name: "SelectInput",
+  name: 'SelectInput',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     options: {
       type: Array,
-      default: () => { },
+      default: () => {},
     },
     disabled: {
       type: Boolean,
@@ -29,11 +28,11 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "",
+      default: '',
     },
     modelValue: String,
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       internalValue: this.modelValue,
@@ -41,7 +40,7 @@ export default {
   },
   watch: {
     internalValue(newValue) {
-      this.$emit("update:modelValue", newValue);
+      this.$emit('update:modelValue', newValue);
     },
     modelValue(newValue) {
       this.internalValue = newValue;
@@ -51,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .select-input {
   width: 100%;
@@ -123,6 +122,7 @@ export default {
     opacity: 0.5;
   }
 
-  &__input:focus {}
+  &__input:focus {
+  }
 }
 </style>

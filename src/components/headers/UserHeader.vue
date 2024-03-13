@@ -1,7 +1,7 @@
 <template>
   <div class="user-header">
     <div class="user-header__logo">
-      <img src="/img/logo_small_with_text.svg" alt="">
+      <img src="/img/logo_small_with_text.svg" alt="" />
     </div>
     <div class="user-header__right">
       <router-link :to="{ name: 'user-settings' }" class="user-header__info">
@@ -16,24 +16,24 @@
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import FontIcon from "@/components/other/FontIcon.vue";
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
+import FontIcon from '@/components/other/FontIcon.vue';
 export default {
-  name: "userHeader",
+  name: 'userHeader',
   components: {
     DefaultButton,
-    FontIcon
+    FontIcon,
   },
   methods: {
     async logoutFn() {
-      this.$store.dispatch("logOutAction");
+      this.$store.dispatch('logOutAction');
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .user-header {
   padding: 15px 20px;

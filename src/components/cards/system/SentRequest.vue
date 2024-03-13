@@ -17,49 +17,54 @@
       Статус: <span class="receive-request-card__bold">{{ status }}</span>
     </div>
 
-    <DefaultButton v-if="status !== 'Очікується на відповідь'" label="Видалити" @action="handleDeleteRequest"
-      :danger="true" />
+    <DefaultButton v-if="status !== 'Очікується на відповідь'" label="Видалити" @action="handleDeleteRequest" :danger="true" :loading="loadingButton" />
   </div>
 </template>
 
 <script>
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
 
 export default {
-  name: "SentRequest",
+  name: 'SentRequest',
   components: { DefaultButton },
   props: {
     to: {
       type: String,
-      default: "",
+      default: '',
     },
     location: {
       type: String,
-      default: "",
+      default: '',
     },
     message: {
       type: String,
-      default: "",
+      default: '',
     },
     position: {
       type: String,
-      default: "",
+      default: '',
     },
     status: {
       type: String,
-      default: "",
+      default: '',
     },
+  },
+  data() {
+    return {
+      loadingButton: false,
+    };
   },
   methods: {
     handleDeleteRequest() {
-      this.$emit("delete-request");
+      this.loadingButton = true;
+      this.$emit('delete-request');
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .receive-request-card {
   border-radius: 15px;

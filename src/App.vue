@@ -7,7 +7,6 @@
     <Transition name="header" appear>
       <CompanyHeader v-if="role == 'company'" />
     </Transition>
-
   </div>
   <LoaderComponent v-if="loading" />
   <div class="main-container" v-else>
@@ -17,36 +16,31 @@
 </template>
 
 <script>
-import UserHeader from "@/components/headers/UserHeader.vue";
-import CompanyHeader from "@/components/headers/CompanyHeader.vue";
-import MainBackground from "@/views/System/MainBackground.vue";
-import NotificationMessage from "@/components/other/NotificationMessage.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue";
-const {
-  isAuth,
-  checkRoutePermission,
-  checkRole,
-} = require("../utils/permission");
+import UserHeader from '@/components/headers/UserHeader.vue';
+import CompanyHeader from '@/components/headers/CompanyHeader.vue';
+import MainBackground from '@/views/System/MainBackground.vue';
+import NotificationMessage from '@/components/other/NotificationMessage.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
+const { isAuth, checkRoutePermission, checkRole } = require('../utils/permission');
 
 export default {
   computed: {
     isAuthorized() {
-      return isAuth()
+      return isAuth();
     },
     id() {
       return this.$store.state.id || localStorage.getItem('token');
-    }
+    },
   },
   mounted() {
     this.role = checkRole();
     isAuth();
-    this.setInfo()
+    this.setInfo();
   },
-
 
   data() {
     return {
-      role: "",
+      role: '',
       loading: true,
     };
   },
@@ -56,63 +50,63 @@ export default {
     CompanyHeader,
     MainBackground,
     NotificationMessage,
-    LoaderComponent
+    LoaderComponent,
   },
 
   methods: {
     setInfo() {
       if (checkRole() === 'user' && this.id) {
-        this.$store.dispatch('getCurrentUserAction', { id: this.id }).then(res => {
+        this.$store.dispatch('getCurrentUserAction', { id: this.id }).then((res) => {
           if (res.success) {
             if (res.data.isImage) {
-              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then(res1 => {
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then((res1) => {
                 if (res1.success) this.loading = false;
-              })
+              });
             } else {
               this.loading = false;
             }
           }
-        })
+        });
       } else if (checkRole() === 'company' && this.id) {
-        this.$store.dispatch('getCurrentCompanyAction', { id: this.id }).then(res => {
+        this.$store.dispatch('getCurrentCompanyAction', { id: this.id }).then((res) => {
           if (res.success) {
-            this.$store.dispatch('getLocationsAction', { id: this.id })
+            this.$store.dispatch('getLocationsAction', { id: this.id });
             if (res.data.isImage) {
-              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then(res1 => {
+              this.$store.dispatch('getImageAction', { id: this.id, profile: true }).then((res1) => {
                 if (res1.success) this.loading = false;
-              })
+              });
             } else {
               this.loading = false;
             }
           }
-        })
+        });
       }
-    }
+    },
   },
 
   watch: {
-    "$route.name"() {
+    '$route.name'() {
       if (this.$route.name === 'login') {
-        this.role = ''
-        this.$store.commit('clearData')
-        this.loading = false
+        this.role = '';
+        this.$store.commit('clearData');
+        this.loading = false;
       } else {
         this.role = checkRole();
-        this.setInfo()
+        this.setInfo();
       }
       isAuth();
       checkRoutePermission();
     },
 
     id() {
-      this.setInfo()
-    }
-  }
+      this.setInfo();
+    },
+  },
 };
 </script>
 
 <style lang="scss">
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -149,9 +143,7 @@ export default {
 }
 
 .page-enter-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .page-enter-from {
@@ -160,9 +152,7 @@ export default {
 }
 
 .header-enter-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .header-enter-from {

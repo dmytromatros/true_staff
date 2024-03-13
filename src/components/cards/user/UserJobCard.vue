@@ -17,18 +17,18 @@
 
 <script>
 export default {
-  name: "UserJobCard",
+  name: 'UserJobCard',
   props: {
     job: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .user-job-card {
   &__container {

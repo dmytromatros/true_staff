@@ -14,8 +14,7 @@
       </div>
       <div v-if="!loading" class="location-card__buttons">
         <div class="location-card__buttons-left">
-          <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees"
-            title="Працівники" />
+          <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees" title="Працівники" />
         </div>
         <div class="location-card__buttons-right">
           <CircleButtonVue class="location-card__button" icon="edit" @action="openEditPopupFN" />
@@ -24,99 +23,110 @@
       </div>
     </div>
 
-    <EditLocationPopup :isShown="editPopupOpen" @edited="getLocations" :id="location._id"
-      @close="() => { this.editPopupOpen = false }" />
+    <EditLocationPopup
+      :isShown="editPopupOpen"
+      @edited="getLocations"
+      :id="location._id"
+      @close="
+        () => {
+          this.editPopupOpen = false;
+        }
+      "
+    />
 
-    <ConfirmPopupVue :is-shown="isConfirming"
-      :text="`Ви дійсно хочете видали \'${location.address}\' із списку працівників?`" @close="isConfirming = false"
-      @confirm="deleteLocationFn(location._id)" />
+    <ConfirmPopupVue
+      :is-shown="isConfirming"
+      :text="`Ви дійсно хочете видали \'${location.address}\' із списку працівників?`"
+      @close="isConfirming = false"
+      @confirm="deleteLocationFn(location._id)"
+    />
 
     <LocationEmployees :id="location._id" :is-shown="showLocationEmployees" @close="showLocationEmployees = false" />
-
   </div>
 </template>
 
 <script>
 // import BaseCard from "@/components/cards/system/BaseCard.vue";
-import EditLocationPopup from "@/components/popups/EditLocationPopup.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue";
-import CircleButtonVue from "@/components/buttons/CircleButton.vue";
-import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue'
-import LocationEmployees from "@/components/popups/LocationEmployees.vue";
+import EditLocationPopup from '@/components/popups/EditLocationPopup.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
+import CircleButtonVue from '@/components/buttons/CircleButton.vue';
+import ConfirmPopupVue from '@/components/popups/ConfirmPopup.vue';
+import LocationEmployees from '@/components/popups/LocationEmployees.vue';
 export default {
-  name: "LocationCard",
+  name: 'LocationCard',
   components: { EditLocationPopup, LoaderComponent, CircleButtonVue, LocationEmployees, ConfirmPopupVue },
   props: {
     location: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
   },
   data() {
     return {
-      imageUrl: "",
+      imageUrl: '',
       editPopupOpen: false,
       loading: true,
       showLocationEmployees: false,
-      isConfirming: false
+      isConfirming: false,
     };
   },
   methods: {
     getLocations() {
-      this.$emit("edited");
+      this.$emit('edited');
       this.getImage();
-      this.editPopupOpen = false
+      this.editPopupOpen = false;
     },
     openEditPopupFN() {
-      this.editPopupOpen = true
+      this.editPopupOpen = true;
     },
     openConfirmPopup() {
       this.isConfirming = true;
     },
     deleteLocationFn(id) {
       this.$store
-        .dispatch("getDeleteLocationAction", {
+        .dispatch('getDeleteLocationAction', {
           id,
         })
         .then((res) => {
           if (res.success) {
-            this.$store.commit('deleteLocation', id)
-            this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
+            this.$store.commit('deleteLocation', id);
+            this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
           } else {
-            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
           }
         });
     },
     getImage() {
       this.$store
-        .dispatch("getImageAction", { id: this.location._id })
+        .dispatch('getImageAction', { id: this.location._id })
         .then((res) => {
           if (res.success) {
             this.imageUrl = res.data;
           }
-        }).finally(() => {
-          this.loading = false
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     viewLocationEmployees() {
-      this.showLocationEmployees = true
-    }
+      this.showLocationEmployees = true;
+    },
   },
   mounted() {
     setTimeout(() => {
-      this.loading = false
+      this.loading = false;
     }, 2000);
     if (this.location.isImage) {
       this.getImage();
     } else {
-      this.loading = false
+      this.loading = false;
     }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .location-card {
   width: 100%;

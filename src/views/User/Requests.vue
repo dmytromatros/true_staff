@@ -7,26 +7,35 @@
           <div class="requests__receive-content">
             <LoaderComponent v-if="loading" />
             <div v-else v-for="(rec, key) in receive" :key="key">
-              <ReceiveRequest :from="rec.companyName" :location="rec.locationAddress" :position="rec.position"
-                :message="rec.message" :editable="!rec.rejected && !rec.accepted"
-                @accept-request="acceptReceiveRequest(rec._id)" @reject-request="rejectReceiveRequest(rec._id)"
-                @delete-request="deleteReceiveRequest(rec._id)" />
+              <ReceiveRequest
+                :from="rec.companyName"
+                :location="rec.locationAddress"
+                :position="rec.position"
+                :message="rec.message"
+                :editable="!rec.rejected && !rec.accepted"
+                @accept-request="acceptReceiveRequest(rec._id)"
+                @reject-request="rejectReceiveRequest(rec._id)"
+                @delete-request="deleteReceiveRequest(rec._id)"
+              />
             </div>
-            <div v-if="!Object.keys(receive).length && !loading" class="requests__receive-label">Немає отриманих запитів
-            </div>
+            <div v-if="!Object.keys(receive).length && !loading" class="requests__receive-label">Немає отриманих запитів</div>
           </div>
         </div>
         <div class="requests__receive">
           <div class="requests__receive-title">Відправлені</div>
           <div class="requests__receive-content">
             <LoaderComponent v-if="loading" />
-            <div v-else v-for="( rec, key ) in  sent " :key="key">
-              <SentRequest :to="rec.companyName" :location="rec.locationAddress" :position="rec.position"
-                :message="rec.message" @delete-request="deleteSentRequest(rec._id)"
-                :status="sentStatus(rec.rejected, rec.accepted)" />
+            <div v-else v-for="(rec, key) in sent" :key="key">
+              <SentRequest
+                :to="rec.companyName"
+                :location="rec.locationAddress"
+                :position="rec.position"
+                :message="rec.message"
+                @delete-request="deleteSentRequest(rec._id)"
+                :status="sentStatus(rec.rejected, rec.accepted)"
+              />
             </div>
-            <div v-if="!Object.keys(sent).length && !loading" class="requests__receive-label">Немає відправлених запитів
-            </div>
+            <div v-if="!Object.keys(sent).length && !loading" class="requests__receive-label">Немає відправлених запитів</div>
           </div>
         </div>
       </div>
@@ -36,21 +45,24 @@
           <FontIcon v-else icon="edit_square" font-size="34px" />
         </button>
         <div class="requests__add-new">
-          <div class=" requests__receive-title--add">Відравити запит</div>
+          <div class="requests__receive-title--add">Відравити запит</div>
           <div class="requests__receive-content">
             <div class="user-settings__organization">
               <div>
                 <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
                 <div>
-                  <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList"
-                    :disabled="!company" />
+                  <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList" :disabled="!company" />
                   <div>
                     <TextInput class="requests__input" placeholder="Позиція" v-model="position" :disabled="!location" />
                     <div>
-                      <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message"
-                        :disabled="!position" />
-                      <DefaultButton class="requests__input" label="Відправити запит" @action="sendRequest"
-                        :disabled="!company || !location || !position || !message" :loading="loadingButton" />
+                      <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message" :disabled="!position" />
+                      <DefaultButton
+                        class="requests__input"
+                        label="Відправити запит"
+                        @action="sendRequest"
+                        :disabled="!company || !location || !position || !message"
+                        :loading="loadingButton"
+                      />
                     </div>
                   </div>
                 </div>
@@ -64,15 +76,15 @@
 </template>
 
 <script>
-import SelectInput from "@/components/inputs/SelectInput.vue";
-import ReceiveRequest from "@/components/cards/system/ReceiveRequest.vue";
-import SentRequest from "@/components/cards/system/SentRequest.vue";
-import TextInput from "@/components/inputs/TextInput.vue";
-import DefaultButton from "@/components/buttons/DefaultButton.vue";
-import LoaderComponent from "@/components/other/LoaderComponent.vue"
-import FontIcon from "@/components/other/FontIcon.vue";
+import SelectInput from '@/components/inputs/SelectInput.vue';
+import ReceiveRequest from '@/components/cards/system/ReceiveRequest.vue';
+import SentRequest from '@/components/cards/system/SentRequest.vue';
+import TextInput from '@/components/inputs/TextInput.vue';
+import DefaultButton from '@/components/buttons/DefaultButton.vue';
+import LoaderComponent from '@/components/other/LoaderComponent.vue';
+import FontIcon from '@/components/other/FontIcon.vue';
 export default {
-  name: "UserRequests",
+  name: 'UserRequests',
   data() {
     return {
       sent: {},
@@ -81,10 +93,10 @@ export default {
       user: this.$store.state.user,
       isEmployee: this.$store.state.user.isEmployee,
       // Request data
-      company: "",
-      location: "",
-      position: "",
-      message: "",
+      company: '',
+      location: '',
+      position: '',
+      message: '',
       ////////////
       companyList: [],
       locationList: [],
@@ -101,47 +113,44 @@ export default {
     TextInput,
     DefaultButton,
     LoaderComponent,
-    FontIcon
+    FontIcon,
   },
   methods: {
     sentStatus(rejected, accepted) {
-      if (accepted) return "Підтверджено";
-      else if (rejected) return "Відхилено";
-      else return "Очікується на відповідь";
+      if (accepted) return 'Підтверджено';
+      else if (rejected) return 'Відхилено';
+      else return 'Очікується на відповідь';
     },
     acceptReceiveRequest(id) {
-      this.$store
-        .dispatch("acceptRequestAction", { id: id, type: 2 })
-        .then((res) => {
-          if (res.success) this.getAllRequest();
-        });
+      this.$store.dispatch('acceptRequestAction', { id: id, type: 2 }).then((res) => {
+        if (res.success) this.getAllRequest();
+      });
     },
     rejectReceiveRequest(id) {
-      this.$store
-        .dispatch("rejectRequestAction", { id: id, type: 1 })
-        .then((res) => {
-          if (res.success) this.getAllRequest();
-        });
+      this.$store.dispatch('rejectRequestAction', { id: id, type: 1 }).then((res) => {
+        if (res.success) this.getAllRequest();
+      });
     },
     deleteReceiveRequest(id) {
-      this.$store.dispatch("userDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch('userDeleteRequestAction', { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     deleteSentRequest(id) {
-      this.$store.dispatch("userDeleteRequestAction", { id }).then((res) => {
+      this.$store.dispatch('userDeleteRequestAction', { id }).then((res) => {
         if (res.success) this.getAllRequest();
       });
     },
     getAllRequest() {
       this.$store
-        .dispatch("getUserRequestListAction", { id: this.$store.state.id })
+        .dispatch('getUserRequestListAction', { id: this.$store.state.id })
         .then((res) => {
           if (res.success) {
             this.sent = { ...res.data.sent };
             this.receive = { ...res.data.receive };
           }
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loading = false;
         });
     },
@@ -149,7 +158,7 @@ export default {
     // To send requests
 
     getCompanyList() {
-      this.$store.dispatch("getCompanyListAction").then((res) => {
+      this.$store.dispatch('getCompanyListAction').then((res) => {
         if (res.success) {
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
@@ -163,7 +172,7 @@ export default {
       });
     },
     getLocationList(id) {
-      this.$store.dispatch("getLocationsAction", { id }).then((res) => {
+      this.$store.dispatch('getLocationsAction', { id }).then((res) => {
         if (res.success) {
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
@@ -177,11 +186,11 @@ export default {
       });
     },
     getLocationAddress(id) {
-      const location = this.$store.state.locations.find(loc => loc._id === id);
+      const location = this.$store.state.locations.find((loc) => loc._id === id);
       return location ? location.address : null;
     },
     async sendRequest() {
-      this.loadingButton = true
+      this.loadingButton = true;
       const companyName = this.$store.state.company.name;
       const locationAddress = this.getLocationAddress(this.location);
 
@@ -197,21 +206,24 @@ export default {
         type: 2,
       };
 
-      this.$store.dispatch("addUserRequestAction", data).then((res) => {
-        if (res.success) {
-          this.$store.dispatch('showNotification', { message: res.message, type: 'success' })
-          this.getAllRequest()
-        } else {
-          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' })
-        }
-      }).finally(() => {
-        this.loadingButton = false
-      });
+      this.$store
+        .dispatch('addUserRequestAction', data)
+        .then((res) => {
+          if (res.success) {
+            this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+            this.getAllRequest();
+          } else {
+            this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+          }
+        })
+        .finally(() => {
+          this.loadingButton = false;
+        });
     },
 
     openAddNew() {
       this.opened = !this.opened;
-    }
+    },
   },
   mounted() {
     this.getAllRequest();
@@ -226,7 +238,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .requests {
   height: 100%;
@@ -291,7 +303,6 @@ export default {
     gap: 15px;
 
     @include no-scroll;
-
   }
 
   &__bottom {
@@ -300,12 +311,11 @@ export default {
     display: flex;
     height: 100%;
 
-
     @media (max-height: 714px) {
       height: 100%;
     }
 
-    &>* {
+    & > * {
       white-space: nowrap;
     }
   }
@@ -324,8 +334,6 @@ export default {
     border-radius: 0 $border-radius $border-radius $border-radius;
     background-color: $white;
     transition: 0.25s ease-in-out all;
-
-
   }
 
   &__input {

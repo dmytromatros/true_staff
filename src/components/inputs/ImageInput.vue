@@ -3,28 +3,25 @@
     <input class="image-input__input" type="file" accept="image/*" @change="handleFileChange" id="image-input__input" />
 
     <div class="image-input__wrapper">
-      <img v-if="imagePreview || imageLink" class="image-input__image" :src="imagePreview ? imagePreview : imageLink"
-        alt="img" />
+      <img v-if="imagePreview || imageLink" class="image-input__image" :src="imagePreview ? imagePreview : imageLink" alt="img" />
       <img v-else class="image-input__image" src="/img/profile-img.webp" alt="img" />
       <label class="image-input__label" for="image-input__input"></label>
       <label class="image-input__label-1" for="image-input__input">+</label>
     </div>
-
   </div>
 </template>
 
 <script>
-
 export default {
-  name: "ImageInput",
+  name: 'ImageInput',
   props: {
     imageLink: {
       type: String,
-      default: "",
+      default: '',
     },
     id: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -50,27 +47,27 @@ export default {
         reader.readAsDataURL(file);
 
         const formData = new FormData();
-        formData.append("userId", self.id);
-        formData.append("file", self.image);
+        formData.append('userId', self.id);
+        formData.append('file', self.image);
 
-        self.$emit("changed", formData);
+        self.$emit('changed', formData);
       } else {
         this.imagePreview = undefined;
       }
     },
     saveImage() {
       const formData = new FormData();
-      formData.append("userId", this.id);
-      formData.append("file", this.image);
+      formData.append('userId', this.id);
+      formData.append('file', this.image);
 
-      this.$emit("changed", formData);
+      this.$emit('changed', formData);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .image-input {
   position: relative;

@@ -5,26 +5,22 @@
 </template>
 
 <script>
-import UserSearchVue from "@/components/UserSearch/UserSearch.vue";
+import UserSearchVue from '@/components/UserSearch/UserSearch.vue';
 
 export default {
-  name: "SendReviewCard",
+  name: 'SendReviewCard',
   components: {
-
-    UserSearchVue
+    UserSearchVue,
   },
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import '@/styles/main.scss';
 
 .send-review-card {
   height: 100%;

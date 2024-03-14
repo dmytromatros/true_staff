@@ -25,7 +25,7 @@ export default {
     icon: {
       type: String,
       default: '',
-    }
+    },
   },
   methods: {
     goToLink() {

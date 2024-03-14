@@ -6,7 +6,7 @@
     <div class="user-header__right">
       <router-link :to="{ name: 'company-settings' }" class="user-header__info">
         <div class="user-header__image">
-          <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="profile_img">
+          <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="profile_img" />
         </div>
         <div class="user-header__name">{{ $store.state.company.name }}</div>
       </router-link>

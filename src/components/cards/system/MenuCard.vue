@@ -1,7 +1,7 @@
 <template>
   <div class="menu-card">
     <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active" :title="label">
-      <slot name="image"> </slot>
+      <FontIcon class="menu-card__icon" :icon="icon" font-size="40px" />
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
     </router-link>
@@ -9,8 +9,10 @@
 </template>
 
 <script>
+import FontIcon from '@/components/other/FontIcon.vue';
 export default {
   name: 'MenuCard',
+  components: { FontIcon },
   props: {
     label: {
       type: String,
@@ -20,6 +22,10 @@ export default {
       type: String,
       default: '',
     },
+    icon: {
+      type: String,
+      default: '',
+    }
   },
   methods: {
     goToLink() {
@@ -56,7 +62,7 @@ export default {
   &__button {
     border-radius: $border-radius;
     @include main-shadow;
-    padding: 15px 15px;
+    padding: 10px 10px;
     width: 100%;
     height: fit-content;
     display: flex;
@@ -72,6 +78,10 @@ export default {
 
     &:hover {
       border-color: $second-color;
+
+      .menu-card__icon {
+        color: $second-color;
+      }
     }
 
     &--active .menu-card__back {
@@ -83,10 +93,18 @@ export default {
 
       &:hover {
         border-color: transparent;
+
+        .menu-card__icon {
+          color: $white;
+        }
       }
     }
 
     &--active .menu-card__label {
+      color: $white;
+    }
+
+    &--active .menu-card__icon {
       color: $white;
     }
   }
@@ -103,15 +121,12 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
 
-:deep(img) {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: $border-radius;
-  position: relative;
-  z-index: 1;
+  &__icon {
+    position: relative;
+    z-index: 1;
+    color: $dark_text;
+    transition: 0.25s ease-in-out all;
+  }
 }
 </style>

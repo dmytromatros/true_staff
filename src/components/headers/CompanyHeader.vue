@@ -6,7 +6,7 @@
     <div class="user-header__right">
       <router-link :to="{ name: 'company-settings' }" class="user-header__info">
         <div class="user-header__image">
-          <FontIcon icon="person" />
+          <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="profile_img">
         </div>
         <div class="user-header__name">{{ $store.state.company.name }}</div>
       </router-link>
@@ -17,13 +17,11 @@
 
 <script>
 import DefaultButton from '@/components/buttons/DefaultButton.vue';
-import FontIcon from '@/components/other/FontIcon.vue';
 
 export default {
   name: 'userHeader',
   components: {
     DefaultButton,
-    FontIcon,
   },
   methods: {
     async logoutFn() {
@@ -84,6 +82,16 @@ export default {
   &__right {
     display: flex;
     gap: 70px;
+  }
+
+  &__image {
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 }
 </style>

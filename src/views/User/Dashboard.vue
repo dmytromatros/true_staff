@@ -3,23 +3,14 @@
     <div class="user-dashboard__body">
       <Transition name="sidebar" appear>
         <div class="user-dashboard__sidebar">
-          <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard">
-            <template v-slot:image>
-              <img src="/img/m-glass.avif" alt="Знайти користувача" style="object-position: left" />
-            </template>
-          </MenuCard>
+          <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard"
+            icon="person_search" />
 
-          <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests">
-            <template v-slot:image>
-              <img src="/img/cooperation.avif" alt="Запити до співпраці" />
-            </template>
-          </MenuCard>
+          <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests"
+            icon="forum" />
 
-          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль" link="user-settings" :key="updateKey">
-            <template v-slot:image>
-              <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="Профіль" />
-            </template>
-          </MenuCard>
+          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль"
+            link="user-settings" :key="updateKey" icon="person" />
         </div>
       </Transition>
       <div class="user-dashboard__content">
@@ -83,14 +74,18 @@ export default {
     height: 100%;
     overflow: auto;
     padding: 15px;
-    flex: 1;
-
+    width: 93px;
     background: white;
     border-radius: 10px;
+    transition: 0.25s ease-in-out all;
+
+    &:hover {
+      width: 300px;
+    }
   }
 
   &__content {
-    flex: 4.5;
+    flex: 1;
   }
 
   &__send-review {

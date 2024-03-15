@@ -2,11 +2,11 @@
   <div class="search-by-name">
     <BaseCard class="search-by-name__card">
       <template v-slot:body>
-        <div class="search-by-name__card">
+        <form class="search-by-name__card" @submit.prevent="startSearch">
           <TextInput placeholder="Ім'я" v-model="user.name" />
           <TextInput placeholder="Прізвище" v-model="user.lname" />
-          <DefaultButton label="Шукати" @action="startSearch" :loading="loading" :disabled="!Boolean(user.name.length) && !Boolean(user.lname.length)" />
-        </div>
+          <DefaultButton type="submit" label="Шукати" :loading="loading" :disabled="!Boolean(user.name.length) && !Boolean(user.lname.length)" />
+        </form>
         <DefaultPopup
           :is-shown="isPopupOpened"
           :show-confirm-button="false"

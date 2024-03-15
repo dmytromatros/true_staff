@@ -7,8 +7,8 @@ module.exports = async (req, res) => {
     req.body;
     let error = [];
 
-    if (!req.body.locationId || !req.body.locationAddress) error.push('Введіть адресу локації');
-    if (!req.body.companyId || !req.body.companyName) error.push('Company is required');
+    if (!req.body.locationId) error.push('Введіть адресу локації');
+    if (!req.body.companyId) error.push('Company is required');
     if (!req.body.employeeId) error.push('Введіть ID користувача');
     if (!req.body.message) error.push('Введіть повідомлення');
     if (!req.body.position) error.push('Введіть посаду');

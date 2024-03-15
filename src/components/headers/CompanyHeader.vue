@@ -1,8 +1,8 @@
 <template>
   <div class="user-header">
-    <div class="user-header__logo">
+    <router-link :to="{ name: 'company-dashboard' }" class="user-header__logo">
       <img src="/img/logo_small_with_text.svg" alt="" />
-    </div>
+    </router-link>
     <div class="user-header__right">
       <router-link :to="{ name: 'company-settings' }" class="user-header__info">
         <div class="user-header__image">

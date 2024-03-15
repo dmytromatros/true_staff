@@ -13,7 +13,7 @@
                   <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="$store.state.user.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
-                <CheckboxInput label="Is an employee" v-model="$store.state.user.isEmployee" :disabled="isWorking" />
+                <CheckboxInput label="Я - працівник" v-model="$store.state.user.isEmployee" :disabled="isWorking" />
 
                 <div class="user-settings__buttons">
                   <DefaultButton label="Зберегти зміни" @action="editUser" :loading="loading" />

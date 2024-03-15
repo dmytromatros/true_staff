@@ -4,7 +4,7 @@
     <div v-else-if="!loading && Object.keys(info).length" class="user-info-card__container">
       <!-- <div class="user-info-card__container"> -->
 
-      <div class="user-info-card__user" :style="{ height: !isUser ? '100%' : info._id == $store.state.id ? '100%' : '70%' }">
+      <div class="user-info-card__user" :style="{ height: !isUser ? '100%' : info._id == $store.state.id || !info.isWorking ? '100%' : '70%' }">
         <BaseCard>
           <template v-slot:body>
             <div class="user-info-card__info">
@@ -17,7 +17,7 @@
                 <div v-else class="user-info-card__label">Ой-ой-ой... Немає відгуків... Залиш свій &#128513;</div>
               </div>
               <div v-if="selected == 2" class="user-info-card__jobs">
-                <div v-if="info.jobs?.length" class="user-info-card__card-container">
+                <div v-if="info.jobs?.length" class="user-info-card__card-container user-info-card__card-container--jobs">
                   <UserJobCard v-for="(card, key) in info.jobs" :key="key" :job="card" />
                 </div>
                 <div v-else class="user-info-card__label">У-у-упс... Немає записів...</div>
@@ -27,7 +27,7 @@
         </BaseCard>
       </div>
 
-      <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview"
+      <BaseCard class="user-info-card__review-container" v-if="isUser && !canSendReview && info.isWorking"
         ><template v-slot:body>
           <div class="user-info-card__send-review">
             <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" placeholder="Скажи все що думаєш!" />
@@ -378,6 +378,11 @@ export default {
     flex-direction: column;
     gap: 15px;
     padding: 15px;
+
+    &--jobs {
+      // flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 
   &__review-container {

@@ -1,23 +1,23 @@
 <template>
-  <div class="add-employee-card">
+  <form class="add-employee-card" @submit.prevent="addEmployee">
     <BaseCard class="add-employee-card__new-card">
       <template v-slot:body>
         <div class="add-employee-card__new-card-title">Додати нового співробітника</div>
         <SelectInput class="add-employee-card__input" placeholder="Локація" :options="locations" v-model="newEmployee.location" />
         <TextInput class="add-employee-card__input" placeholder="ID користувача" type="text" v-model="newEmployee.userId" />
-        <TextInput class="add-employee-card__input" placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
         <TextInput class="add-employee-card__input" placeholder="Посада" type="text" v-model="newEmployee.position" />
+        <TextInput class="add-employee-card__input" placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />
 
         <DefaultButton
           class="add-employee-card__button"
-          label="Add employee"
-          @action="addEmployee"
+          label="Додати співробітника"
+          type="submit"
           :loading="loadingButton"
           :disabled="!newEmployee.location || !newEmployee.userId || !newEmployee.message || !newEmployee.position"
         />
       </template>
     </BaseCard>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -52,15 +52,10 @@ export default {
         .dispatch('checkUserAction', { id: this.newEmployee.userId || 'test' })
         .then(async (res) => {
           if (res.success) {
-            const employeeName = await this.getUserName(res.data._id);
-            const companyName = this.$store.state.company.name;
             let data = {
               companyId: this.$store.state.id,
-              companyName: companyName,
               locationId: this.newEmployee.location,
-              locationAddress: this.getLocationAddress(this.newEmployee.location),
               employeeId: res.data._id,
-              employeeName: employeeName,
               message: this.newEmployee.message,
               position: this.newEmployee.position,
               type: 1,

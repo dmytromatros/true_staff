@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     if (!req.body.locationId) error.push('Location is required');
     if (!req.body.position) error.push('Position is required');
     if (!req.body.message) error.push('Message is required');
-    if (!req.body.employeeId || !req.body.employeeName) error.push('Employee info is required');
+    if (!req.body.employeeId) error.push('Employee info is required');
 
     // Check the user
 

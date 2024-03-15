@@ -59,8 +59,8 @@ export default {
     width: 50px;
     height: 25px;
     border-radius: 50px;
-    background-color: $main-color;
-    border: 2px solid $main-color;
+    background-color: $white;
+    border: 1px solid $red-color;
     position: relative;
     transition: 0.3s ease-in-out all;
     cursor: pointer;
@@ -70,15 +70,17 @@ export default {
       width: 19px;
       height: 19px;
       position: absolute;
-      transform: translate(1px, 1px);
+      transform: translate(2px, 2px);
       border-radius: 50%;
-      background-color: $placeholder-color;
+      background-color: $red-color;
       transition: 0.3s ease-in-out all;
     }
 
     &--active {
+      border-color: $green-color;
+
       &::before {
-        transform: translate(26px, 1px);
+        transform: translate(27px, 2px);
 
         background-color: $green-color;
       }
@@ -88,6 +90,7 @@ export default {
   &__text {
     cursor: pointer;
     margin-left: 10px;
+    font-weight: 600;
   }
 
   &.disabled {

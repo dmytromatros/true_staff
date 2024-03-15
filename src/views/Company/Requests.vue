@@ -10,8 +10,8 @@
               <div v-if="!Object.keys(receive).length" class="requests__receive-label">Немає отриманих запитів</div>
               <div v-for="(rec, key) in receive" :key="key">
                 <ReceiveRequest
-                  :from="rec.employeeName"
-                  :location="rec.locationAddress"
+                  :from="rec.employeeId"
+                  :location="rec.locationId"
                   :position="rec.position"
                   :editable="!rec.rejected && !rec.accepted"
                   :message="rec.message"
@@ -31,9 +31,10 @@
               <div v-if="!Object.keys(sent).length" class="requests__receive-label">Немає відправлених запитів</div>
               <div v-for="(rec, key) in sent" :key="key">
                 <SentRequest
-                  :to="rec.employeeName"
-                  :location="rec.locationAddress"
+                  :to="rec.employeeId"
+                  :location="rec.locationId"
                   :position="rec.position"
+                  :message="rec.message"
                   @delete-request="deleteSentRequest(rec._id)"
                   :status="sentStatus(rec.rejected, rec.accepted)"
                 />
@@ -79,22 +80,44 @@ export default {
     },
     acceptReceiveRequest(id) {
       this.$store.dispatch('acceptRequestAction', { id: id, type: 1 }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     rejectReceiveRequest(id) {
       this.$store.dispatch('rejectRequestAction', { id: id, type: 1 }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     deleteReceiveRequest(id) {
       this.$store.dispatch('companyDeleteRequestAction', { id }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     deleteSentRequest(id) {
       this.$store.dispatch('companyDeleteRequestAction', { id }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     getAllRequest() {

@@ -13,15 +13,15 @@
       <div class="locations-list__new-location-wrapper">
         <BaseCard class="locations-list__new-location-card" :key="reloadData">
           <template v-slot:body>
-            <div class="locations-list__new-location">
+            <form class="locations-list__new-location" @submit.prevent="addLocation">
               <ImageInput v-model="newLocation.image" @changed="handleImage" id="new" />
 
               <span class="locations-list__new-location-text"> Адреса локації </span>
 
               <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації" v-model="newLocation.address" />
 
-              <DefaultButton label="Додати локацію" @action="addLocation" :loading="loadingButton" />
-            </div>
+              <DefaultButton label="Додати локацію" type="submit" :loading="loadingButton" />
+            </form>
           </template>
         </BaseCard>
       </div>
@@ -81,7 +81,9 @@ export default {
               this.newLocation.image.set('userId', resLocations.data.new._id);
               this.$store.dispatch('uploadImageAction', this.newLocation.image).then((res) => {
                 if (res.success) {
-                  this.$store.commit('addLocation', resLocations.data.new);
+                  let newLocation = resLocations.data.new;
+                  newLocation.employeesCount = 0;
+                  this.$store.commit('addLocation', newLocation);
                   this.loadingButton = false;
                   this.clearData();
                   this.$store.dispatch('showNotification', { message: resLocations.message, type: 'success' });

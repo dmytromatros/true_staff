@@ -8,14 +8,15 @@
             <LoaderComponent v-if="loading" />
             <div v-else v-for="(rec, key) in receive" :key="key">
               <ReceiveRequest
-                :from="rec.companyName"
-                :location="rec.locationAddress"
+                :from="rec.companyId"
+                :location="rec.locationId"
                 :position="rec.position"
                 :message="rec.message"
                 :editable="!rec.rejected && !rec.accepted"
                 @accept-request="acceptReceiveRequest(rec._id)"
                 @reject-request="rejectReceiveRequest(rec._id)"
                 @delete-request="deleteReceiveRequest(rec._id)"
+                :is-user="true"
               />
             </div>
             <div v-if="!Object.keys(receive).length && !loading" class="requests__receive-label">Немає отриманих запитів</div>
@@ -27,12 +28,13 @@
             <LoaderComponent v-if="loading" />
             <div v-else v-for="(rec, key) in sent" :key="key">
               <SentRequest
-                :to="rec.companyName"
-                :location="rec.locationAddress"
+                :to="rec.companyId"
+                :location="rec.locationId"
                 :position="rec.position"
                 :message="rec.message"
                 @delete-request="deleteSentRequest(rec._id)"
                 :status="sentStatus(rec.rejected, rec.accepted)"
+                :isUser="true"
               />
             </div>
             <div v-if="!Object.keys(sent).length && !loading" class="requests__receive-label">Немає відправлених запитів</div>
@@ -47,27 +49,13 @@
         <div class="requests__add-new">
           <div class="requests__receive-title--add">Відравити запит</div>
           <div class="requests__receive-content">
-            <div class="user-settings__organization">
-              <div>
-                <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
-                <div>
-                  <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList" :disabled="!company" />
-                  <div>
-                    <TextInput class="requests__input" placeholder="Позиція" v-model="position" :disabled="!location" />
-                    <div>
-                      <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message" :disabled="!position" />
-                      <DefaultButton
-                        class="requests__input"
-                        label="Відправити запит"
-                        @action="sendRequest"
-                        :disabled="!company || !location || !position || !message"
-                        :loading="loadingButton"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <form class="user-settings__organization" @submit.prevent="sendRequest">
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
+              <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList" :disabled="!company" />
+              <TextInput class="requests__input" placeholder="Посада" v-model="position" :disabled="!location" />
+              <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message" :disabled="!position" />
+              <DefaultButton class="requests__input" label="Відправити запит" type="submit" :disabled="!company || !location || !position || !message" :loading="loadingButton" />
+            </form>
           </div>
         </div>
       </div>
@@ -123,22 +111,46 @@ export default {
     },
     acceptReceiveRequest(id) {
       this.$store.dispatch('acceptRequestAction', { id: id, type: 2 }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     rejectReceiveRequest(id) {
-      this.$store.dispatch('rejectRequestAction', { id: id, type: 1 }).then((res) => {
-        if (res.success) this.getAllRequest();
+      this.$store.dispatch('rejectRequestAction', { id: id, type: 2 }).then((res) => {
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     deleteReceiveRequest(id) {
       this.$store.dispatch('userDeleteRequestAction', { id }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     deleteSentRequest(id) {
       this.$store.dispatch('userDeleteRequestAction', { id }).then((res) => {
-        if (res.success) this.getAllRequest();
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$store.commit('setReceiveRequestsCount', this.$store.state.receiveRequestCount - 1);
+          this.getAllRequest();
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
       });
     },
     getAllRequest() {
@@ -172,6 +184,7 @@ export default {
       });
     },
     getLocationList(id) {
+      this.locationList = [];
       this.$store.dispatch('getLocationsAction', { id }).then((res) => {
         if (res.success) {
           for (const key in res.data) {
@@ -185,24 +198,14 @@ export default {
         }
       });
     },
-    getLocationAddress(id) {
-      const location = this.$store.state.locations.find((loc) => loc._id === id);
-      return location ? location.address : null;
-    },
     async sendRequest() {
       this.loadingButton = true;
-      const companyName = this.$store.state.company.name;
-      const locationAddress = this.getLocationAddress(this.location);
-
       const data = {
         companyId: this.company,
-        companyName: companyName,
         locationId: this.location,
-        locationAddress: locationAddress,
         position: this.position,
         message: this.message,
         employeeId: this.user._id,
-        employeeName: `${this.user.name} ${this.user.surname}`,
         type: 2,
       };
 

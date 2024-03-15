@@ -25,6 +25,7 @@ exports = module.exports = (app) => {
 
     app.post('/api/add-company', require('./routes/company/add-company'))
     app.get('/api/get-current-company/:id', require('./routes/company/get-current-company'))
+    app.get('/api/get-company/:id', require('./routes/company/get-company'))
     app.post('/api/edit-company', require('./routes/company/edit-company'))
     app.post('/api/edit-company-password', require('./routes/company/edit-password'))
     app.post('/api/send-company-request', require('./routes/company/send-request'))

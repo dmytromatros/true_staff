@@ -76,8 +76,8 @@ export default {
   &__label {
     color: $dark_text;
     font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin-bottom: 5px;
     margin-left: 10px;
   }
 

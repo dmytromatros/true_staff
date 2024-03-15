@@ -1,8 +1,8 @@
 <template>
-  <div class="search-by-id">
+  <form class="search-by-id" @submit.prevent="find(id)">
     <TextInput placeholder="Введіть ID користувача" v-model="id" />
-    <DefaultButton label="Шукати" @action="find(id)" :loading="loading" :disabled="!Boolean(id.length)" />
-  </div>
+    <DefaultButton label="Шукати" type="submit" :loading="loading" :disabled="!Boolean(id.length)" />
+  </form>
 </template>
 
 <script>

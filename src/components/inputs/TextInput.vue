@@ -70,9 +70,9 @@ export default {
   &__label {
     color: $dark_text;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 600;
     margin-left: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     width: fit-content;
     border-radius: 7px 7px 0 0;
   }

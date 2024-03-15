@@ -124,7 +124,7 @@ export default {
       height: 100%;
       left: 0;
       top: 0;
-      background-color: $main-color;
+      background: $main-gradient;
       z-index: 1;
       transition: 0.3s ease-in-out all;
       @include main-shadow;

@@ -65,6 +65,10 @@ export default {
             } else {
               this.loading = false;
             }
+
+            this.$store.dispatch('getUserRequestListAction', { id: this.id }).then((resRequest) => {
+              this.$store.commit('setReceiveRequestsCount', resRequest.data.receive.length);
+            });
           }
         });
       } else if (checkRole() === 'company' && this.id) {
@@ -78,6 +82,10 @@ export default {
             } else {
               this.loading = false;
             }
+
+            this.$store.dispatch('getCompanyRequestListAction', { id: this.id }).then((resRequest) => {
+              this.$store.commit('setReceiveRequestsCount', resRequest.data.receive.length);
+            });
           }
         });
       }

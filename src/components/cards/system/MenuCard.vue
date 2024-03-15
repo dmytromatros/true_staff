@@ -1,7 +1,8 @@
 <template>
   <div class="menu-card">
     <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active" :title="label">
-      <FontIcon class="menu-card__icon" :icon="icon" font-size="40px" />
+      <FontIcon class="menu-card__icon" :class="{ 'menu-card__icon--animation': message && $store.state.receiveRequestCount }" :icon="icon" font-size="40px" />
+      <FontIcon v-if="message && $store.state.receiveRequestCount" icon="notifications_active" class="menu-card__icon menu-card__icon--message" font-size="40px" />
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
     </router-link>
@@ -25,6 +26,10 @@ export default {
     icon: {
       type: String,
       default: '',
+    },
+    message: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
@@ -127,6 +132,66 @@ export default {
     z-index: 1;
     color: $dark_text;
     transition: 0.25s ease-in-out all;
+
+    &--animation {
+      animation: first-anim 10s infinite;
+      animation-delay: 2s;
+    }
+
+    &--message {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      transform: translate(0, -50%);
+      color: $second-color;
+      opacity: 0;
+      animation: second-anim 10s infinite;
+      animation-delay: 2s;
+    }
+  }
+}
+
+@keyframes first-anim {
+  0% {
+    opacity: 1;
+  }
+
+  10% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes second-anim {
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 </style>

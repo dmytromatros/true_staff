@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Request has been accepted',
+            message: 'Запит підтверджено!',
             success: true
         });
     } else {

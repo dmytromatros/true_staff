@@ -51,6 +51,27 @@ module.exports = async (req, res) => {
         }
     }
 
+    let workplaces;
+
+    if (errors.length === 0) {
+        try {
+            workplaces = await req.app.db.collection('workplaces').find({
+                employeeId: req.params.id,
+                deleted: false
+            }).toArray();
+        } catch (err) {
+            errors.push(err);
+        }
+    }
+
+    if (errors.length === 0) {
+        if (workplaces.length > 0) {
+            user.isWorking = true;
+        } else {
+            user.isWorking = false;
+        }
+    }
+
     if (errors.length === 0) {
         res.status(200).json({
             data: user,

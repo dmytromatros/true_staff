@@ -1,9 +1,9 @@
 <template>
-  <DefaultPopup :isShown="isShown" @close="close" title="Редагуання працівника" @confirm="editEmployee" :loadingButton="loadingButton" :loading="loading">
+  <DefaultPopup :isShown="isShown" @close="close" title="Редагування працівника" @confirm="editEmployee" :loadingButton="loadingButton" :loading="loading">
     <template v-slot:body>
       <div class="edit-employee__container">
-        <SelectInputVue v-model="location" :options="locations" />
-        <TextInput class="edit-employee__input" placeholder="Посада" type="test" v-model="position" />
+        <SelectInputVue v-model="location" :options="locations" label="Локація" />
+        <TextInput class="edit-employee__input" placeholder="Посада" type="test" v-model="position" label="Посада" />
       </div>
     </template>
   </DefaultPopup>

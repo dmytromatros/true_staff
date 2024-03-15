@@ -20,6 +20,7 @@ export default createStore({
     locations: [],
     notifications: [],
     profileImage: null,
+    receiveRequestCount: 0,
   },
   getters: {},
   mutations: {
@@ -47,6 +48,7 @@ export default createStore({
       else state.id = '';
     },
     setLocations: (state, data) => {
+      console.log('lll');
       if (Array.isArray(data.data)) state.locations = data.data;
       else {
         state.locations = [];
@@ -70,6 +72,10 @@ export default createStore({
     deleteNotification: (state, data) => {
       const index = state.notifications.findIndex((item) => item.id === data);
       if (index > -1) state.notifications.splice(index, 1);
+    },
+
+    setReceiveRequestsCount: (state, data) => {
+      state.receiveRequestCount = data;
     },
   },
   actions: {
@@ -276,6 +282,17 @@ export default createStore({
           .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-current-company/${data.id}`)
           .then((res) => {
             commit('setCompany', res.data);
+            done(res.data);
+          })
+          .catch((err) => done(err));
+      });
+    },
+
+    getCompanyAction: async ({ commit }, data) => {
+      return new Promise((done) => {
+        axios
+          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`)
+          .then((res) => {
             done(res.data);
           })
           .catch((err) => done(err));

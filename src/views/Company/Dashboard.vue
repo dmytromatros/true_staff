@@ -9,7 +9,7 @@
 
           <MenuCard class="company-dashboard__sidebar-link" label="Знайти користувача" link="company-search-user" icon="person_search" />
 
-          <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests" icon="forum" />
+          <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests" icon="forum" :message="true" />
 
           <MenuCard class="company-dashboard__sidebar-link company-dashboard__sidebar-link--profile" label="Профіль" link="company-settings" :key="updateKey" icon="person" />
         </div>

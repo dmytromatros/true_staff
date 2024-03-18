@@ -19,11 +19,22 @@ module.exports = async (req, res) => {
         }
     }
 
+    let averageStars = 0
+
+    if (error.length === 0) {
+        if (reviewsList && reviewsList.length > 0) {
+            const validReviews = reviewsList.filter(review => review.reviewStars);
+            const sum = validReviews.reduce((acc, review) => acc + review.reviewStars, 0);
+            const allReviews = validReviews.length;
+            averageStars = sum / allReviews;
+        }
+    }
 
     if (error.length === 0) {
         res.status(200).json({
             message: 'Review has been sent!',
             data: { ...reviewsList },
+            rate: averageStars,
             success: true
         });
     } else {

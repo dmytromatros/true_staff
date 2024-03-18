@@ -1,14 +1,17 @@
 <template>
   <div class="review-card">
     <div class="review-card__container">
-      <div class="review-card__sender">
-        <div class="review-card__img">
-          <img v-if="sender.image" :src="sender.image" alt="" />
-          <img v-else src="/img/profile-img.webp" alt="" />
+      <div class="review-card__header">
+        <div class="review-card__sender">
+          <div class="review-card__img">
+            <img v-if="sender.image" :src="sender.image" alt="" />
+            <img v-else src="/img/profile-img.webp" alt="" />
+          </div>
+          <div class="review-card__name">
+            {{ sender.name }}
+          </div>
         </div>
-        <div class="review-card__name">
-          {{ sender.name }}
-        </div>
+        <StarsCount :count="review.reviewStars" />
       </div>
       <div class="review-card__review">
         {{ review.review }}
@@ -21,8 +24,10 @@
 </template>
 
 <script>
+import StarsCount from '@/components/other/StarsCount.vue';
 export default {
   name: 'ReviewCard',
+  components: { StarsCount },
   props: {
     review: {
       type: Object,
@@ -93,6 +98,11 @@ export default {
 
   &__container {
     width: 100%;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
   }
 
   &__sender {

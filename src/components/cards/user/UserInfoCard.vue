@@ -31,7 +31,18 @@
         ><template v-slot:body>
           <div class="user-info-card__send-review">
             <TextInput class="user-info-card__review-input" :textarea="true" v-model="review" placeholder="Скажи все що думаєш!" />
-            <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review" :loading="loadingReview" />
+            <div class="user-info-card__review-bottom">
+              <StarsCount
+                :count="reviewStars"
+                :selectable="true"
+                @rate="
+                  (index) => {
+                    reviewStars = index;
+                  }
+                "
+              />
+              <DefaultButton class="user-info-card__button" label="Залишити відгук" @action="sendReview" :disabled="!review || reviewStars == 0" :loading="loadingReview" />
+            </div>
           </div>
         </template>
       </BaseCard>
@@ -57,6 +68,7 @@
             <div class="user-info-card__flex-inner">
               <div class="user-info-card__name" :title="`${info.name} ${info.surname}`">{{ info.name }} {{ info.surname }}</div>
 
+              <StarsCount class="user-info-card__stars" :count="info.rate" :selectable="false" />
               <IdComponent :id="info.uniqueId" />
             </div>
           </div>
@@ -78,6 +90,7 @@ import IdComponent from '@/components/other/IdComponent.vue';
 import { checkRole } from '../../../../utils/permission';
 import SearchCard from '@/components/cards/system/SearchCard.vue';
 // import FontIcon from "@/components/other/FontIcon.vue";
+import StarsCount from '@/components/other/StarsCount.vue';
 export default {
   name: 'UserInfoCard',
   data() {
@@ -87,6 +100,7 @@ export default {
       imageUrl: '',
       selected: 1,
       reviews: {},
+      reviewStars: 0,
       review: '',
       loading: true,
       loadingReview: false,
@@ -102,6 +116,7 @@ export default {
     LoaderComponent,
     IdComponent,
     SearchCard,
+    StarsCount,
     // FontIcon
   },
   computed: {
@@ -137,6 +152,7 @@ export default {
       this.$store.dispatch('getReviewsListAction', { id: id }).then((res) => {
         if (res.success) {
           this.reviews = res.data;
+          this.info.rate = res.rate;
         }
       });
     },
@@ -154,6 +170,7 @@ export default {
         from: this.$store.state.id,
         to: this.info._id,
         review: this.review,
+        reviewStars: this.reviewStars,
       };
       data.date = Date.now();
       this.$store.dispatch('sendReviewAction', data).then((res) => {
@@ -198,6 +215,12 @@ export default {
   gap: 15px;
   @include no-scroll;
 
+  &__stars {
+    :deep(.starts-count__star) {
+      font-size: 20px;
+    }
+  }
+
   &__text {
     img {
       width: 100%;
@@ -208,6 +231,13 @@ export default {
       font-weight: 700;
       color: $main-color;
     }
+  }
+
+  &__review-bottom {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__label {
@@ -320,9 +350,8 @@ export default {
     display: flex;
     gap: 20px;
     height: 100%;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
-    flex-direction: column;
 
     &-inner {
       display: flex;

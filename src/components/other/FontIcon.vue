@@ -1,5 +1,5 @@
 <template>
-  <span class="material-symbols-outlined" :style="`font-size: ${fontSize || 24}px`">
+  <span class="material-symbols-outlined" :style="`font-size: ${fontSize}px`">
     {{ icon }}
   </span>
 </template>

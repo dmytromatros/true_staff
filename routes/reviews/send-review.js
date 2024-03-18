@@ -2,14 +2,13 @@
 
 module.exports = async (req, res) => {
 
-    const { to, from, review, date } = req.body;
+    const { to, from, review, date, reviewStars } = req.body;
 
     let error = [];
 
-    // if (company == '' || company == undefined) error.push('company is required');
-    // if (location == '' || location == undefined) error.push('location is required');
     if (from == '' || from == undefined) error.push('from is required');
     if (review == '' || review == undefined) error.push('Заповнять поле для відгуку');
+    if (reviewStars == '' || reviewStars == undefined) error.push('Оберіть кількість зірочок для відгуку');
     if (to == '' || to == undefined) error.push('to is required');
     if (date == '' || date == undefined) error.push('date is required');
 

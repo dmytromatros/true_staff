@@ -74,5 +74,7 @@ exports = module.exports = (app) => {
 
     app.post('/api/send-review', require('./routes/reviews/send-review'));
     app.get('/api/get-reviews-list/:id', require('./routes/reviews/get-reviews-list'));
+    app.post('/api/edit-review', require('./routes/reviews/edit-review'));
+    app.post('/api/delete-review/:id', require('./routes/reviews/delete-review'));
 
 }

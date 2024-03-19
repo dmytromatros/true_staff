@@ -288,7 +288,7 @@ export default createStore({
       });
     },
 
-    getCompanyAction: async ({ commit }, data) => {
+    getCompanyAction: async (context, data) => {
       return new Promise((done) => {
         axios
           .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`)
@@ -573,6 +573,28 @@ export default createStore({
       return new Promise((done) => {
         axios
           .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-reviews-list/${data.id}`)
+          .then((res) => {
+            done(res.data);
+          })
+          .catch((err) => done(err));
+      });
+    },
+
+    editReviewAction: async (context, data) => {
+      return new Promise((done) => {
+        axios
+          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-review`, data)
+          .then((res) => {
+            done(res.data);
+          })
+          .catch((err) => done(err));
+      });
+    },
+
+    deleteReviewAction: async (context, data) => {
+      return new Promise((done) => {
+        axios
+          .post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-review/${data.id}`)
           .then((res) => {
             done(res.data);
           })

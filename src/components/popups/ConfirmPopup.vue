@@ -1,5 +1,5 @@
 <template>
-  <DefaultPopup :is-shown="isShown" confirmLabel="Видалити" title="Видалення користувача" @close="close" @confirm="confirm">
+  <DefaultPopup :is-shown="isShown" confirmLabel="Видалити" :title="title" @close="close" @confirm="confirm">
     <template v-slot:body>
       <span class="confirm-text">{{ text }}</span>
     </template>
@@ -15,6 +15,10 @@ export default {
     text: {
       type: String,
       default: '',
+    },
+    title: {
+      type: String,
+      default: 'Видалення користувача',
     },
     isShown: {
       type: Boolean,

@@ -1,7 +1,7 @@
 <template>
   <div class="circle-button">
     <button @click.stop="action" class="circle-button__button" :class="{ danger, success, warning, disabled }" :title="title">
-      <FontIcon :icon="icon" :font-size="fontSize || '20'" />
+      <FontIcon :icon="icon" :font-size="fontSize || '16'" />
     </button>
   </div>
 </template>
@@ -52,8 +52,8 @@ export default {
 
 .circle-button {
   &__button {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     text-align: center;
     border-radius: 50%;
     @include main-shadow;

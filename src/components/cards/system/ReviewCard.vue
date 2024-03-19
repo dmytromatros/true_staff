@@ -13,21 +13,63 @@
         </div>
         <StarsCount :count="review.reviewStars" />
       </div>
-      <div class="review-card__review">
-        {{ review.review }}
+      <div class="review-card__review" :style="{ 'margin-bottom': isEditing ? '0px' : '' }">
+        <div v-if="!isEditing">{{ tempReview }}</div>
+        <TextInput v-else :textarea="true" v-model="tempReview" />
       </div>
-      <div class="review-card__date">
-        {{ getDateFn(review.date) }}
+
+      <div class="review-card__bottom">
+        <div class="review-card__date">
+          {{ getDateFn(review.date) }}
+        </div>
+        <div class="review-card__buttons" v-if="canEdit">
+          <CircleButton
+            v-if="!isEditing"
+            icon="edit"
+            @action="
+              () => {
+                isEditing = true;
+              }
+            "
+          />
+          <CircleButton
+            v-if="!isEditing"
+            icon="delete"
+            :danger="true"
+            @action="
+              () => {
+                showConfirmPopup = true;
+              }
+            "
+          />
+          <CircleButton v-if="isEditing" icon="done" @action="editReviewFn" />
+          <CircleButton v-if="isEditing" icon="close" @action="closeEditing" :danger="true" />
+        </div>
       </div>
     </div>
+    <div class="review-card__back"></div>
+    <ConfirmPopup
+      :is-shown="showConfirmPopup"
+      text="Ти дійсно бажаєш видалити відгук?"
+      @close="
+        () => {
+          showConfirmPopup = false;
+        }
+      "
+      @confirm="deleteReview"
+      title="Видалення відгуку"
+    />
   </div>
 </template>
 
 <script>
 import StarsCount from '@/components/other/StarsCount.vue';
+import CircleButton from '@/components/buttons/CircleButton.vue';
+import TextInput from '@/components/inputs/TextInput.vue';
+import ConfirmPopup from '@/components/popups/ConfirmPopup.vue';
 export default {
   name: 'ReviewCard',
-  components: { StarsCount },
+  components: { StarsCount, CircleButton, TextInput, ConfirmPopup },
   props: {
     review: {
       type: Object,
@@ -37,7 +79,15 @@ export default {
   data() {
     return {
       sender: {},
+      isEditing: false,
+      tempReview: this.review.review,
+      showConfirmPopup: false,
     };
+  },
+  computed: {
+    canEdit() {
+      return this.review.from === this.$store.state.id;
+    },
   },
   methods: {
     getSenderFn(id) {
@@ -51,6 +101,8 @@ export default {
       this.$store.dispatch('getImageAction', { id: id }).then((res) => {
         if (res.success) {
           this.sender.image = res.data;
+        } else {
+          this.sender.image = '';
         }
       });
     },
@@ -71,9 +123,43 @@ export default {
       const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
       // Construct the formatted date string
-      const formattedDate = `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes}`;
+      const formattedDate = `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
 
       return formattedDate;
+    },
+
+    closeEditing() {
+      this.isEditing = false;
+      this.tempReview = this.review.review;
+    },
+
+    editReviewFn() {
+      this.$store.dispatch('editReviewAction', { id: this.review._id, review: this.tempReview }).then((res) => {
+        if (res.success) {
+          this.isEditing = false;
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
+      });
+    },
+
+    deleteReview() {
+      this.$store.dispatch('deleteReviewAction', { id: this.review._id }).then((res) => {
+        if (res.success) {
+          this.$store.dispatch('showNotification', { message: res.message, type: 'success' });
+          this.$emit('edited');
+        } else {
+          this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
+        }
+      });
+    },
+  },
+  watch: {
+    'review.review'() {
+      this.tempReview = this.review.review;
+      this.getSenderFn(this.review.from);
+      this.getSenderImageFn(this.review.from);
     },
   },
   mounted() {
@@ -89,15 +175,32 @@ export default {
 .review-card {
   background-color: $white;
   @include main-shadow;
-  border: 1px solid $main-color;
-  padding: 15px;
   border-radius: $border-radius;
   overflow: auto;
   display: flex;
   gap: 15px;
+  position: relative;
 
   &__container {
     width: 100%;
+    position: relative;
+    z-index: 1;
+    background-color: $white;
+    border-radius: $border-radius;
+    padding: 15px;
+    border: 1.35px solid transparent;
+    background-clip: padding-box;
+  }
+
+  &__back {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $main-gradient;
+    border-radius: $border-radius;
   }
 
   &__header {
@@ -108,19 +211,17 @@ export default {
   &__sender {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid $main-color;
     width: fit-content;
   }
 
   &__img {
     img {
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
@@ -129,18 +230,28 @@ export default {
 
   &__review {
     width: 100%;
-    // max-height: 75px;
+    line-height: 1.3;
     padding: 10px;
     border-radius: 5px;
-    //  border: 1px solid $main-color;
     margin-bottom: 25px;
   }
 
   &__date {
     color: grey;
     font-size: 14px;
-    width: 100%;
     text-align: right;
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 7.5px;
   }
 }
 </style>

@@ -203,7 +203,7 @@ export default {
 
   &__buttons {
     display: flex;
-    gap: 15px;
+    gap: 7.5px;
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;

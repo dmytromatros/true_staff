@@ -12,7 +12,7 @@
 
               <div v-if="selected == 1" class="user-info-card__reviews">
                 <div v-if="Object.keys(reviews).length" class="user-info-card__card-container">
-                  <ReviewCard v-for="(card, key) in reviews" :key="key" :review="card" />
+                  <ReviewCard v-for="(card, key) in reviews" :key="key" :review="card" @edited="getReviewsListFn(info._id)" />
                 </div>
                 <div v-else class="user-info-card__label">Ой-ой-ой... Немає відгуків... Залиш свій &#128513;</div>
               </div>
@@ -176,6 +176,7 @@ export default {
       this.$store.dispatch('sendReviewAction', data).then((res) => {
         this.loadingReview = false;
         this.review = '';
+        this.reviewStars = 0;
         if (!res.success) {
           this.$store.dispatch('showNotification', { message: res.response.data.message[0], type: 'error' });
         } else {

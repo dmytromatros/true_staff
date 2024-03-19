@@ -85,7 +85,7 @@ export default {
     @include main-shadow;
     color: $dark_text;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 600;
     transition: 0.3s ease-in-out all;
     border: 1px solid $main-color;
 
@@ -101,6 +101,11 @@ export default {
     &:focus,
     &:focus-visible {
       border: 1px solid $input-focus;
+    }
+
+    &::placeholder {
+      font-weight: 600;
+      opacity: 0.5;
     }
   }
 

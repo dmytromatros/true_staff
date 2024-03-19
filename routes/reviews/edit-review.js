@@ -7,43 +7,30 @@ module.exports = async (req, res) => {
     let error = [];
 
     if (!req.body.id) error.push('Id is required');
-    if (!req.body.companyId) error.push('Company id is required');
+    if (!req.body.review) error.push('Відгук має містити хоча б щось...');
 
-
-    let locations;
 
     const objectId = new ObjectId(req.body.id);
 
     let updateData = {};
 
     if (error.length === 0) {
-        if (req.body.address) updateData.address = req.body.address;
-        if (req.body.image) updateData.image = req.body.image;
+        if (req.body.review) updateData.review = req.body.review;
     }
 
     let result;
 
     if (error.length === 0) {
         try {
-            result = await req.app.db.collection('locations').updateOne({ _id: objectId }, { $set: updateData });
+            result = await req.app.db.collection('reviews').updateOne({ _id: objectId }, { $set: updateData });
         } catch (err) {
             error.push(err);
         }
     }
-
-
-    if (error.length === 0) {
-        try {
-            locations = await req.app.db.collection('locations').find({ company: req.body.companyId }).toArray()
-        } catch (err) {
-            error.push(err);
-        }
-    }
-
 
     if (error.length === 0) {
         res.status(200).json({
-            data: { ...locations },
+            message: 'Відгук змінено',
             success: true
         });
     } else {

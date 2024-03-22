@@ -4,10 +4,10 @@
     <div v-else class="search-card__container">
       <CustomSwitch :options="{ Компанія: 1, ID: 2, 'ім\'я': 3 }" v-model="page" />
       <div class="search-card__company" v-if="page === 1">
-        <BaseCard>
+        <BaseCard style="overflow: visible">
           <template v-slot:body>
             <div class="search-card__content">
-              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company" :options="companyList" />
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company" :options="companyList" :searchable="true" />
 
               <SelectInput
                 class="requests__input"
@@ -15,9 +15,10 @@
                 :disabled="!searchInfo.company || !locationList.length"
                 v-model="searchInfo.location"
                 :options="locationList"
+                :searchable="true"
               />
 
-              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user" :options="users" />
+              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user" :options="users" :searchable="true" />
             </div>
           </template>
         </BaseCard>

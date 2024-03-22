@@ -10,7 +10,7 @@
             <path d="M7.15283 6.72803L22.4749 22.0501" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
-        <div class="default-popup__body">
+        <div class="default-popup__body" :style="{ overflow: overflow ? 'auto' : 'visible' }">
           <LoaderComponentVue v-if="loading" />
           <slot name="body" v-else></slot>
         </div>
@@ -36,6 +36,7 @@ export default {
     loadingButton: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
     showConfirmButton: { type: Boolean, default: true },
+    overflow: { type: Boolean, default: true },
   },
   methods: {
     closePopup() {

@@ -50,8 +50,8 @@
           <div class="requests__receive-title--add">Відравити запит</div>
           <div class="requests__receive-content">
             <form class="user-settings__organization" @submit.prevent="sendRequest">
-              <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" />
-              <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList" :disabled="!company" />
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="company" :options="companyList" :searchable="true" />
+              <SelectInput class="requests__input" placeholder="Локація" v-model="location" :options="locationList" :disabled="!company" :searchable="true" />
               <TextInput class="requests__input" placeholder="Посада" v-model="position" :disabled="!location" />
               <TextInput class="requests__input" placeholder="Повідомлення" :textarea="true" v-model="message" :disabled="!position" />
               <DefaultButton class="requests__input" label="Відправити запит" type="submit" :disabled="!company || !location || !position || !message" :loading="loadingButton" />

@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
         try {
             currentLocation = await req.app.db.collection('locations').findOne({ company: req.body.company, address: req.body.address })
         } catch (err) {
-            error.push('lll');
+            error.push('error');
         }
     }
 

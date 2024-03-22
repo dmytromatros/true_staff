@@ -48,7 +48,6 @@ export default createStore({
       else state.id = '';
     },
     setLocations: (state, data) => {
-      console.log('lll');
       if (Array.isArray(data.data)) state.locations = data.data;
       else {
         state.locations = [];

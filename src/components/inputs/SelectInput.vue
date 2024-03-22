@@ -1,16 +1,39 @@
 <template>
   <div class="select-input" :class="{ disabled }">
-    <span v-if="label" class="select-input__label">{{ label }}</span>
-    <label v-if="!internalValue" class="select-input__placeholder">{{ placeholder }}</label>
-    <select class="select-input__input" name="select" id="select" v-model="internalValue">
-      <option v-for="(option, key) in options" :key="key" :value="option.value">
-        {{ option.label }}
-      </option>
-    </select>
+    <span v-if="label" class="select-input__label">{{ label || placeholder }}</span>
+    <div class="select-input__container" :class="{ 'select-input__container--open': open }">
+      <input
+        v-if="!searchable"
+        type="text"
+        class="select-input__input"
+        :value="getLabel(internalValue)"
+        @focus="openDropDown"
+        @focusout="closeDropDown"
+        :readonly="true"
+        ref="inputRef"
+        :placeholder="placeholder"
+      />
+
+      <input v-else type="text" class="select-input__input" v-model="searchValue" @focus="openDropDown" @focusout="closeDropDown" ref="inputRef" :placeholder="placeholder" />
+      <FontIcon class="select-input__container-icon" icon="expand_more" />
+    </div>
+    <Transition name="options">
+      <div v-show="open" class="select-input__options" ref="dropDown">
+        <button class="select-input__option" v-for="option in tempOptions" :key="option.value" type="button">
+          <div class="select-input__option-content" @click="selectValue(option.value)">
+            {{ option.label }}
+          </div>
+        </button>
+        <button class="select-input__option" v-if="!tempOptions.length" style="pointer-events: none">
+          <div class="select-input__option-content">Нічого немає...</div>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script>
+import FontIcon from '@/components/other/FontIcon.vue';
 export default {
   name: 'SelectInput',
   props: {
@@ -30,20 +53,77 @@ export default {
       type: String,
       default: '',
     },
+    searchable: {
+      type: Boolean,
+      default: false,
+    },
     modelValue: String,
   },
   emits: ['update:modelValue'],
+  components: { FontIcon },
   data() {
     return {
       internalValue: this.modelValue,
+      open: false,
+      searchValue: this.modelValue ? this.getLabel(this.modelValue) : '',
+      tempOptions: this.options,
     };
   },
+
+  methods: {
+    getLabel(id) {
+      return this.options.find((option) => option.value === id)?.label;
+    },
+
+    openDropDown() {
+      this.open = true;
+
+      const dropdown = this.$refs.dropDown;
+
+      setTimeout(() => {
+        if (dropdown.getBoundingClientRect().height + dropdown.getBoundingClientRect().top > window.innerHeight) {
+          dropdown.style.height = `${window.innerHeight - dropdown.getBoundingClientRect().top - 50}px`;
+        }
+      }, 0);
+    },
+    selectValue(value) {
+      this.internalValue = value;
+      this.searchValue = this.getLabel(value);
+      this.closeDropDown();
+    },
+
+    closeDropDown() {
+      setTimeout(() => {
+        this.open = false;
+        this.tempOptions = this.options;
+        if (this.searchable) {
+          this.searchValue = this.getLabel(this.internalValue);
+        }
+      }, 5);
+    },
+  },
+
+  mounted() {
+    const dropdown = this.$refs.dropDown;
+    dropdown.style.maxHeight = `${window.innerHeight - (this.$refs.inputRef.getBoundingClientRect().top + this.$refs.inputRef.getBoundingClientRect().height + 5) - 50}px`;
+  },
+
   watch: {
     internalValue(newValue) {
+      if (this.searchable) this.searchValue = this.getLabel(newValue);
       this.$emit('update:modelValue', newValue);
     },
     modelValue(newValue) {
       this.internalValue = newValue;
+    },
+    searchValue() {
+      if (this.searchable && this.open) {
+        this.tempOptions = this.options.filter((option) => option.label.toLowerCase().includes(this.searchValue.toLowerCase()));
+      }
+    },
+    options() {
+      this.tempOptions = this.options;
+      this.searchValue = '';
     },
   },
 };
@@ -60,17 +140,57 @@ export default {
   background: $white;
   border-radius: 5px;
 
-  &::after {
-    content: '';
+  &__options {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    z-index: 1;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23000000" height="800px" width="800px" version="1.1" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve"><path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/></svg>');
-    background-size: 100% 100%;
+    width: 100%;
+    top: 120%;
+    left: 0;
+    background: $white;
+    box-shadow: 0 2px 10px 1px rgba($color: $black, $alpha: 0.2);
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    transition: 0.25s ease all;
+  }
+
+  &__container {
+    position: relative;
+
+    &-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      color: $main-color;
+      transition: 0.25s ease-in-out all;
+    }
+
+    &--open &-icon {
+      transform: translateY(-50%) rotate(180deg);
+      color: $second-color;
+    }
+  }
+
+  &__option {
+    cursor: pointer;
+    white-space: break-word;
+    word-wrap: break-word;
+    font-size: 16px;
+    transition: 0.25s ease all;
+    text-align: left;
+
+    &:hover {
+      color: $main-color-hover;
+      background-color: rgba($color: $placeholder-color, $alpha: 0.2);
+    }
+  }
+
+  &__option-content {
+    padding: 10px 15px;
   }
 
   &__label {
@@ -97,6 +217,7 @@ export default {
     appearance: none;
     z-index: 2;
     background: transparent;
+    position: relative;
 
     &:hover {
       box-shadow: 0 0 10px 1px rgba($color: $black, $alpha: 0.2);
@@ -105,6 +226,11 @@ export default {
     &:focus,
     &:focus-visible {
       border: 1px solid $input-focus;
+    }
+
+    &::placeholder {
+      font-weight: 600;
+      opacity: 0.5;
     }
   }
 
@@ -115,14 +241,31 @@ export default {
     left: 15px;
     color: $placeholder-color;
     z-index: 1;
+    font-weight: 600;
+    opacity: 0.5;
   }
 
   &.disabled {
     pointer-events: none;
     opacity: 0.5;
   }
+}
 
-  &__input:focus {
-  }
+.options-enter-active {
+  transition: opacity 5 ease, transform 5 ease;
+}
+
+.options-enter-from {
+  opacity: 0.01;
+  transform: translateY(-25px);
+}
+
+.options-leave-to {
+  opacity: 0.01;
+  transform: translateY(-25px);
+}
+
+.options-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 </style>

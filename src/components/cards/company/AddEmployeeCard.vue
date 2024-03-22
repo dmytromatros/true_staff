@@ -3,7 +3,7 @@
     <BaseCard class="add-employee-card__new-card">
       <template v-slot:body>
         <div class="add-employee-card__new-card-title">Додати нового співробітника</div>
-        <SelectInput class="add-employee-card__input" placeholder="Локація" :options="locations" v-model="newEmployee.location" />
+        <SelectInput class="add-employee-card__input" placeholder="Локація" :options="locations" v-model="newEmployee.location" :searchable="true" />
         <TextInput class="add-employee-card__input" placeholder="ID користувача" type="text" v-model="newEmployee.userId" />
         <TextInput class="add-employee-card__input" placeholder="Посада" type="text" v-model="newEmployee.position" />
         <TextInput class="add-employee-card__input" placeholder="Повідомлення" type="text" v-model="newEmployee.message" :textarea="true" />

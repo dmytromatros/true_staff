@@ -63,7 +63,6 @@ export default {
         });
     },
     getImageFn(id) {
-      console.log('lll');
       this.$store.dispatch('getImageAction', { id: id }).then((res) => {
         if (res.success) {
           this.imageUrl = res.data;

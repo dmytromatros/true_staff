@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 import axios from 'axios';
 // import router from '@/router';
 
-const { isAuth } = require('../../utils/permission');
+const { isAuth, showTour } = require('../../utils/permission');
 
 const hashCode = (s) => {
   return s.split('').reduce(function (a, b) {
@@ -21,6 +21,7 @@ export default createStore({
     notifications: [],
     profileImage: null,
     receiveRequestCount: 0,
+    showTour: false,
   },
   getters: {},
   mutations: {
@@ -76,6 +77,10 @@ export default createStore({
     setReceiveRequestsCount: (state, data) => {
       state.receiveRequestCount = data;
     },
+
+    setTour: (state, data) => {
+      state.showTour = data;
+    }
   },
   actions: {
     // System actions /////////////////////////////////////////////////////////////////////////////
@@ -91,6 +96,7 @@ export default createStore({
             localStorage.setItem('role', 'user');
 
             isAuth();
+            showTour();
 
             done(res.data);
           })
@@ -109,6 +115,7 @@ export default createStore({
             localStorage.setItem('role', 'company');
 
             isAuth(res.data.data._id);
+            showTour();
 
             done(res.data);
           })
@@ -144,6 +151,8 @@ export default createStore({
           .then((res) => {
             commit('setUserList', res.data);
             done(res.data);
+
+
           })
           .catch((err) => done(err));
       });

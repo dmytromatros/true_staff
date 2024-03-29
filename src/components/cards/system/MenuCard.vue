@@ -1,8 +1,11 @@
 <template>
   <div class="menu-card">
     <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active" :title="label">
-      <FontIcon class="menu-card__icon" :class="{ 'menu-card__icon--animation': message && $store.state.receiveRequestCount }" :icon="icon" font-size="40px" />
-      <FontIcon v-if="message && $store.state.receiveRequestCount" icon="notifications_active" class="menu-card__icon menu-card__icon--message" font-size="40px" />
+      <FontIcon class="menu-card__icon"
+        :class="{ 'menu-card__icon--animation': message && $store.state.receiveRequestCount }" :icon="icon"
+        font-size="32px" />
+      <FontIcon v-if="message && $store.state.receiveRequestCount" icon="notifications_active"
+        class="menu-card__icon menu-card__icon--message" font-size="32px" />
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
     </router-link>
@@ -65,9 +68,9 @@ export default {
   }
 
   &__button {
-    border-radius: $border-radius;
+    border-radius: 8px;
     @include main-shadow;
-    padding: 10px 10px;
+    padding: 5px 5px;
     width: 100%;
     height: fit-content;
     display: flex;
@@ -78,7 +81,7 @@ export default {
     gap: 15px;
     max-height: 120px;
     background: white;
-    border: 1px solid $main-color;
+    // border: 1px solid $main-color;
     overflow: hidden;
 
     &:hover {
@@ -94,7 +97,7 @@ export default {
     }
 
     &--active {
-      border: 1px solid transparent;
+      // border: 1px solid transparent;
 
       &:hover {
         border-color: transparent;

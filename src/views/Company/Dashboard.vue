@@ -2,16 +2,23 @@
   <div class="company-dashboard">
     <div class="company-dashboard__body">
       <Transition name="sidebar" appear>
-        <div class="company-dashboard__sidebar">
-          <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations" icon="location_on" />
+        <div class="company-dashboard__sidebar" ref="mainSidebar" @click="openSidebar"
+          @pointerleave="openedSideBar = false" :class="{ 'company-dashboard__sidebar--opened': openedSideBar }">
+          <div class="company-dashboard__top">
+            <MenuCard class="company-dashboard__sidebar-link" label="Локації" link="company-locations"
+              icon="location_on" id="tour-step-locations" />
 
-          <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard" icon="groups" />
+            <MenuCard class="company-dashboard__sidebar-link" label="Працівники" link="company-dashboard"
+              icon="groups" />
 
-          <MenuCard class="company-dashboard__sidebar-link" label="Знайти користувача" link="company-search-user" icon="person_search" />
+            <MenuCard class="company-dashboard__sidebar-link" label="Знайти користувача" link="company-search-user"
+              icon="person_search" />
 
-          <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests" icon="forum" :message="true" />
-
-          <MenuCard class="company-dashboard__sidebar-link company-dashboard__sidebar-link--profile" label="Профіль" link="company-settings" :key="updateKey" icon="person" />
+            <MenuCard class="company-dashboard__sidebar-link" label="Запити до співпраці" link="company-requests"
+              icon="forum" :message="true" />
+          </div>
+          <MenuCard class="company-dashboard__sidebar-link company-dashboard__sidebar-link--profile" label="Профіль"
+            link="company-settings" :key="updateKey" icon="person" />
         </div>
       </Transition>
       <div class="company-dashboard__content">
@@ -37,6 +44,7 @@ export default {
       image: null,
       updateKey: Date.now(),
       loading: false,
+      openedSideBar: false,
     };
   },
   methods: {
@@ -53,6 +61,13 @@ export default {
     checkRoute(route) {
       return this.$route.name == route;
     },
+    openSidebar(e) {
+      if (e.target && e.target === this.$refs.mainSidebar) {
+        this.openedSideBar = true;
+      } else {
+        this.openedSideBar = false;
+      }
+    }
   },
 };
 </script>
@@ -73,19 +88,24 @@ export default {
   &__sidebar {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 15px;
+    justify-content: space-between;
     height: 100%;
     overflow: auto;
-    padding: 15px;
-    width: 93px;
+    padding: 8.7px;
+    width: 60px;
     background: white;
     border-radius: 10px;
     transition: 0.25s ease-in-out all;
 
-    &:hover {
-      width: 300px;
+    &--opened {
+      width: 270px;
     }
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   &__content {
@@ -99,10 +119,6 @@ export default {
   &__sidebar-link {
     height: fit-content;
 
-    &--profile {
-      flex: 1;
-      align-items: flex-end;
-    }
   }
 }
 

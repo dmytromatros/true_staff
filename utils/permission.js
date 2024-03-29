@@ -55,7 +55,6 @@ function checkRoutePermission() {
     }
 }
 
-
 function checkRole() {
     const auth = localStorage.getItem('token') == '' ? false : true;
     const role = localStorage.getItem('role')
@@ -74,4 +73,16 @@ function checkRole() {
     return null;
 }
 
-export { isAuth, checkRoutePermission, checkRole };
+function showTour() {
+    let show = localStorage.getItem('showTour');
+
+
+    if (show === null) {
+        localStorage.setItem('showTour', true)
+        return true;
+    } else {
+        return show == 'true' ? true : false;
+    }
+}
+
+export { isAuth, checkRoutePermission, checkRole, showTour };

@@ -13,6 +13,10 @@
     <router-view class="main-router-view" />
   </div>
   <NotificationMessage />
+  <TourStep />
+  <button class="open-help-popup-btn" @click="$store.state.showTour = !$store.state.showTour">
+    <FontIcon icon="help" class="open-help-popup-btn-icon" />
+  </button>
 </template>
 
 <script>
@@ -21,7 +25,9 @@ import CompanyHeader from '@/components/headers/CompanyHeader.vue';
 import MainBackground from '@/views/System/MainBackground.vue';
 import NotificationMessage from '@/components/other/NotificationMessage.vue';
 import LoaderComponent from '@/components/other/LoaderComponent.vue';
-const { isAuth, checkRoutePermission, checkRole } = require('../utils/permission');
+import TourStep from '@/components/cards/system/TourStep.vue';
+import FontIcon from '@/components/other/FontIcon.vue';
+const { isAuth, checkRoutePermission, checkRole, showTour } = require('../utils/permission');
 
 export default {
   computed: {
@@ -51,6 +57,8 @@ export default {
     MainBackground,
     NotificationMessage,
     LoaderComponent,
+    TourStep,
+    FontIcon
   },
 
   methods: {
@@ -63,6 +71,7 @@ export default {
                 if (res1.success) this.loading = false;
               });
             } else {
+
               this.loading = false;
             }
 
@@ -89,6 +98,8 @@ export default {
           }
         });
       }
+
+      this.$store.state.showTour = showTour();
     },
   },
 
@@ -150,6 +161,25 @@ export default {
     flex: 1;
   }
 }
+
+.open-help-popup-btn {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+  z-index: 4;
+  padding: 0;
+  font-size: 35px;
+  height: 35px;
+  color: $main-color;
+  transition: 0.25s ease-in-out all;
+  background-color: transparent;
+
+  &:hover,
+  &:focus {
+    color: $second-color;
+  }
+}
+
 
 .page-enter-active {
   transition: opacity 0.5s ease, transform 0.5s ease;

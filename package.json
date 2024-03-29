@@ -22,6 +22,7 @@
         "path": "^0.12.7",
         "vue": "^3.2.13",
         "vue-router": "^4.0.3",
+        "vue3-tour": "^0.3.4",
         "vuex": "^4.1.0"
     },
     "devDependencies": {

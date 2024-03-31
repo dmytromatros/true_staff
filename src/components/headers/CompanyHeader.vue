@@ -81,6 +81,7 @@ export default {
 
   &__right {
     display: flex;
+    align-items: center;
     gap: 70px;
   }
 

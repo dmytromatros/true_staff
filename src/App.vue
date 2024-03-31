@@ -58,7 +58,7 @@ export default {
     NotificationMessage,
     LoaderComponent,
     TourStep,
-    FontIcon
+    FontIcon,
   },
 
   methods: {
@@ -71,7 +71,6 @@ export default {
                 if (res1.success) this.loading = false;
               });
             } else {
-
               this.loading = false;
             }
 
@@ -179,7 +178,6 @@ export default {
     color: $second-color;
   }
 }
-
 
 .page-enter-active {
   transition: opacity 0.5s ease, transform 0.5s ease;

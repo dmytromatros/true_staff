@@ -1,11 +1,8 @@
 <template>
   <div class="menu-card">
     <router-link class="menu-card__button" :to="{ name: link }" active-class="menu-card__button--active" :title="label">
-      <FontIcon class="menu-card__icon"
-        :class="{ 'menu-card__icon--animation': message && $store.state.receiveRequestCount }" :icon="icon"
-        font-size="32px" />
-      <FontIcon v-if="message && $store.state.receiveRequestCount" icon="notifications_active"
-        class="menu-card__icon menu-card__icon--message" font-size="32px" />
+      <FontIcon class="menu-card__icon" :class="{ 'menu-card__icon--animation': message && $store.state.receiveRequestCount }" :icon="icon" font-size="32px" />
+      <FontIcon v-if="message && $store.state.receiveRequestCount" icon="notifications_active" class="menu-card__icon menu-card__icon--message" font-size="32px" />
       <span class="menu-card__label">{{ label }}</span>
       <div class="menu-card__back"></div>
     </router-link>

@@ -3,14 +3,11 @@
     <div class="user-dashboard__body">
       <Transition name="sidebar" appear>
         <div class="user-dashboard__sidebar">
-          <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard"
-            icon="person_search" />
+          <MenuCard class="user-dashboard__sidebar-link" label="Знайти користувача" link="user-dashboard" icon="person_search" />
 
-          <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests" icon="forum"
-            :message="true" />
+          <MenuCard class="user-dashboard__sidebar-link" label="Запити до співпраці" link="user-requests" icon="forum" :message="true" />
 
-          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль"
-            link="user-settings" :key="updateKey" icon="person" />
+          <MenuCard class="user-dashboard__sidebar-link user-dashboard__sidebar-link--profile" label="Профіль" link="user-settings" :key="updateKey" icon="person" />
         </div>
       </Transition>
       <div class="user-dashboard__content">

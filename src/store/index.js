@@ -80,7 +80,7 @@ export default createStore({
 
     setTour: (state, data) => {
       state.showTour = data;
-    }
+    },
   },
   actions: {
     // System actions /////////////////////////////////////////////////////////////////////////////
@@ -151,8 +151,6 @@ export default createStore({
           .then((res) => {
             commit('setUserList', res.data);
             done(res.data);
-
-
           })
           .catch((err) => done(err));
       });

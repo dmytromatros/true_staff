@@ -2,10 +2,7 @@
   <MainBackground v-if="!isAuthorized" />
   <div class="header" v-else>
     <Transition name="header" appear>
-      <UserHeader v-if="role == 'user'" />
-    </Transition>
-    <Transition name="header" appear>
-      <CompanyHeader v-if="role == 'company'" />
+      <MainHeader v-if="!loading" />
     </Transition>
   </div>
   <LoaderComponent v-if="loading" />
@@ -20,8 +17,7 @@
 </template>
 
 <script>
-import UserHeader from '@/components/headers/UserHeader.vue';
-import CompanyHeader from '@/components/headers/CompanyHeader.vue';
+import MainHeader from '@/views/System/MainHeader.vue';
 import MainBackground from '@/views/System/MainBackground.vue';
 import NotificationMessage from '@/components/other/NotificationMessage.vue';
 import LoaderComponent from '@/components/other/LoaderComponent.vue';
@@ -52,8 +48,7 @@ export default {
   },
 
   components: {
-    UserHeader,
-    CompanyHeader,
+    MainHeader,
     MainBackground,
     NotificationMessage,
     LoaderComponent,

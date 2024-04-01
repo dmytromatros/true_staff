@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
     if (error.length === 0) {
         if (req.body.name) updateData.name = req.body.name;
         if (req.body.surname) updateData.surname = req.body.surname;
+        if (req.body.about) updateData.about = req.body.about;
         if (req.body.image) updateData.image = req.body.image;
         if (req.body.isEmployee == false || req.body.isEmployee == true) updateData.isEmployee = req.body.isEmployee;
     }

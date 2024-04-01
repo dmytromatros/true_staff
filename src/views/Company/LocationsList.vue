@@ -2,13 +2,19 @@
   <div class="locations-list">
     <LoaderComponent v-if="loading" />
     <div v-else class="locations-list__container">
-      <div class="locations-list__locations-card">
+      <div class="locations-list__label" v-if="!loading && !Object.keys($store.state.locations).length">Немає
+        локацій.</div>
+
+      <div class="locations-list__locations-card" v-else>
         <div class="locations-list__locations">
-          <div class="locations-list__location" v-for="(location, key) in $store.state.locations" :key="key + location._id">
+          <div class="locations-list__location" v-for="(location, key) in $store.state.locations"
+            :key="key + location._id">
             <LocationCard :location="location" />
           </div>
         </div>
       </div>
+
+
 
       <div class="locations-list__new-location-wrapper">
         <BaseCard class="locations-list__new-location-card" :key="reloadData">
@@ -18,7 +24,8 @@
 
               <span class="locations-list__new-location-text"> Адреса локації </span>
 
-              <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації" v-model="newLocation.address" />
+              <TextInput class="locations-list__new-location-input" type="text" placeholder="Введіть адресу локації"
+                v-model="newLocation.address" />
 
               <DefaultButton label="Додати локацію" type="submit" :loading="loadingButton" />
             </form>
@@ -26,7 +33,6 @@
         </BaseCard>
       </div>
     </div>
-    <div class="locations-list__label" v-if="!loading && !Object.keys($store.state.locations).length">У вас немає локацій.</div>
   </div>
 </template>
 
@@ -144,8 +150,7 @@ export default {
     gap: 15px;
   }
 
-  &__new-location-wrapper {
-  }
+  &__new-location-wrapper {}
 
   &__new-location-text {
     font-size: 26px;

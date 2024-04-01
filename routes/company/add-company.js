@@ -2,12 +2,13 @@
 
 module.exports = async (req, res) => {
 
-    const { name, login, password } = req.body;
+    const { name, login, password, type } = req.body;
     let error = [];
 
-    if (name == '' || name == undefined) error.push('Введіть ім\'я');
-    if (login == '' || login == undefined) error.push('Придумайте та введіть логін');
-    if (password == '' || password == undefined) error.push('Придумайте та введіть пароль');
+    if (name == '' || name == undefined) error.push('Введи ім\'я , будь-ласка)');
+    if (login == '' || login == undefined) error.push('Придумай та введіть логін , будь-ласка)');
+    if (password == '' || password == undefined) error.push('Придумай та введіть пароль , будь-ласка)');
+    if (type == '' || type == undefined) error.push('Обери категорію закладу , будь-ласка)');
 
     let nameCheck, loginCheck;
 
@@ -57,7 +58,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Ви успішно зареєструвались!',
+            message: 'Вітаю в системі!',
             data: currentCompany,
             success: true
         });

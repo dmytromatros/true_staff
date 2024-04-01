@@ -7,18 +7,17 @@
         <BaseCard style="overflow: visible">
           <template v-slot:body>
             <div class="search-card__content">
-              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company" :options="companyList" :searchable="true" />
+              <SelectInput class="requests__input" placeholder="Категорія" v-model="searchInfo.category"
+                :options="companiesCategories" :searchable="true" />
+              <SelectInput class="requests__input" placeholder="Компанія" v-model="searchInfo.company"
+                :options="companyList" :searchable="true" />
 
-              <SelectInput
-                class="requests__input"
-                placeholder="Локація"
-                :disabled="!searchInfo.company || !locationList.length"
-                v-model="searchInfo.location"
-                :options="locationList"
-                :searchable="true"
-              />
+              <SelectInput class="requests__input" placeholder="Локація"
+                :disabled="!searchInfo.company || !locationList.length" v-model="searchInfo.location"
+                :options="locationList" :searchable="true" />
 
-              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length" v-model="searchInfo.user" :options="users" :searchable="true" />
+              <SelectInput placeholder="Робітник" :disabled="!searchInfo.location || !users.length"
+                v-model="searchInfo.user" :options="users" :searchable="true" />
             </div>
           </template>
         </BaseCard>
@@ -45,6 +44,7 @@ import SearchById from '@/components/UserSearch/SearchById.vue';
 import SearchByName from '@/components/UserSearch/SearchByName.vue';
 import CustomSwitch from '@/components/inputs/CustomSwitch.vue';
 import LoaderComponent from '@/components/other/LoaderComponent.vue';
+import { categories } from '../../../../utils/categoryList';
 export default {
   name: 'SearchCard',
   components: {
@@ -62,6 +62,7 @@ export default {
         location: '',
         user: '',
         review: '',
+        category: ''
       },
       companyList: [],
       locationList: [],
@@ -69,6 +70,7 @@ export default {
       page: 1,
       loading: true,
       buttonLoading: false,
+      companiesCategories: categories
     };
   },
   computed: {
@@ -77,16 +79,24 @@ export default {
     },
   },
   methods: {
-    getCompanyList() {
+    getCompanyList(category) {
+      this.companyList = []
       this.$store.dispatch('getCompanyListAction').then((res) => {
         if (res.success) {
           this.loading = false;
           for (const key in res.data) {
             if (Object.hasOwnProperty.call(res.data, key)) {
-              this.companyList.push({
-                label: res.data[key].name,
-                value: res.data[key]._id,
-              });
+              if (category && res.data[key].type == category || !category) {
+                this.companyList.push({
+                  label: res.data[key].name,
+                  value: res.data[key]._id,
+                })
+              } else if (category === '0' && (res.data[key].type === '0' || !res.data[key].type)) {
+                this.companyList.push({
+                  label: res.data[key].name,
+                  value: res.data[key]._id,
+                })
+              }
             }
           }
         }
@@ -162,6 +172,9 @@ export default {
     },
   },
   watch: {
+    'searchInfo.category'() {
+      this.getCompanyList(this.searchInfo.category)
+    },
     'searchInfo.company'() {
       this.getLocationList(this.searchInfo.company);
     },

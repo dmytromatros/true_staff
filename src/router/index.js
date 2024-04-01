@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/user',
     redirect: { name: 'user-dashboard' },
-    component: () => import('@/views/User/Dashboard.vue'),
+    component: () => import('@/views/System/Dashboard.vue'),
     children: [
       {
         path: 'settings',
@@ -21,7 +21,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'user-dashboard',
-        component: () => import('@/views/User/SendReview.vue'),
+        component: () => import('@/views/System/UserSearch.vue'),
       },
       {
         path: 'requests',
@@ -33,7 +33,7 @@ const routes = [
   {
     path: '/company',
     redirect: { name: 'company-dashboard' },
-    component: () => import('@/views/Company/Dashboard.vue'),
+    component: () => import('@/views/System/Dashboard.vue'),
     children: [
       {
         path: 'dashboard',
@@ -56,7 +56,7 @@ const routes = [
       {
         path: 'search-user',
         name: 'company-search-user',
-        component: () => import('@/views/Company/SearchUser.vue'),
+        component: () => import('@/views/System/UserSearch.vue'),
       },
 
       {

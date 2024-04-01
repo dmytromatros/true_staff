@@ -89,7 +89,7 @@ module.exports = async (req, res) => {
                 rejected: false
             });
             if (existingRequest) {
-                error.push('Ви вже відправили такий запит');
+                error.push('Ти вже відправив такий запит');
             }
         } catch (err) {
             error.push('Error checking for existing request');

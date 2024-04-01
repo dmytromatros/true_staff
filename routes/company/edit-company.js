@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         if (req.body.name) updateData.name = req.body.name;
+        if (req.body.type) updateData.type = req.body.type;
     }
 
     let result;

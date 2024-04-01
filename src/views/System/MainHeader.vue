@@ -1,14 +1,14 @@
 <template>
   <div class="user-header">
-    <router-link :to="{ name: 'user-dashboard' }" class="user-header__logo">
+    <router-link :to="{ name: logoRout }" class="user-header__logo">
       <img src="/img/logo_small_with_text.svg" alt="" />
     </router-link>
     <div class="user-header__right">
-      <router-link :to="{ name: 'user-settings' }" class="user-header__info">
+      <router-link :to="{ name: nameRout }" class="user-header__info">
         <div class="user-header__image">
           <img :src="$store.state.profileImage || '/img/profile-img.webp'" alt="profile_img" />
         </div>
-        <div class="user-header__name">{{ $store?.state?.user?.name }} {{ $store?.state?.user?.surname }}</div>
+        <div class="user-header__name">{{ computedName }}</div>
       </router-link>
       <DefaultButton class="user-header-button" @action="logoutFn" label="Вийти" />
     </div>
@@ -17,10 +17,22 @@
 
 <script>
 import DefaultButton from '@/components/buttons/DefaultButton.vue';
+
 export default {
-  name: 'userHeader',
+  name: 'MainHeader',
   components: {
     DefaultButton,
+  },
+  computed: {
+    computedName() {
+      return this.$route.name.includes('company') ? this.$store.state.company.name : `${this.$store?.state?.user?.name}` + ' ' + `${this.$store?.state?.user?.surname}`;
+    },
+    logoRout() {
+      return this.$route.name.includes('company') ? 'company-dashboard' : 'user-dashboard';
+    },
+    nameRout() {
+      return this.$route.name.includes('company') ? 'company-settings' : 'user-settings';
+    }
   },
   methods: {
     async logoutFn() {
@@ -80,6 +92,7 @@ export default {
 
   &__right {
     display: flex;
+    align-items: center;
     gap: 70px;
   }
 

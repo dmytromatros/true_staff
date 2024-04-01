@@ -33,6 +33,7 @@ module.exports = async (req, res) => {
     let newUser = req.body
 
     newUser.isImage = false
+    newUser.about = ''
 
     newUser.uniqueId = generateUniqueId(`${name} ${surname}`)
 
@@ -61,7 +62,7 @@ module.exports = async (req, res) => {
 
     if (error.length === 0) {
         res.status(200).json({
-            message: 'Ви успішно зареєстувались!',
+            message: 'Вітаю в системі!',
             data: currentUser,
             success: true
         });

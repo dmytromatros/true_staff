@@ -35,6 +35,7 @@ export default createStore({
     },
     setUser: (state, data) => {
       state.user = data.data;
+      if (!state.user.about) state.user.about = ''
       state.role = 'user';
       if (data.data) state.id = data.data._id;
       else state.id = '';
@@ -44,6 +45,7 @@ export default createStore({
     },
     setCompany(state, data) {
       state.company = data.data;
+      if (state.user.type === null || state.user.type === undefined) state.user.type = null
       state.role = 'company';
       if (data.data) state.id = data.data._id;
       else state.id = '';

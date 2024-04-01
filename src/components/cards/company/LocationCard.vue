@@ -14,7 +14,8 @@
       </div>
       <div v-if="!loading" class="location-card__buttons">
         <div class="location-card__buttons-left">
-          <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees" title="Працівники" />
+          <CircleButtonVue class="location-card__button" icon="group" @action="viewLocationEmployees"
+            title="Працівники" />
         </div>
         <div class="location-card__buttons-right">
           <CircleButtonVue class="location-card__button" icon="edit" @action="openEditPopupFN" />
@@ -23,23 +24,14 @@
       </div>
     </div>
 
-    <EditLocationPopup
-      :isShown="editPopupOpen"
-      @edited="getLocations"
-      :id="location._id"
-      @close="
-        () => {
+    <EditLocationPopup :isShown="editPopupOpen" @edited="getLocations" :id="location._id" @close="() => {
           this.editPopupOpen = false;
         }
-      "
-    />
+        " />
 
-    <ConfirmPopupVue
-      :is-shown="isConfirming"
-      :text="`Ви дійсно хочете видали \'${location.address}\' із списку працівників?`"
-      @close="isConfirming = false"
-      @confirm="deleteLocationFn(location._id)"
-    />
+    <ConfirmPopupVue :is-shown="isConfirming"
+      :text="`Ти дійсно хочеш видали \'${location.address}\' із списку працівників?`" @close="isConfirming = false"
+      @confirm="deleteLocationFn(location._id)" />
 
     <LocationEmployees :id="location._id" :is-shown="showLocationEmployees" @close="showLocationEmployees = false" />
   </div>
@@ -58,7 +50,7 @@ export default {
   props: {
     location: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {

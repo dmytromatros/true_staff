@@ -19,28 +19,44 @@
       </div>
 
       <div class="review-card__bottom">
-        <div class="review-card__date">
-          {{ getDateFn(review.date) }} / Company
-        </div>
+        <div class="review-card__date">{{ getDateFn(review.date) }} / Company</div>
         <div class="review-card__buttons" v-if="canEdit">
-          <CircleButton v-if="!isEditing" icon="edit" @action="() => {
+          <CircleButton
+            v-if="!isEditing"
+            icon="edit"
+            @action="
+              () => {
                 isEditing = true;
               }
-              " />
-          <CircleButton v-if="!isEditing" icon="delete" :danger="true" @action="() => {
+            "
+          />
+          <CircleButton
+            v-if="!isEditing"
+            icon="delete"
+            :danger="true"
+            @action="
+              () => {
                 showConfirmPopup = true;
               }
-              " />
+            "
+          />
           <CircleButton v-if="isEditing" icon="done" @action="editReviewFn" />
           <CircleButton v-if="isEditing" icon="close" @action="closeEditing" :danger="true" />
         </div>
       </div>
     </div>
     <div class="review-card__back"></div>
-    <ConfirmPopup :is-shown="showConfirmPopup" text="Ти дійсно бажаєш видалити відгук?" @close="() => {
-                showConfirmPopup = false;
-              }
-              " @confirm="deleteReview" title="Видалення відгуку" />
+    <ConfirmPopup
+      :is-shown="showConfirmPopup"
+      text="Ти дійсно бажаєш видалити відгук?"
+      @close="
+        () => {
+          showConfirmPopup = false;
+        }
+      "
+      @confirm="deleteReview"
+      title="Видалення відгуку"
+    />
   </div>
 </template>
 
@@ -55,7 +71,7 @@ export default {
   props: {
     review: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
   },
   data() {

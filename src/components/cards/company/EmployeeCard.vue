@@ -25,10 +25,15 @@
         <CircleButton class="employee-card__button" :danger="true" icon="delete" @action="deleteUserConfirm" />
       </div>
     </div>
-    <ConfirmPopupVue :is-shown="isConfirming" :text="`Ти дійсно хочеш видали ${employeeName} із списку працівників?`"
-      @close="isConfirming = false" @confirm="deleteUser" />
-    <EditUserPopupVue :is-shown="editUserPopup" :current-position="position" :current-location="locationId"
-      :current-employee="employeeId" @close="editUserPopup = false" @employee-edited="employeeEdited" />
+    <ConfirmPopupVue :is-shown="isConfirming" :text="`Ти дійсно хочеш видали ${employeeName} із списку працівників?`" @close="isConfirming = false" @confirm="deleteUser" />
+    <EditUserPopupVue
+      :is-shown="editUserPopup"
+      :current-position="position"
+      :current-location="locationId"
+      :current-employee="employeeId"
+      @close="editUserPopup = false"
+      @employee-edited="employeeEdited"
+    />
   </div>
 </template>
 

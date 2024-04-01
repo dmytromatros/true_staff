@@ -4,8 +4,7 @@
       <div class="registration-form__top">
         <div class="registration-form__image">
           <FontIcon class="registration-form__image-icon" font-size="50px" v-if="role == 'user'" icon="person" />
-          <FontIcon class="registration-form__image-icon" font-size="50px" v-if="role == 'company'"
-            icon="source_environment" />
+          <FontIcon class="registration-form__image-icon" font-size="50px" v-if="role == 'company'" icon="source_environment" />
         </div>
         <SelectInput class="registration-form__choose" :options="roles" v-model="role" />
       </div>
@@ -20,26 +19,24 @@
 
       <div v-if="role == 'company'" class="registration-form__company">
         <div class="registration-form__type">
-          <RadioCheckboxInput name="company-type" :items="[
-            { value: 1, label: 'Юридична особа РНОКПП' },
-            { value: 2, label: 'Фізична особа ЄДРПОУ' },
-          ]" v-model="companyInfo.organizationType" />
+          <RadioCheckboxInput
+            name="company-type"
+            :items="[
+              { value: 1, label: 'Юридична особа РНОКПП' },
+              { value: 2, label: 'Фізична особа ЄДРПОУ' },
+            ]"
+            v-model="companyInfo.organizationType"
+          />
         </div>
-        <TextInput class="registration-form__input" placeholder="Назва компанії" type="text"
-          v-model="companyInfo.name" />
-        <SelectInput class="registration-form__choose" :options="categories" placeholder="Категорія"
-          v-model="companyInfo.type" />
-        <TextInput class="registration-form__input" placeholder="Логін (це має бути код компанії)" type="text"
-          v-model="companyInfo.login" />
-        <TextInput class="registration-form__input" placeholder="Пароль" type="password"
-          v-model="companyInfo.password" />
+        <TextInput class="registration-form__input" placeholder="Назва компанії" type="text" v-model="companyInfo.name" />
+        <SelectInput class="registration-form__choose" :options="categories" placeholder="Категорія" v-model="companyInfo.type" />
+        <TextInput class="registration-form__input" placeholder="Логін (це має бути код компанії)" type="text" v-model="companyInfo.login" />
+        <TextInput class="registration-form__input" placeholder="Пароль" type="password" v-model="companyInfo.password" />
       </div>
     </div>
 
-    <button v-if="role == 'company' && !loading" class="registration-form__button" @click="registerCompany"
-      type="submit">Зареєструватись</button>
-    <button v-if="role == 'user' && !loading" class="registration-form__button" @click="registerUser"
-      type="submit">Зареєструватись</button>
+    <button v-if="role == 'company' && !loading" class="registration-form__button" @click="registerCompany" type="submit">Зареєструватись</button>
+    <button v-if="role == 'user' && !loading" class="registration-form__button" @click="registerUser" type="submit">Зареєструватись</button>
     <button v-if="loading" class="registration-form__button" @click="registerUser">
       <LoaderComponent class="loader-component" />
     </button>
@@ -53,7 +50,7 @@ import RadioCheckboxInput from '@/components/inputs/RadioCheckboxInput.vue';
 import SelectInput from '@/components/inputs/SelectInput.vue';
 import LoaderComponent from '@/components/other/LoaderComponent.vue';
 import FontIcon from '@/components/other/FontIcon.vue';
-import { categories } from '../../../utils/categoryList'
+import { categories } from '../../../utils/categoryList';
 export default {
   name: 'RegistrationForm',
   data() {
@@ -84,7 +81,7 @@ export default {
         },
       ],
       loading: false,
-      categories: categories
+      categories: categories,
     };
   },
   components: {

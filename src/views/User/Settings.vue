@@ -9,11 +9,9 @@
               <div class="user-settings__data-content">
                 <TextInput label="Ім'я" v-model="$store.state.user.name" placeholder="Введіть ім'я" />
                 <TextInput label="Прізвище" v-model="$store.state.user.surname" placeholder="Введіть прізвище" />
-                <TextInput label="Інформація про себе" v-model="$store.state.user.about" :textarea="true"
-                  placeholder="Про себе" />
+                <TextInput label="Інформація про себе" v-model="$store.state.user.about" :textarea="true" placeholder="Про себе" />
                 <div class="user-settings__data-pass">
-                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password"
-                    v-model="$store.state.user.password" :disabled="true" />
+                  <TextInput class="user-settings__data-pass-input" label="Пароль" type="password" v-model="$store.state.user.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
                 <CheckboxInput label="Я - працівник" v-model="$store.state.user.isEmployee" :disabled="isWorking" />

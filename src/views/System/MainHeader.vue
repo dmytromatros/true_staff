@@ -32,7 +32,7 @@ export default {
     },
     nameRout() {
       return this.$route.name.includes('company') ? 'company-settings' : 'user-settings';
-    }
+    },
   },
   methods: {
     async logoutFn() {

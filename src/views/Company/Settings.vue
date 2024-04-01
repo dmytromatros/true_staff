@@ -11,8 +11,7 @@
                 <TextInput label="Логін" v-model="$store.state.company.login" :disabled="true" />
                 <SelectInput placeholder="Категорія" v-model="$store.state.company.type" :options="categories" />
                 <div class="company-settings__data-pass">
-                  <TextInput class="company-settings__data-pass-input" label="Пароль" type="password"
-                    v-model="$store.state.company.password" :disabled="true" />
+                  <TextInput class="company-settings__data-pass-input" label="Пароль" type="password" v-model="$store.state.company.password" :disabled="true" />
                   <DefaultButton label="Змінити пароль" @action="openPopup" />
                 </div>
 
@@ -45,7 +44,7 @@ import BaseCard from '@/components/cards/system/BaseCard.vue';
 import ImageInput from '@/components/inputs/ImageInput.vue';
 import ChangeCompanyPasswordPopup from '@/components/popups/ChangeCompanyPasswordPopup.vue';
 import SelectInput from '@/components/inputs/SelectInput.vue';
-import { categories } from '../../../utils/categoryList'
+import { categories } from '../../../utils/categoryList';
 export default {
   name: 'CompanySettings',
   components: {
@@ -54,7 +53,7 @@ export default {
     BaseCard,
     ImageInput,
     ChangeCompanyPasswordPopup,
-    SelectInput
+    SelectInput,
   },
   data() {
     return {

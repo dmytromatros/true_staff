@@ -56,8 +56,6 @@ export default {
   &__send-review {
     height: 100%;
   }
-
-
 }
 
 .content-enter-active {

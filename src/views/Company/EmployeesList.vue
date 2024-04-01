@@ -2,18 +2,24 @@
   <div class="employees-list">
     <LoaderComponent v-if="loading" />
     <div class="employees-list__nav" v-if="!loading">
-      <SelectInput class="employees-list__nav-select" :options="options" placeholder="Оберати локацію"
-        v-model="selectedLocation" />
-      <DefaultButton v-if="selectedLocation" class="employees-list__nav-button" @action="selectedLocation = ''"
-        label="Показати всіх" />
+      <SelectInput class="employees-list__nav-select" :options="options" placeholder="Оберати локацію" v-model="selectedLocation" />
+      <DefaultButton v-if="selectedLocation" class="employees-list__nav-button" @action="selectedLocation = ''" label="Показати всіх" />
     </div>
 
     <div class="employees-list__label" v-if="!loading && !Object.keys(tempEmployees).length">Немає працівників.</div>
     <div class="employees-list__container" v-if="!loading">
       <div class="employees-list__list">
-        <EmployeeCard v-for="(emp, key) in tempEmployees" :key="key + reloadData" :employeeId="emp.employeeId"
-          :location="emp.locationAddress" :position="emp.position" :employee-name="emp.employeeName"
-          @deleted="getEmployees" :unique-id="emp.uniqueId" :locationId="emp.locationId" />
+        <EmployeeCard
+          v-for="(emp, key) in tempEmployees"
+          :key="key + reloadData"
+          :employeeId="emp.employeeId"
+          :location="emp.locationAddress"
+          :position="emp.position"
+          :employee-name="emp.employeeName"
+          @deleted="getEmployees"
+          :unique-id="emp.uniqueId"
+          :locationId="emp.locationId"
+        />
       </div>
     </div>
   </div>

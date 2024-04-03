@@ -90,7 +90,7 @@ export default createStore({
     logInUserAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/login-user`, data)
+          .post(`/api/login-user`, data)
           .then((res) => {
             commit('setUser', res.data);
 
@@ -109,7 +109,7 @@ export default createStore({
     logInCompanyAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/login-company`, data)
+          .post(`/api/login-company`, data)
           .then((res) => {
             commit('setCompany', res.data);
 
@@ -149,7 +149,7 @@ export default createStore({
     getUserListAction: async ({ commit }) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-list`)
+          .get(`/api/get-user-list`)
           .then((res) => {
             commit('setUserList', res.data);
             done(res.data);
@@ -161,7 +161,7 @@ export default createStore({
     addUserAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/add-user`, data)
+          .post(`/api/add-user`, data)
           .then((res) => {
             context.dispatch('logInUserAction', res.data.data);
             done(res.data);
@@ -173,7 +173,7 @@ export default createStore({
     getUserAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user/${data.id}`)
+          .get(`/api/get-user/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -184,7 +184,7 @@ export default createStore({
     getCurrentUserAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-current-user/${data.id}`)
+          .get(`/api/get-current-user/${data.id}`)
           .then((res) => {
             done(res.data);
             context.commit('setUser', res.data);
@@ -196,7 +196,7 @@ export default createStore({
     checkUserAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/check-user/${data.id}`)
+          .get(`/api/check-user/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -207,7 +207,7 @@ export default createStore({
     findByNameAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/find-by-name`, data)
+          .post(`/api/find-by-name`, data)
           .then((res) => {
             done(res.data);
           })
@@ -218,7 +218,7 @@ export default createStore({
     getUserInfoAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-info/${data.id}`)
+          .get(`/api/get-user-info/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -229,7 +229,7 @@ export default createStore({
     editUserAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-user`, data)
+          .post(`/api/edit-user`, data)
           .then((res) => {
             done(res.data);
           })
@@ -240,7 +240,7 @@ export default createStore({
     editEmployeeAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-employee`, data)
+          .post(`/api/edit-employee`, data)
           .then((res) => {
             done(res.data);
           })
@@ -251,7 +251,7 @@ export default createStore({
     addUserRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/send-user-request`, data)
+          .post(`/api/send-user-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -262,7 +262,7 @@ export default createStore({
     getUserRequestListAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-user-request-list/${data.id}`)
+          .get(`/api/get-user-request-list/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -275,7 +275,7 @@ export default createStore({
     addCompanyAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/add-company`, data)
+          .post(`/api/add-company`, data)
           .then((res) => {
             context.dispatch('logInCompanyAction', res.data.data);
             done(res.data);
@@ -287,7 +287,7 @@ export default createStore({
     getCurrentCompanyAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-current-company/${data.id}`)
+          .get(`/api/get-current-company/${data.id}`)
           .then((res) => {
             commit('setCompany', res.data);
             done(res.data);
@@ -299,7 +299,7 @@ export default createStore({
     getCompanyAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company/${data.id}`)
+          .get(`/api/get-company/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -310,7 +310,7 @@ export default createStore({
     editCompanyAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company`, data)
+          .post(`/api/edit-company`, data)
           .then((res) => {
             commit('setCompany', res.data);
             done(res.data);
@@ -322,7 +322,7 @@ export default createStore({
     editCompanyPasswordAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-company-password`, data)
+          .post(`/api/edit-company-password`, data)
           .then((res) => {
             commit('setCompany', res.data);
             done(res.data);
@@ -334,7 +334,7 @@ export default createStore({
     editUserPasswordAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-user-password`, data)
+          .post(`/api/edit-user-password`, data)
           .then((res) => {
             commit('setUser', res.data);
             done(res.data);
@@ -346,7 +346,7 @@ export default createStore({
     addCompanyRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/send-company-request`, data)
+          .post(`/api/send-company-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -357,7 +357,7 @@ export default createStore({
     getCompanyListAction: async () => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-list`)
+          .get(`/api/get-list`)
           .then((res) => {
             done(res.data);
           })
@@ -368,7 +368,7 @@ export default createStore({
     getCompanyEmployeesAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company-employees/${data.id}`)
+          .get(`/api/get-company-employees/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -379,7 +379,7 @@ export default createStore({
     deleteEmployeeAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-employee`, data)
+          .post(`/api/delete-employee`, data)
           .then((res) => {
             done(res.data);
           })
@@ -392,7 +392,7 @@ export default createStore({
     getLocationsAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-locations/${data.id}`)
+          .get(`/api/get-locations/${data.id}`)
           .then((res) => {
             commit('setLocations', res.data);
             done(res.data);
@@ -404,7 +404,7 @@ export default createStore({
     addLocationAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/add-location`, data)
+          .post(`/api/add-location`, data)
           .then((res) => {
             done(res.data);
           })
@@ -415,7 +415,7 @@ export default createStore({
     getLocationAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-location/${data.locationId}`)
+          .get(`/api/get-location/${data.locationId}`)
           .then((res) => {
             done(res.data);
           })
@@ -426,7 +426,7 @@ export default createStore({
     editLocationAction: async ({ commit }, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-location`, data)
+          .post(`/api/edit-location`, data)
           .then((res) => {
             commit('setLocations', res.data);
             done(res.data);
@@ -438,7 +438,7 @@ export default createStore({
     getLocationEmployeesAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-location-employees/${data.id}`)
+          .get(`/api/get-location-employees/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -449,7 +449,7 @@ export default createStore({
     getDeleteLocationAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-location/${data.id}`)
+          .post(`/api/delete-location/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -462,7 +462,7 @@ export default createStore({
     rejectRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/reject-request`, data)
+          .post(`/api/reject-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -472,7 +472,7 @@ export default createStore({
     userDeleteRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/user-delete-request`, data)
+          .post(`/api/user-delete-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -483,7 +483,7 @@ export default createStore({
     companyDeleteRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/company-delete-request`, data)
+          .post(`/api/company-delete-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -494,7 +494,7 @@ export default createStore({
     acceptRequestAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/accept-request`, data)
+          .post(`/api/accept-request`, data)
           .then((res) => {
             done(res.data);
           })
@@ -505,7 +505,7 @@ export default createStore({
     getCompanyRequestListAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-company-request-list/${data.id}`)
+          .get(`/api/get-company-request-list/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -518,7 +518,7 @@ export default createStore({
     getWorkplacesAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-workplaces/${data.employeeId}`)
+          .get(`/api/get-workplaces/${data.employeeId}`)
           .then((res) => {
             done(res.data);
           })
@@ -531,7 +531,7 @@ export default createStore({
     uploadImageAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/upload-image`, data)
+          .post(`/api/upload-image`, data)
           .then((res) => {
             done(res.data);
           })
@@ -542,7 +542,7 @@ export default createStore({
     getImageAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-image/${data.id}`)
+          .get(`/api/get-image/${data.id}`)
           .then((res) => {
             done(res.data);
             if (data.profile) {
@@ -556,7 +556,7 @@ export default createStore({
     getEmployeesAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-employees/${data.location}`)
+          .get(`/api/get-employees/${data.location}`)
           .then((res) => {
             done(res.data);
           })
@@ -569,7 +569,7 @@ export default createStore({
     sendReviewAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/send-review`, data)
+          .post(`/api/send-review`, data)
           .then((res) => {
             done(res.data);
           })
@@ -580,7 +580,7 @@ export default createStore({
     getReviewsListAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .get(`${process.env.VUE_APP_BACKEND_URL}/api/get-reviews-list/${data.id}`)
+          .get(`/api/get-reviews-list/${data.id}`)
           .then((res) => {
             done(res.data);
           })
@@ -591,7 +591,7 @@ export default createStore({
     editReviewAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/edit-review`, data)
+          .post(`/api/edit-review`, data)
           .then((res) => {
             done(res.data);
           })
@@ -602,7 +602,7 @@ export default createStore({
     deleteReviewAction: async (context, data) => {
       return new Promise((done) => {
         axios
-          .post(`${process.env.VUE_APP_BACKEND_URL}/api/delete-review/${data.id}`)
+          .post(`/api/delete-review/${data.id}`)
           .then((res) => {
             done(res.data);
           })

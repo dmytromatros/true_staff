@@ -18,11 +18,18 @@ require('./mongodb-connection')(app);
 const storage = multer.memoryStorage(); // Store the file in memory as a Buffer
 app.upload = multer({ storage: storage });
 
-// Image upload endpoint
-
+// app.use('/api', express.static(path.join(__dirname, 'dist')));
 
 // Other routes
 require('./router')(app);
+
+
+// Handle production
+// Static folder
+app.use(express.static(__dirname + '/dist/'));
+
+// Handle SPA
+app.use(/.*/, (req, res) => res.sendFile(__dirname + '/dist/index.html'))
 
 const port = process.env.PORT || 5000;
 
